@@ -1,0 +1,9 @@
+C:\Users\franco\source\repos\Entrega1software\DAL\bin\Debug\DAL.dll
+C:\Users\franco\source\repos\Entrega1software\DAL\bin\Debug\DAL.pdb
+C:\Users\franco\source\repos\Entrega1software\DAL\bin\Debug\BE.dll
+C:\Users\franco\source\repos\Entrega1software\DAL\bin\Debug\BE.pdb
+C:\Users\franco\source\repos\Entrega1software\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache
+C:\Users\franco\source\repos\Entrega1software\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+C:\Users\franco\source\repos\Entrega1software\DAL\obj\Debug\DAL.csproj.Up2Date
+C:\Users\franco\source\repos\Entrega1software\DAL\obj\Debug\DAL.dll
+C:\Users\franco\source\repos\Entrega1software\DAL\obj\Debug\DAL.pdb

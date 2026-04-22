@@ -1,0 +1,6 @@
+C:\Users\franco\source\repos\Entrega1software\BE\bin\Debug\BE.dll
+C:\Users\franco\source\repos\Entrega1software\BE\bin\Debug\BE.pdb
+C:\Users\franco\source\repos\Entrega1software\BE\obj\Debug\BE.csproj.AssemblyReference.cache
+C:\Users\franco\source\repos\Entrega1software\BE\obj\Debug\BE.csproj.CoreCompileInputs.cache
+C:\Users\franco\source\repos\Entrega1software\BE\obj\Debug\BE.dll
+C:\Users\franco\source\repos\Entrega1software\BE\obj\Debug\BE.pdb
