@@ -44,6 +44,13 @@ namespace Entrega1software
                 };
                 bll.AgregarUsuario(u);
                 MessageBox.Show("Usuario agregado correctamente.");
+                BitacoraBLL bitacora = new BitacoraBLL();
+                bitacora.Registrar(
+                    SesionManager.Instancia.UsuarioActual.Id,
+                    SesionManager.Instancia.UsuarioActual.Nombre,
+                    "Alta Usuario",
+                    $"Se creo el usuario {u.NroTerminal}"
+                );
                 CargarUsuarios();
                 LimpiarCampos();
             }

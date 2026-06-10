@@ -120,7 +120,36 @@ namespace DAL
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+        public int InsertarYObtenerID(Usuario u)
+        {
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                string q = @"INSERT INTO USUARIOS (NroTerminal, Clave, Nombre, Apellido, PerfilId, Activo)
+                     VALUES (@nro, @clave, @nom, @ape, @per, 1);
+                     SELECT SCOPE_IDENTITY();";
+                SqlCommand cmd = new SqlCommand(q, con);
+                cmd.Parameters.AddWithValue("@nro", u.NroTerminal);
+                cmd.Parameters.AddWithValue("@clave", u.Clave);
+                cmd.Parameters.AddWithValue("@nom", u.Nombre);
+                cmd.Parameters.AddWithValue("@ape", u.Apellido ?? "");
+                cmd.Parameters.AddWithValue("@per", u.PerfilId);
+                con.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
 
+        public bool ActualizarPerfil(int usuarioId, int perfilId)
+        {
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                SqlCommand cmd = new SqlCommand(
+                    "UPDATE USUARIOS SET PerfilId = @per WHERE Id = @id", con);
+                cmd.Parameters.AddWithValue("@per", perfilId);
+                cmd.Parameters.AddWithValue("@id", usuarioId);
+                con.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
         public void RegistrarAuditoria(int usuarioId, string accion)
         {
             using (SqlConnection con = new SqlConnection(conexion))

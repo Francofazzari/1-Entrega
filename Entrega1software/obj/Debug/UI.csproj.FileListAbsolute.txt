@@ -15,3 +15,4 @@ C:\Users\franco\source\repos\Entrega1software\Entrega1software\bin\Debug\BLL.pdb
 C:\Users\franco\source\repos\Entrega1software\Entrega1software\bin\Debug\DAL.pdb
 C:\Users\franco\source\repos\Entrega1software\Entrega1software\obj\Debug\Entrega1software.exe.config
 C:\Users\franco\source\repos\Entrega1software\Entrega1software\obj\Debug\UI.csproj.Up2Date
+C:\Users\franco\source\repos\Entrega1software\Entrega1software\obj\Debug\Entrega1software.FormLogin.resources

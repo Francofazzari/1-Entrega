@@ -1,46 +1,12 @@
--- Crear la base de datos
-CREATE DATABASE AgenciaQuiniela;
-GO
-
 USE AgenciaQuiniela;
 GO
 
--- Tabla PERFILES
-CREATE TABLE PERFILES (
-    Id          INT PRIMARY KEY IDENTITY,
-    Nombre      VARCHAR(50) NOT NULL,
-    Descripcion VARCHAR(100)
+CREATE TABLE Bitacora (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    FechaHora DATETIME DEFAULT GETDATE(),
+    UsuarioId INT,
+    UsuarioNombre VARCHAR(100),
+    Actividad VARCHAR(100),
+    Detalle VARCHAR(255)
 );
-
--- Tabla USUARIOS
-CREATE TABLE USUARIOS (
-    Id          INT PRIMARY KEY IDENTITY,
-    NroTerminal VARCHAR(20) NOT NULL UNIQUE,
-    Clave       VARCHAR(256) NOT NULL,
-    Nombre      VARCHAR(100) NOT NULL,
-    Apellido    VARCHAR(100) NOT NULL,
-    PerfilId    INT NOT NULL FOREIGN KEY REFERENCES PERFILES(Id),
-    Activo      BIT NOT NULL DEFAULT 1
-);
-
--- Tabla AUDITORIA_LOGIN
-CREATE TABLE AUDITORIA_LOGIN (
-    Id        INT PRIMARY KEY IDENTITY,
-    UsuarioId INT NOT NULL FOREIGN KEY REFERENCES USUARIOS(Id),
-    FechaHora DATETIME NOT NULL DEFAULT GETDATE(),
-    Accion    VARCHAR(10) NOT NULL,
-    IP        VARCHAR(50)
-);
-GO
-
--- Datos iniciales
-INSERT INTO PERFILES (Nombre, Descripcion) VALUES 
-    ('Admin', 'Administrador del sistema'),
-    ('Operador', 'Operador de terminal');
-
--- Usuario admin (clave: admin123)
-INSERT INTO USUARIOS (NroTerminal, Clave, Nombre, Apellido, PerfilId, Activo)
-VALUES ('T001', 
-        '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
-        'Juan', 'Perez', 1, 1);
 GO
