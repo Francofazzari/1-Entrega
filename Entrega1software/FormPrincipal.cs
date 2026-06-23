@@ -1,4 +1,4 @@
-using BE;
+ï»¿using BE;
 using BLL;
 using System;
 using System.Collections.Generic;
@@ -32,36 +32,42 @@ namespace Entrega1software
 
         private void ConfigurarSegunPerfil()
         {
-            string perfil = SesionManager.Instancia.UsuarioActual.Perfil;
-            int perfilId = SesionManager.Instancia.UsuarioActual.PerfilId;
+            bool isAdmin = false;
+            foreach (var p in SesionManager.Instancia.UsuarioActual.Permisos)
+            {
+                if (p.Codigo == "Admin") isAdmin = true;
+            }
 
-            if (perfil == "Admin")
-                if (perfil == "Admin" || perfilId == 1)
-                {
-                    btnUsuarios.Visible = true;
-                    btnPerfiles.Visible = true;
-                    btnVentas.Visible = true;
-                    btnReporte.Visible = true;
-                    btnApuesta.Visible = true;
-                }
-                else // Operador
-                {
-                    btnUsuarios.Visible = false;
-                    btnPerfiles.Visible = false;
-                    btnVentas.Visible = false;
-                    btnReporte.Visible = false;
-                    btnApuesta.Visible = true;
-                }
+            if (isAdmin)
+            {
+                btnUsuarios.Visible = true;
+                btnPerfiles.Visible = true;
+                btnVentas.Visible = true;
+                btnReporte.Visible = true;
+                btnApuesta.Visible = true;
+                btnCambios.Visible = true;
+                btnIdiomas.Visible = true;
+            }
+            else // Operador
+            {
+                btnUsuarios.Visible = false;
+                btnPerfiles.Visible = false;
+                btnVentas.Visible = false;
+                btnReporte.Visible = false;
+                btnApuesta.Visible = true;
+                btnCambios.Visible = false;
+                btnIdiomas.Visible = false;
+            }
         }
         public void ActualizarIdioma(Idioma idioma)
         {
-            // Pedimos a la BLL el texto de cada botón usando su clave
             btnUsuarios.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_usuarios");
             btnPerfiles.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_perfiles");
             btnVentas.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_ventas");
             btnReporte.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_reporte");
             btnApuesta.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_apuesta");
             btnLogout.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_logout");
+            btnIdiomas.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_idiomas") == "btn_idiomas" ? "Gestion Idiomas" : IdiomaManager.Instancia.ObtenerMensaje("btn_idiomas");
         }
         private void btnUsuarios_Click(object sender, System.EventArgs e)
         {
@@ -98,6 +104,13 @@ namespace Entrega1software
             fa.Show();
         }
 
+        private void btnIdiomas_Click(object sender, System.EventArgs e)
+        {
+            FormControlIdiomas fci = new FormControlIdiomas();
+            fci.MdiParent = this;
+            fci.Show();
+        }
+
         private void btnLogout_Click(object sender, System.EventArgs e)
         {
             BitacoraBLL bitacora = new BitacoraBLL();
@@ -123,8 +136,11 @@ namespace Entrega1software
             fb.MdiParent = this;
             fb.Show();
         }
-
+        private void btnCambios_Click(object sender, System.EventArgs e)
+        {
+            FormControlCambios fcc = new FormControlCambios();
+            fcc.MdiParent = this;
+            fcc.Show();
+        }
     }
 }
-
-

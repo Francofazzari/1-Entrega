@@ -1,10 +1,8 @@
-﻿using BE;
+using BE;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -17,15 +15,15 @@ namespace DAL
             List<Permiso> lista = new List<Permiso>();
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                string q = "SELECT Id, Codigo, Nombre, Descripcion, Tipo, PermisoPadreId FROM PERMISOS ORDER BY PermisoPadreId, Id";
+                string q = "SELECT Id, Codigo, Nombre, Descripcion, EsPadre FROM PERMISOS";
                 SqlCommand cmd = new SqlCommand(q, con);
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    string tipo = dr["Tipo"].ToString();
+                    bool esPadre = dr["EsPadre"] != DBNull.Value && (bool)dr["EsPadre"];
                     Permiso p;
-                    if (tipo == "A")
+                    if (!esPadre)
                         p = new PermisoSimple();
                     else
                         p = new PermisoCompleto();
@@ -34,52 +32,99 @@ namespace DAL
                     p.Codigo = dr["Codigo"].ToString();
                     p.Nombre = dr["Nombre"].ToString();
                     p.Descripcion = dr["Descripcion"].ToString();
-                    p.PermisoPadreId = dr["PermisoPadreId"] == DBNull.Value ? (int?)null : (int)dr["PermisoPadreId"];
+                    p.EsPadre = esPadre;
                     lista.Add(p);
-
                 }
             }
             return lista;
         }
 
-        public List<Perfil> ObtenerPerfiles()
+        public Permiso ObtenerArbol(int permisoRaizId)
         {
-            List<Perfil> lista = new List<Perfil>();
+            List<Permiso> todos = ObtenerTodos();
+            return ConstruirNodo(permisoRaizId, todos);
+        }
+
+        private Permiso ConstruirNodo(int id, List<Permiso> todos)
+        {
+            Permiso raiz = todos.FirstOrDefault(p => p.Id == id);
+            if (raiz == null) return null;
+
+            if (!raiz.EsPadre) return raiz; // Es patente, no tiene hijos
+
+            PermisoCompleto compuesto = (PermisoCompleto)raiz;
+
+            // Busca los hijos en PERMISO_PERMISO
+            List<int> idsHijos = ObtenerIdsHijos(id);
+
+            foreach (int idHijo in idsHijos)
+            {
+                Permiso hijo = ConstruirNodo(idHijo, todos);
+                if (hijo != null)
+                {
+                    compuesto.Agregar(hijo);
+                }
+            }
+            return compuesto;
+        }
+
+        private List<int> ObtenerIdsHijos(int idPadre)
+        {
+            List<int> hijos = new List<int>();
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                SqlCommand cmd = new SqlCommand(
-                    "SELECT Id, Nombre, Descripcion, PermisoRaizId FROM PERFILES", con);
+                string q = "SELECT IdHijo FROM PERMISO_PERMISO WHERE IdPadre = @padre";
+                SqlCommand cmd = new SqlCommand(q, con);
+                cmd.Parameters.AddWithValue("@padre", idPadre);
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    lista.Add(new Perfil
-                    {
-                        Id = (int)dr["Id"],
-                        Nombre = dr["Nombre"].ToString(),
-                        Descripcion = dr["Descripcion"].ToString(),
-                        PermisoRaizId = dr["PermisoRaizId"] == DBNull.Value ? 0 : (int)dr["PermisoRaizId"]
-                    });
+                    hijos.Add((int)dr["IdHijo"]);
                 }
             }
-            return lista;
+            return hijos;
         }
 
-        public bool Insertar(Permiso p, int? padreId)
+        public int Insertar(Permiso p)
         {
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                string tipo = p is PermisoSimple ? "A" : "C";
-                string q = @"INSERT INTO PERMISOS (Codigo, Nombre, Descripcion, Tipo, PermisoPadreId)
-                             VALUES (@cod, @nom, @des, @tip, @pad)";
+                string q = @"INSERT INTO PERMISOS (Codigo, Nombre, Descripcion, EsPadre)
+                             VALUES (@cod, @nom, @des, @espadre);
+                             SELECT SCOPE_IDENTITY();";
                 SqlCommand cmd = new SqlCommand(q, con);
                 cmd.Parameters.AddWithValue("@cod", p.Codigo);
                 cmd.Parameters.AddWithValue("@nom", p.Nombre);
                 cmd.Parameters.AddWithValue("@des", p.Descripcion ?? "");
-                cmd.Parameters.AddWithValue("@tip", tipo);
-                cmd.Parameters.AddWithValue("@pad", padreId.HasValue ? (object)padreId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@espadre", p.EsPadre);
+                con.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
+
+        public bool InsertarPermisoPermiso(int idPadre, int idHijo)
+        {
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                string q = @"INSERT INTO PERMISO_PERMISO (IdPadre, IdHijo) VALUES (@padre, @hijo)";
+                SqlCommand cmd = new SqlCommand(q, con);
+                cmd.Parameters.AddWithValue("@padre", idPadre);
+                cmd.Parameters.AddWithValue("@hijo", idHijo);
                 con.Open();
                 return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+        public bool LimpiarHijos(int idPadre)
+        {
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                string q = @"DELETE FROM PERMISO_PERMISO WHERE IdPadre = @padre";
+                SqlCommand cmd = new SqlCommand(q, con);
+                cmd.Parameters.AddWithValue("@padre", idPadre);
+                con.Open();
+                return cmd.ExecuteNonQuery() >= 0;
             }
         }
 
@@ -87,95 +132,35 @@ namespace DAL
         {
             using (SqlConnection con = new SqlConnection(conexion))
             {
+                // Primero eliminar referencias en USUARIO_PERMISO y PERMISO_PERMISO
+                SqlCommand cmdDel1 = new SqlCommand("DELETE FROM USUARIO_PERMISO WHERE IdPermiso=@id", con);
+                cmdDel1.Parameters.AddWithValue("@id", id);
+                
+                SqlCommand cmdDel2 = new SqlCommand("DELETE FROM PERMISO_PERMISO WHERE IdPadre=@id OR IdHijo=@id", con);
+                cmdDel2.Parameters.AddWithValue("@id", id);
+                
                 SqlCommand cmd = new SqlCommand("DELETE FROM PERMISOS WHERE Id=@id", con);
                 cmd.Parameters.AddWithValue("@id", id);
-                con.Open();
-                return cmd.ExecuteNonQuery() > 0;
-            }
-        }
 
-        public int InsertarPerfilYObtenerID(string nombre, string descripcion)
-        {
-            using (SqlConnection con = new SqlConnection(conexion))
-            {
-                string q = @"INSERT INTO PERFILES (Nombre, Descripcion)
-                     VALUES (@nom, @des);
-                     SELECT SCOPE_IDENTITY();";
-                SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@nom", nombre);
-                cmd.Parameters.AddWithValue("@des", descripcion ?? "");
                 con.Open();
-                return Convert.ToInt32(cmd.ExecuteScalar());
-            }
-        }
-
-        public bool InsertarPerfilPermiso(int perfilId, int permisoId)
-        {
-            using (SqlConnection con = new SqlConnection(conexion))
-            {
-                SqlCommand cmd = new SqlCommand(
-                    "INSERT INTO PERFIL_PERMISOS (PerfilId, PermisoId) VALUES (@per, @perm)", con);
-                cmd.Parameters.AddWithValue("@per", perfilId);
-                cmd.Parameters.AddWithValue("@perm", permisoId);
-                con.Open();
-                return cmd.ExecuteNonQuery() > 0;
-            }
-        }
-
-        public int ObtenerIdPermisoPorNombre(string nombre)
-        {
-            using (SqlConnection con = new SqlConnection(conexion))
-            {
-                SqlCommand cmd = new SqlCommand(
-                    "SELECT Id FROM PERMISOS WHERE Nombre = @nom", con);
-                cmd.Parameters.AddWithValue("@nom", nombre);
-                con.Open();
-                object result = cmd.ExecuteScalar();
-                return result != null ? Convert.ToInt32(result) : 0;
-            }
-        }
-
-        public List<string> ObtenerFuncionesDeUsuario(int usuarioId)
-        {
-            List<string> lista = new List<string>();
-            using (SqlConnection con = new SqlConnection(conexion))
-            {
-                string q = @"SELECT p.Nombre FROM PERMISOS p
-                     INNER JOIN PERFIL_PERMISOS pp ON p.Id = pp.PermisoId
-                     INNER JOIN PERFILES pf ON pp.PerfilId = pf.Id
-                     INNER JOIN USUARIOS u ON u.PerfilId = pf.Id
-                     WHERE u.Id = @uid";
-                SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@uid", usuarioId);
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                    lista.Add(dr["Nombre"].ToString());
-            }
-            return lista;
-        }
-        public Perfil ObtenerPerfilPorNombre(string nombre)
-        {
-            Perfil p = null;
-            using (SqlConnection con = new SqlConnection(conexion))
-            {
-                string q = "SELECT Id, Nombre, Descripcion, PermisoRaizId FROM PERFILES WHERE Nombre = @nom";
-                SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@nom", nombre);
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                if (dr.Read())
+                SqlTransaction tx = con.BeginTransaction();
+                try
                 {
-                    p = new Perfil
-                    {
-                        Id = (int)dr["Id"],
-                        Nombre = dr["Nombre"].ToString(),
-                        Descripcion = dr["Descripcion"].ToString(),
-                        PermisoRaizId = dr["PermisoRaizId"] == DBNull.Value ? 0 : (int)dr["PermisoRaizId"]
-                    };
+                    cmdDel1.Transaction = tx;
+                    cmdDel2.Transaction = tx;
+                    cmd.Transaction = tx;
+                    cmdDel1.ExecuteNonQuery();
+                    cmdDel2.ExecuteNonQuery();
+                    bool res = cmd.ExecuteNonQuery() > 0;
+                    tx.Commit();
+                    return res;
+                }
+                catch
+                {
+                    tx.Rollback();
+                    return false;
                 }
             }
-            return p;
         }
     }
 }

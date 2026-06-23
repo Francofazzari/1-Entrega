@@ -18,7 +18,6 @@ namespace BLL
 
         private IdiomaManager() { }
 
-        // Aquí guardamos todos los formularios que están "escuchando" los cambios de idioma
         private List<IObservadorIdioma> observadores = new List<IObservadorIdioma>();
 
         public Idioma IdiomaActual { get; private set; }
@@ -28,7 +27,6 @@ namespace BLL
         public void Suscribir(IObservadorIdioma obs)
         {
             observadores.Add(obs);
-            // Si ya hay un idioma seleccionado, se lo aplicamos automáticamente al suscribirse
             if (IdiomaActual != null)
             {
                 obs.ActualizarIdioma(IdiomaActual);
@@ -43,9 +41,8 @@ namespace BLL
         public void CambiarIdioma(Idioma nuevoIdioma)
         {
             IdiomaActual = nuevoIdioma;
-            // Al cambiar el idioma, vamos a la BD a buscar sus traducciones
             traduccionesActuales = dal.ObtenerTraducciones(nuevoIdioma.Id);
-            Notificar(); // Avisamos a todos los formularios
+            Notificar();
         }
 
         private void Notificar()
@@ -61,12 +58,42 @@ namespace BLL
             if (traduccionesActuales.ContainsKey(clave))
                 return traduccionesActuales[clave];
 
-            return clave; // Si no encuentra la traducción, muestra la clave por defecto
+            return clave;
         }
 
         public List<Idioma> ObtenerIdiomas()
         {
             return dal.ObtenerIdiomas();
+        }
+
+        public List<Traduccion> ObtenerTraduccionesGrid(int idiomaId)
+        {
+            return dal.ObtenerTraduccionesGrid(idiomaId);
+        }
+
+        public bool InsertarIdioma(Idioma i)
+        {
+            return dal.InsertarIdioma(i);
+        }
+
+        public bool RenombrarIdioma(int id, string nuevoNombre)
+        {
+            return dal.RenombrarIdioma(id, nuevoNombre);
+        }
+
+        public bool EliminarIdioma(int id)
+        {
+            return dal.EliminarIdioma(id);
+        }
+
+        public bool GuardarTraducciones(int idiomaId, List<Traduccion> traducciones)
+        {
+            bool res = dal.GuardarTraducciones(idiomaId, traducciones);
+            if (res && IdiomaActual != null && IdiomaActual.Id == idiomaId)
+            {
+                CambiarIdioma(IdiomaActual); // Refresca si es el idioma actual
+            }
+            return res;
         }
     }
 }

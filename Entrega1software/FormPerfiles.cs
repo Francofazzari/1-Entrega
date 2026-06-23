@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using BE;
 using BLL;
@@ -9,160 +10,173 @@ namespace Entrega1software
     public partial class FormPerfiles : Form
     {
         private PerfilBLL bll = new PerfilBLL();
-        private UsuarioBLL usuarioBLL = new UsuarioBLL();
-
-        // Guarda Id del usuario por nombre
-        private Dictionary<string, int> empleadosIds = new Dictionary<string, int>();
-        private string empleadoSeleccionado = null;
+        private List<Permiso> todosLosPermisos = new List<Permiso>();
 
         public FormPerfiles()
         {
             InitializeComponent();
-            CargarFuncionesDisponibles();
-            CargarArbolDesdeDB();
+            lstFamilias.SelectedIndexChanged += LstFamilias_SelectedIndexChanged;
+            CargarDatos();
         }
 
-        private void CargarFuncionesDisponibles()
+        private void LstFamilias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            lstFunciones.Items.Clear();
-            lstFunciones.Items.Add("Gestion de Empleados");
-            lstFunciones.Items.Add("Cargar Empleado");
-            lstFunciones.Items.Add("Modificar Empleado");
-            lstFunciones.Items.Add("Eliminar Empleado");
-            lstFunciones.Items.Add("Ventas en Linea");
-            lstFunciones.Items.Add("Ver Ventas de Operadores");
-            lstFunciones.Items.Add("Reporte Semanal");
-            lstFunciones.Items.Add("Apuestas");
-            lstFunciones.Items.Add("Cargar Apuesta");
-            lstFunciones.Items.Add("Cobrar Jugada");
+            treeViewPreview.Nodes.Clear();
+            if (lstFamilias.SelectedItem != null)
+            {
+                Permiso p = (Permiso)lstFamilias.SelectedItem;
+                TreeNode root = new TreeNode(p.Nombre);
+                root.Tag = p;
+                
+                // Cargar los hijos actuales de la familia para previsualizar si ya tiene
+                PermisoCompleto arbol = bll.ObtenerArbol(p.Id) as PermisoCompleto;
+                if (arbol != null)
+                {
+                    ConstruirNodosHijos(root, arbol);
+                }
+
+                treeViewPreview.Nodes.Add(root);
+                treeViewPreview.ExpandAll();
+            }
         }
 
-        private void CargarArbolDesdeDB()
+        private void CargarDatos()
         {
+            todosLosPermisos = bll.ObtenerTodos();
+            
+            // Cargar listas
+            lstFamilias.DataSource = null;
+            lstFamilias.DataSource = todosLosPermisos.Where(p => p.EsPadre).ToList();
+            lstFamilias.DisplayMember = "Nombre";
+
+            lstPatentes.DataSource = null;
+            lstPatentes.DataSource = todosLosPermisos.Where(p => !p.EsPadre).ToList();
+            lstPatentes.DisplayMember = "Nombre";
+
+            // Cargar TreeView izquierdo (todos)
             treeViewPermisos.Nodes.Clear();
-            empleadosIds.Clear();
-
-            // Carga todos los usuarios de la BD
-            List<Usuario> usuarios = usuarioBLL.ObtenerTodos();
-
-            foreach (Usuario u in usuarios)
+            foreach (var familia in todosLosPermisos.Where(p => p.EsPadre))
             {
-                TreeNode nodoUsuario = new TreeNode($"{u.Nombre} [{u.NroTerminal}]");
-                nodoUsuario.Tag = u.Id;
-
-                // Carga las funciones asignadas al usuario
-                List<string> funciones = bll.ObtenerFuncionesDeUsuario(u.Id);
-                foreach (string f in funciones)
-                    nodoUsuario.Nodes.Add(f);
-
-                treeViewPermisos.Nodes.Add(nodoUsuario);
-                empleadosIds[u.Nombre] = u.Id;
-            }
-
-            treeViewPermisos.ExpandAll();
-
-            treeViewPermisos.NodeMouseClick += (s, e) =>
-            {
-                if (e.Node.Level == 0)
-                    empleadoSeleccionado = e.Node.Text;
-            };
-        }
-
-        private void btnAgregarEmpleado_Click(object sender, EventArgs e)
-        {
-            string nombre = txtNombreEmpleado.Text.Trim();
-            if (string.IsNullOrEmpty(nombre))
-            {
-                MessageBox.Show("Ingrese el nombre del empleado.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Genera nro de terminal automático
-            string nroTerminal = "T" + DateTime.Now.Ticks.ToString().Substring(10, 4);
-
-            try
-            {
-                int nuevoId = bll.CrearEmpleado(nombre, nroTerminal);
-                if (nuevoId > 0)
+                PermisoCompleto arbol = bll.ObtenerArbol(familia.Id) as PermisoCompleto;
+                if (arbol != null)
                 {
-                    empleadosIds[nombre] = nuevoId;
-                    TreeNode nodo = new TreeNode($"{nombre} [{nroTerminal}]");
-                    nodo.Tag = nuevoId;
+                    TreeNode nodo = new TreeNode(arbol.Nombre);
+                    nodo.Tag = arbol;
+                    ConstruirNodosHijos(nodo, arbol);
                     treeViewPermisos.Nodes.Add(nodo);
-                    treeViewPermisos.ExpandAll();
-                    empleadoSeleccionado = $"{nombre} [{nroTerminal}]";
-                    txtNombreEmpleado.Text = "";
-                    MessageBox.Show($"Empleado '{nombre}' agregado. Terminal: {nroTerminal}\nClave por defecto: 1234");
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if(lstFamilias.SelectedItem != null) {
+                LstFamilias_SelectedIndexChanged(null, null);
             }
         }
 
-        private void btnAsignar_Click(object sender, EventArgs e)
+        private void ConstruirNodosHijos(TreeNode padre, PermisoCompleto permisoCompleto)
         {
-            if (empleadoSeleccionado == null)
+            foreach (Permiso hijo in permisoCompleto.SubPermisos)
             {
-                MessageBox.Show("Primero haga clic en un empleado del árbol.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+                TreeNode nodoHijo = new TreeNode(hijo.Nombre);
+                nodoHijo.Tag = hijo;
+                padre.Nodes.Add(nodoHijo);
 
-            if (lstFunciones.CheckedItems.Count == 0)
-            {
-                MessageBox.Show("Seleccione al menos una función.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Obtiene el nodo seleccionado
-            TreeNode nodoEmpleado = null;
-            foreach (TreeNode n in treeViewPermisos.Nodes)
-            {
-                if (n.Text == empleadoSeleccionado)
+                if (hijo is PermisoCompleto pc)
                 {
-                    nodoEmpleado = n;
-                    break;
+                    ConstruirNodosHijos(nodoHijo, pc);
                 }
             }
-            if (nodoEmpleado == null) return;
+        }
 
-            int usuarioId = (int)nodoEmpleado.Tag;
-
-            // Arma lista de funciones
-            List<string> funciones = new List<string>();
-            foreach (string f in lstFunciones.CheckedItems)
-                funciones.Add(f);
-
+        private void btnAgregarFamiliaLista_Click(object sender, EventArgs e)
+        {
             try
             {
-                // Obtiene el nombre sin el terminal
-                string nombreEmpleado = empleadoSeleccionado.Split('[')[0].Trim();
-                bool ok = bll.AsignarFunciones(usuarioId, nombreEmpleado, funciones);
-
-                if (ok)
-                {
-                    // Actualiza el TreeView
-                    foreach (string f in funciones)
-                        nodoEmpleado.Nodes.Add(f);
-
-                    treeViewPermisos.ExpandAll();
-
-                    // Destilda los checks
-                    for (int i = 0; i < lstFunciones.Items.Count; i++)
-                        lstFunciones.SetItemChecked(i, false);
-
-                    MessageBox.Show("Funciones asignadas correctamente.");
-                }
+                bll.AgregarFamilia(txtNombreFamilia.Text.Trim());
+                MessageBox.Show("Familia creada");
+                txtNombreFamilia.Text = "";
+                CargarDatos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnAgregarFamiliaPreview_Click(object sender, EventArgs e)
+        {
+            if (lstFamilias.SelectedItem != null)
+            {
+                Permiso p = (Permiso)lstFamilias.SelectedItem;
+                AgregarAlPreview(p);
+            }
+        }
+
+        private void btnAgregarPatentePreview_Click(object sender, EventArgs e)
+        {
+            if (lstPatentes.SelectedItem != null)
+            {
+                Permiso p = (Permiso)lstPatentes.SelectedItem;
+                AgregarAlPreview(p);
+            }
+        }
+
+        private void AgregarAlPreview(Permiso p)
+        {
+            if (treeViewPreview.Nodes.Count == 0) return;
+            TreeNode root = treeViewPreview.Nodes[0];
+
+            // Evitar duplicados directos
+            foreach (TreeNode n in root.Nodes)
+            {
+                if (((Permiso)n.Tag).Id == p.Id) return;
+            }
+
+            TreeNode nodo = new TreeNode(p.Nombre);
+            nodo.Tag = p;
+            
+            // Si es familia, la mostramos completa en el preview
+            if (p.EsPadre)
+            {
+                PermisoCompleto arbol = bll.ObtenerArbol(p.Id) as PermisoCompleto;
+                if (arbol != null) ConstruirNodosHijos(nodo, arbol);
+            }
+            
+            root.Nodes.Add(nodo);
+            root.ExpandAll();
+        }
+
+        private void btnEliminarSeleccionado_Click(object sender, EventArgs e)
+        {
+            if (treeViewPreview.SelectedNode != null && treeViewPreview.SelectedNode.Parent != null)
+            {
+                treeViewPreview.SelectedNode.Remove();
+            }
+        }
+
+        private void btnGuardarFamilia_Click(object sender, EventArgs e)
+        {
+            if (lstFamilias.SelectedItem == null || treeViewPreview.Nodes.Count == 0)
+            {
+                MessageBox.Show("Debe seleccionar una familia de la lista central para guardar su configuracion.");
+                return;
+            }
+
+            Permiso familiaDestino = (Permiso)lstFamilias.SelectedItem;
+            TreeNode root = treeViewPreview.Nodes[0];
+
+            List<int> idsHijos = new List<int>();
+            foreach (TreeNode n in root.Nodes)
+            {
+                idsHijos.Add(((Permiso)n.Tag).Id);
+            }
+
+            if (bll.GuardarFamilia(familiaDestino.Id, idsHijos))
+            {
+                MessageBox.Show("Familia guardada correctamente");
+                CargarDatos();
+            }
+            else
+            {
+                MessageBox.Show("Error al guardar la familia");
             }
         }
     }

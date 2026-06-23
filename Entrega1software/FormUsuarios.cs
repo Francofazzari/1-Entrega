@@ -1,4 +1,4 @@
-﻿using BE;
+using BE;
 using BLL;
 using System;
 using System.Collections.Generic;
@@ -39,8 +39,7 @@ namespace Entrega1software
                     NroTerminal = txtTerminal.Text.Trim(),
                     Clave = txtClave.Text,
                     Nombre = txtNombre.Text.Trim(),
-                    Apellido = txtApellido.Text.Trim(),
-                    PerfilId = cmbPerfil.SelectedIndex + 1
+                    Apellido = txtApellido.Text.Trim()
                 };
                 bll.AgregarUsuario(u);
                 MessageBox.Show("Usuario agregado correctamente.");
@@ -76,8 +75,7 @@ namespace Entrega1software
                     NroTerminal = txtTerminal.Text.Trim(),
                     Clave = txtClave.Text,
                     Nombre = txtNombre.Text.Trim(),
-                    Apellido = txtApellido.Text.Trim(),
-                    PerfilId = cmbPerfil.SelectedIndex + 1
+                    Apellido = txtApellido.Text.Trim()
                 };
                 bll.ModificarUsuario(u);
                 MessageBox.Show("Usuario modificado correctamente.");

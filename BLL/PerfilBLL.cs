@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BE;
@@ -10,89 +10,88 @@ namespace BLL
     {
         private PerfilDAL dal = new PerfilDAL();
 
-        public PermisoCompleto ConstruirArbol(int permisoRaizId)
+        public List<Permiso> ObtenerTodos()
         {
-            List<Permiso> todos = dal.ObtenerTodos();
-            return ConstruirNodo(permisoRaizId, todos);
+            return dal.ObtenerTodos();
         }
 
-        private PermisoCompleto ConstruirNodo(int id, List<Permiso> todos)
+        public Permiso ObtenerArbol(int permisoRaizId)
         {
-            Permiso raiz = todos.FirstOrDefault(p => p.Id == id);
-            if (raiz == null || !(raiz is PermisoCompleto))
-                return null;
+            return dal.ObtenerArbol(permisoRaizId);
+        }
 
-            PermisoCompleto compuesto = (PermisoCompleto)raiz;
+        public int AgregarFamilia(string nombre)
+        {
+            if (string.IsNullOrEmpty(nombre))
+                throw new Exception("El nombre es obligatorio.");
+            
+            Permiso p = new PermisoCompleto 
+            { 
+                Nombre = nombre,
+                Codigo = nombre, // Simplificación
+                EsPadre = true 
+            };
+            return dal.Insertar(p);
+        }
 
-            // Busca los hijos directos cuyo PermisoPadreId == id
-            List<Permiso> hijos = todos.Where(p => p.PermisoPadreId == id).ToList();
+        public int AgregarPatente(string nombre)
+        {
+            if (string.IsNullOrEmpty(nombre))
+                throw new Exception("El nombre es obligatorio.");
+            
+            Permiso p = new PermisoSimple 
+            { 
+                Nombre = nombre,
+                Codigo = nombre,
+                EsPadre = false 
+            };
+            return dal.Insertar(p);
+        }
 
-            foreach (Permiso hijo in hijos)
+        public bool GuardarFamilia(int familiaId, List<int> permisosIds)
+        {
+            // Primero limpiamos los hijos existentes (reemplazo completo)
+            dal.LimpiarHijos(familiaId);
+            bool ok = true;
+            foreach (int idHijo in permisosIds)
             {
-                if (hijo is PermisoCompleto)
-                    compuesto.Agregar(ConstruirNodo(hijo.Id, todos));
-                else
-                    compuesto.Agregar(hijo);
+                if (!dal.InsertarPermisoPermiso(familiaId, idHijo))
+                {
+                    ok = false;
+                }
             }
-            return compuesto;
+            return ok;
         }
 
-        public PermisoCompleto ObtenerArbolPorPerfil(string nombrePerfil)
-        {
-            Perfil p = dal.ObtenerPerfilPorNombre(nombrePerfil);
-            if (p == null || p.PermisoRaizId == 0) return null;
-            return ConstruirArbol(p.PermisoRaizId);
-        }
-        public List<Perfil> ObtenerPerfiles()
-        {
-            return dal.ObtenerPerfiles();
-        }
-        public bool AgregarPermiso(Permiso p, int? padreId)
-        {
-            if (string.IsNullOrEmpty(p.Codigo) || string.IsNullOrEmpty(p.Nombre))
-                throw new Exception("El codigo y el nombre son obligatorios.");
-            return dal.Insertar(p, padreId);
-        }
         public int CrearEmpleado(string nombre, string nroTerminal)
         {
-            // Crea el usuario con perfil Operador (Id=2) por defecto
             UsuarioDAL usuarioDAL = new UsuarioDAL();
             Usuario u = new Usuario
             {
                 NroTerminal = nroTerminal,
                 Clave = Encriptador.HashSHA256("1234"), // clave por defecto
                 Nombre = nombre,
-                Apellido = "",
-                PerfilId = 2 // Operador por defecto
+                Apellido = ""
             };
             return usuarioDAL.InsertarYObtenerID(u);
         }
 
-        public bool AsignarFunciones(int usuarioId, string nombreEmpleado, List<string> funciones)
+        public bool AsignarPermisosUsuario(int usuarioId, List<int> permisosIds)
         {
-            // Crea un perfil nuevo para este empleado
-            int perfilId = dal.InsertarPerfilYObtenerID(
-                $"Perfil_{nombreEmpleado}", $"Perfil de {nombreEmpleado}");
-
-            if (perfilId == 0) return false;
-
-            // Inserta cada función como permiso del perfil
-            foreach (string funcion in funciones)
-            {
-                int permisoId = dal.ObtenerIdPermisoPorNombre(funcion);
-                if (permisoId > 0)
-                    dal.InsertarPerfilPermiso(perfilId, permisoId);
-            }
-
-            // Asigna el perfil al usuario
             UsuarioDAL usuarioDAL = new UsuarioDAL();
-            return usuarioDAL.ActualizarPerfil(usuarioId, perfilId);
+            usuarioDAL.LimpiarPermisos(usuarioId);
+            
+            bool ok = true;
+            foreach (int pid in permisosIds)
+            {
+                if (!usuarioDAL.AsignarPermiso(usuarioId, pid))
+                {
+                    ok = false;
+                }
+            }
+            return ok;
         }
 
-        public List<string> ObtenerFuncionesDeUsuario(int usuarioId)
-        {
-            return dal.ObtenerFuncionesDeUsuario(usuarioId);
-        }
         public bool EliminarPermiso(int id)
         {
             return dal.Eliminar(id);
