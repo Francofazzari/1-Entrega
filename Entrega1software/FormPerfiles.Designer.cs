@@ -21,6 +21,7 @@ namespace Entrega1software
             this.lstPatentes = new System.Windows.Forms.ListBox();
             this.btnAgregarFamiliaPreview = new System.Windows.Forms.Button();
             this.btnAgregarPatentePreview = new System.Windows.Forms.Button();
+            this.lblEditando = new System.Windows.Forms.Label();
             this.treeViewPreview = new System.Windows.Forms.TreeView();
             this.btnEliminarSeleccionado = new System.Windows.Forms.Button();
             this.btnGuardarFamilia = new System.Windows.Forms.Button();
@@ -78,9 +79,15 @@ namespace Entrega1software
             this.btnAgregarPatentePreview.Name = "btnAgregarPatentePreview";
             this.btnAgregarPatentePreview.Click += new System.EventHandler(this.btnAgregarPatentePreview_Click);
             
+            // lblEditando
+            this.lblEditando.Text = "Editando: (ninguna - doble clic en una familia)";
+            this.lblEditando.Location = new System.Drawing.Point(730, 10);
+            this.lblEditando.Size = new System.Drawing.Size(240, 20);
+            this.lblEditando.Name = "lblEditando";
+
             // treeViewPreview
-            this.treeViewPreview.Location = new System.Drawing.Point(730, 10);
-            this.treeViewPreview.Size = new System.Drawing.Size(240, 410);
+            this.treeViewPreview.Location = new System.Drawing.Point(730, 35);
+            this.treeViewPreview.Size = new System.Drawing.Size(240, 385);
             this.treeViewPreview.Name = "treeViewPreview";
             
             // btnEliminarSeleccionado
@@ -107,6 +114,7 @@ namespace Entrega1software
             this.Controls.Add(this.lstPatentes);
             this.Controls.Add(this.btnAgregarFamiliaPreview);
             this.Controls.Add(this.btnAgregarPatentePreview);
+            this.Controls.Add(this.lblEditando);
             this.Controls.Add(this.treeViewPreview);
             this.Controls.Add(this.btnEliminarSeleccionado);
             this.Controls.Add(this.btnGuardarFamilia);
@@ -124,6 +132,7 @@ namespace Entrega1software
         private System.Windows.Forms.ListBox lstPatentes;
         private System.Windows.Forms.Button btnAgregarFamiliaPreview;
         private System.Windows.Forms.Button btnAgregarPatentePreview;
+        private System.Windows.Forms.Label lblEditando;
         private System.Windows.Forms.TreeView treeViewPreview;
         private System.Windows.Forms.Button btnEliminarSeleccionado;
         private System.Windows.Forms.Button btnGuardarFamilia;

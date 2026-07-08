@@ -12,32 +12,43 @@ namespace Entrega1software
         private PerfilBLL bll = new PerfilBLL();
         private List<Permiso> todosLosPermisos = new List<Permiso>();
 
+        // Familia que se esta armando/editando en el treeViewPreview. Se fija con doble clic
+        // en lstFamilias, para que un clic simple (usado para elegir que agregar) no la pise.
+        private Permiso familiaEnEdicion;
+
         public FormPerfiles()
         {
             InitializeComponent();
-            lstFamilias.SelectedIndexChanged += LstFamilias_SelectedIndexChanged;
+            lstFamilias.DoubleClick += LstFamilias_DoubleClick;
             CargarDatos();
         }
 
-        private void LstFamilias_SelectedIndexChanged(object sender, EventArgs e)
+        private void LstFamilias_DoubleClick(object sender, EventArgs e)
         {
-            treeViewPreview.Nodes.Clear();
             if (lstFamilias.SelectedItem != null)
             {
-                Permiso p = (Permiso)lstFamilias.SelectedItem;
-                TreeNode root = new TreeNode(p.Nombre);
-                root.Tag = p;
-                
-                // Cargar los hijos actuales de la familia para previsualizar si ya tiene
-                PermisoCompleto arbol = bll.ObtenerArbol(p.Id) as PermisoCompleto;
-                if (arbol != null)
-                {
-                    ConstruirNodosHijos(root, arbol);
-                }
-
-                treeViewPreview.Nodes.Add(root);
-                treeViewPreview.ExpandAll();
+                CargarFamiliaEnPreview((Permiso)lstFamilias.SelectedItem);
             }
+        }
+
+        private void CargarFamiliaEnPreview(Permiso familia)
+        {
+            familiaEnEdicion = familia;
+            lblEditando.Text = "Editando: " + familia.Nombre;
+
+            treeViewPreview.Nodes.Clear();
+            TreeNode root = new TreeNode(familia.Nombre);
+            root.Tag = familia;
+
+            // Cargar los hijos actuales de la familia para previsualizar si ya tiene
+            PermisoCompleto arbol = bll.ObtenerArbol(familia.Id) as PermisoCompleto;
+            if (arbol != null)
+            {
+                ConstruirNodosHijos(root, arbol);
+            }
+
+            treeViewPreview.Nodes.Add(root);
+            treeViewPreview.ExpandAll();
         }
 
         private void CargarDatos()
@@ -53,9 +64,10 @@ namespace Entrega1software
             lstPatentes.DataSource = todosLosPermisos.Where(p => !p.EsPadre).ToList();
             lstPatentes.DisplayMember = "Nombre";
 
-            // Cargar TreeView izquierdo (todos)
+            // Cargar TreeView izquierdo (todos), ordenado alfabeticamente
             treeViewPermisos.Nodes.Clear();
-            foreach (var familia in todosLosPermisos.Where(p => p.EsPadre))
+            TreeNode systemRoot = new TreeNode("S.Y.S.T.E.M.");
+            foreach (var familia in todosLosPermisos.Where(p => p.EsPadre).OrderBy(p => p.Nombre))
             {
                 PermisoCompleto arbol = bll.ObtenerArbol(familia.Id) as PermisoCompleto;
                 if (arbol != null)
@@ -63,17 +75,26 @@ namespace Entrega1software
                     TreeNode nodo = new TreeNode(arbol.Nombre);
                     nodo.Tag = arbol;
                     ConstruirNodosHijos(nodo, arbol);
-                    treeViewPermisos.Nodes.Add(nodo);
+                    systemRoot.Nodes.Add(nodo);
                 }
             }
-            if(lstFamilias.SelectedItem != null) {
-                LstFamilias_SelectedIndexChanged(null, null);
+            treeViewPermisos.Nodes.Add(systemRoot);
+            treeViewPermisos.ExpandAll();
+
+            // Si habia una familia en edicion, refrescar su preview con los datos ya guardados
+            if (familiaEnEdicion != null)
+            {
+                Permiso actualizada = todosLosPermisos.FirstOrDefault(p => p.Id == familiaEnEdicion.Id);
+                if (actualizada != null)
+                {
+                    CargarFamiliaEnPreview(actualizada);
+                }
             }
         }
 
         private void ConstruirNodosHijos(TreeNode padre, PermisoCompleto permisoCompleto)
         {
-            foreach (Permiso hijo in permisoCompleto.SubPermisos)
+            foreach (Permiso hijo in permisoCompleto.SubPermisos.OrderBy(p => p.Nombre))
             {
                 TreeNode nodoHijo = new TreeNode(hijo.Nombre);
                 nodoHijo.Tag = hijo;
@@ -103,6 +124,11 @@ namespace Entrega1software
 
         private void btnAgregarFamiliaPreview_Click(object sender, EventArgs e)
         {
+            if (familiaEnEdicion == null)
+            {
+                MessageBox.Show("Primero haga doble clic en una familia de la lista para editarla.");
+                return;
+            }
             if (lstFamilias.SelectedItem != null)
             {
                 Permiso p = (Permiso)lstFamilias.SelectedItem;
@@ -112,6 +138,11 @@ namespace Entrega1software
 
         private void btnAgregarPatentePreview_Click(object sender, EventArgs e)
         {
+            if (familiaEnEdicion == null)
+            {
+                MessageBox.Show("Primero haga doble clic en una familia de la lista para editarla.");
+                return;
+            }
             if (lstPatentes.SelectedItem != null)
             {
                 Permiso p = (Permiso)lstPatentes.SelectedItem;
@@ -124,6 +155,12 @@ namespace Entrega1software
             if (treeViewPreview.Nodes.Count == 0) return;
             TreeNode root = treeViewPreview.Nodes[0];
 
+            if (p.Id == familiaEnEdicion.Id)
+            {
+                MessageBox.Show("Una familia no puede contenerse a si misma.");
+                return;
+            }
+
             // Evitar duplicados directos
             foreach (TreeNode n in root.Nodes)
             {
@@ -132,16 +169,37 @@ namespace Entrega1software
 
             TreeNode nodo = new TreeNode(p.Nombre);
             nodo.Tag = p;
-            
+
             // Si es familia, la mostramos completa en el preview
             if (p.EsPadre)
             {
                 PermisoCompleto arbol = bll.ObtenerArbol(p.Id) as PermisoCompleto;
-                if (arbol != null) ConstruirNodosHijos(nodo, arbol);
+                if (arbol != null)
+                {
+                    if (ContieneA(arbol, familiaEnEdicion.Id))
+                    {
+                        MessageBox.Show(
+                            "'" + p.Nombre + "' ya contiene (directa o indirectamente) a '" + familiaEnEdicion.Nombre +
+                            "'. Agregarla generaria un ciclo.");
+                        return;
+                    }
+                    ConstruirNodosHijos(nodo, arbol);
+                }
             }
-            
+
             root.Nodes.Add(nodo);
             root.ExpandAll();
+        }
+
+        // Recorre recursivamente una familia para saber si contiene (en cualquier nivel) al permiso indicado.
+        private bool ContieneA(PermisoCompleto familia, int idBuscado)
+        {
+            foreach (Permiso hijo in familia.SubPermisos)
+            {
+                if (hijo.Id == idBuscado) return true;
+                if (hijo is PermisoCompleto sub && ContieneA(sub, idBuscado)) return true;
+            }
+            return false;
         }
 
         private void btnEliminarSeleccionado_Click(object sender, EventArgs e)
@@ -154,13 +212,13 @@ namespace Entrega1software
 
         private void btnGuardarFamilia_Click(object sender, EventArgs e)
         {
-            if (lstFamilias.SelectedItem == null || treeViewPreview.Nodes.Count == 0)
+            if (familiaEnEdicion == null || treeViewPreview.Nodes.Count == 0)
             {
-                MessageBox.Show("Debe seleccionar una familia de la lista central para guardar su configuracion.");
+                MessageBox.Show("Debe hacer doble clic en una familia de la lista central para editarla antes de guardar.");
                 return;
             }
 
-            Permiso familiaDestino = (Permiso)lstFamilias.SelectedItem;
+            Permiso familiaDestino = familiaEnEdicion;
             TreeNode root = treeViewPreview.Nodes[0];
 
             List<int> idsHijos = new List<int>();

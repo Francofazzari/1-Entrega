@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using BE;
 
 namespace DAL
@@ -8,12 +10,182 @@ namespace DAL
     {
         private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
 
+        // Columnas de IDIOMAS que participan del calculo de digitos verificadores,
+        // en el orden que define su "posicion de atributo".
+        private static readonly Dictionary<string, Func<Idioma, string>> ColumnasVerificadas =
+            new Dictionary<string, Func<Idioma, string>>
+            {
+                { "Nombre", i => i.Nombre },
+                { "Codigo", i => i.Codigo }
+            };
+
+        // Suma ponderada (valor de caracter x posicion del caracter x posicion del atributo/fila) modulo 11.
+        // Se usa tanto para el digito horizontal (posicion = orden del atributo dentro de la entidad)
+        // como para el vertical (posicion = orden de la fila dentro de la tabla).
+        private static int CalcularDigito(IEnumerable<string> valoresEnOrden)
+        {
+            long suma = 0;
+            int posicion = 1;
+            foreach (string valor in valoresEnOrden)
+            {
+                if (!string.IsNullOrEmpty(valor))
+                {
+                    for (int i = 0; i < valor.Length; i++)
+                    {
+                        int posicionCaracter = i + 1;
+                        suma += (long)valor[i] * posicionCaracter * posicion;
+                    }
+                }
+                posicion++;
+            }
+            return (int)(suma % 11);
+        }
+
+        private static int CalcularDigitoHorizontal(Idioma idioma)
+        {
+            return CalcularDigito(ColumnasVerificadas.Values.Select(f => f(idioma)));
+        }
+
+        // Recalcula y persiste el digito horizontal de cada fila y el vertical de cada columna.
+        // Se ejecuta dentro de la misma transaccion que cualquier alta/baja/modificacion legitima,
+        // de forma que la unica manera de que los digitos queden "desactualizados" sea una
+        // modificacion hecha por fuera del sistema.
+        private void RecalcularDigitos(SqlConnection con, SqlTransaction tx)
+        {
+            List<Idioma> idiomas = new List<Idioma>();
+            SqlCommand cmdSel = new SqlCommand("SELECT Id, Nombre, Codigo FROM IDIOMAS ORDER BY Id", con, tx);
+            using (SqlDataReader dr = cmdSel.ExecuteReader())
+            {
+                while (dr.Read())
+                {
+                    idiomas.Add(new Idioma
+                    {
+                        Id = (int)dr["Id"],
+                        Nombre = dr["Nombre"].ToString(),
+                        Codigo = dr["Codigo"].ToString()
+                    });
+                }
+            }
+
+            foreach (Idioma i in idiomas)
+            {
+                SqlCommand cmdUpd = new SqlCommand("UPDATE IDIOMAS SET DigitoVerificador = @d WHERE Id = @id", con, tx);
+                cmdUpd.Parameters.AddWithValue("@d", CalcularDigitoHorizontal(i));
+                cmdUpd.Parameters.AddWithValue("@id", i.Id);
+                cmdUpd.ExecuteNonQuery();
+            }
+
+            SqlCommand cmdDel = new SqlCommand("DELETE FROM IDIOMAS_DIGITO_VERTICAL", con, tx);
+            cmdDel.ExecuteNonQuery();
+
+            foreach (var columna in ColumnasVerificadas)
+            {
+                SqlCommand cmdIns = new SqlCommand(
+                    "INSERT INTO IDIOMAS_DIGITO_VERTICAL (Columna, Digito) VALUES (@col, @d)", con, tx);
+                cmdIns.Parameters.AddWithValue("@col", columna.Key);
+                cmdIns.Parameters.AddWithValue("@d", CalcularDigito(idiomas.Select(columna.Value)));
+                cmdIns.ExecuteNonQuery();
+            }
+        }
+
+        // Verifica la integridad horizontal (fila vs su digito) y vertical (columna vs su digito)
+        // de la tabla IDIOMAS. Devuelve la lista de inconsistencias encontradas (vacia si esta todo OK).
+        // La primera vez que corre (digitos aun no calculados) establece la linea base en vez de reportar error.
+        public List<string> VerificarIntegridad()
+        {
+            List<string> errores = new List<string>();
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                con.Open();
+                SqlTransaction tx = con.BeginTransaction();
+                try
+                {
+                    List<Idioma> idiomas = new List<Idioma>();
+                    SqlCommand cmdSel = new SqlCommand(
+                        "SELECT Id, Nombre, Codigo, DigitoVerificador FROM IDIOMAS ORDER BY Id", con, tx);
+                    using (SqlDataReader dr = cmdSel.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            idiomas.Add(new Idioma
+                            {
+                                Id = (int)dr["Id"],
+                                Nombre = dr["Nombre"].ToString(),
+                                Codigo = dr["Codigo"].ToString(),
+                                DigitoVerificador = dr["DigitoVerificador"] == DBNull.Value ? (int?)null : (int)dr["DigitoVerificador"]
+                            });
+                        }
+                    }
+
+                    Dictionary<string, int> verticalesGuardados = new Dictionary<string, int>();
+                    SqlCommand cmdVert = new SqlCommand("SELECT Columna, Digito FROM IDIOMAS_DIGITO_VERTICAL", con, tx);
+                    using (SqlDataReader dr = cmdVert.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            verticalesGuardados[dr["Columna"].ToString()] = (int)dr["Digito"];
+                        }
+                    }
+
+                    // La linea base solo se establece la primera vez que corre (todavia no
+                    // existen digitos verticales). Una vez establecida, cualquier fila sin
+                    // digito horizontal (por ejemplo insertada por fuera del sistema) es un error,
+                    // no un caso a adoptar silenciosamente.
+                    bool primeraVez = ColumnasVerificadas.Keys.Any(c => !verticalesGuardados.ContainsKey(c));
+
+                    if (primeraVez)
+                    {
+                        RecalcularDigitos(con, tx);
+                    }
+                    else
+                    {
+                        foreach (Idioma i in idiomas)
+                        {
+                            if (i.DigitoVerificador == null)
+                            {
+                                errores.Add(string.Format(
+                                    "IDIOMAS: la fila Id={0} ('{1}') no tiene digito verificador " +
+                                    "(posible alta hecha fuera del sistema).",
+                                    i.Id, i.Nombre));
+                            }
+                            else if (CalcularDigitoHorizontal(i) != i.DigitoVerificador)
+                            {
+                                errores.Add(string.Format(
+                                    "IDIOMAS: la fila Id={0} ('{1}') no coincide con su digito verificador horizontal.",
+                                    i.Id, i.Nombre));
+                            }
+                        }
+
+                        foreach (var columna in ColumnasVerificadas)
+                        {
+                            int esperado = CalcularDigito(idiomas.Select(columna.Value));
+                            if (verticalesGuardados[columna.Key] != esperado)
+                            {
+                                errores.Add(string.Format(
+                                    "IDIOMAS: el digito verificador vertical de la columna '{0}' no coincide " +
+                                    "(posible fila agregada, eliminada o modificada fuera del sistema).",
+                                    columna.Key));
+                            }
+                        }
+                    }
+
+                    tx.Commit();
+                }
+                catch
+                {
+                    tx.Rollback();
+                    throw;
+                }
+            }
+            return errores;
+        }
+
         public List<Idioma> ObtenerIdiomas()
         {
             List<Idioma> lista = new List<Idioma>();
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Id, Nombre, Codigo FROM IDIOMAS", con);
+                SqlCommand cmd = new SqlCommand("SELECT Id, Nombre, Codigo, DigitoVerificador FROM IDIOMAS", con);
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -22,7 +194,8 @@ namespace DAL
                     {
                         Id = (int)dr["Id"],
                         Nombre = dr["Nombre"].ToString(),
-                        Codigo = dr["Codigo"].ToString()
+                        Codigo = dr["Codigo"].ToString(),
+                        DigitoVerificador = dr["DigitoVerificador"] == DBNull.Value ? (int?)null : (int)dr["DigitoVerificador"]
                     });
                 }
             }
@@ -34,13 +207,13 @@ namespace DAL
             Dictionary<string, string> traducciones = new Dictionary<string, string>();
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Clave, Valor FROM TRADUCCIONES WHERE IdiomaId = @id", con);
+                SqlCommand cmd = new SqlCommand("SELECT Tag, Traduccion FROM TRADUCCIONES WHERE IdiomaId = @id", con);
                 cmd.Parameters.AddWithValue("@id", idiomaId);
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    traducciones.Add(dr["Clave"].ToString(), dr["Valor"].ToString());
+                    traducciones.Add(dr["Tag"].ToString(), dr["Traduccion"].ToString());
                 }
             }
             return traducciones;
@@ -52,10 +225,10 @@ namespace DAL
             using (SqlConnection con = new SqlConnection(conexion))
             {
                 string q = @"
-                    SELECT tAll.Clave, ISNULL(tId.Valor, '') as Valor
-                    FROM (SELECT DISTINCT Clave FROM TRADUCCIONES) tAll
-                    LEFT JOIN TRADUCCIONES tId ON tAll.Clave = tId.Clave AND tId.IdiomaId = @id
-                    ORDER BY tAll.Clave";
+                    SELECT tAll.Tag as Clave, ISNULL(tId.Traduccion, '') as Valor
+                    FROM (SELECT Tag FROM PALABRAS) tAll
+                    LEFT JOIN TRADUCCIONES tId ON tAll.Tag = tId.Tag AND tId.IdiomaId = @id
+                    ORDER BY tAll.Tag";
 
                 SqlCommand cmd = new SqlCommand(q, con);
                 cmd.Parameters.AddWithValue("@id", idiomaId);
@@ -76,13 +249,27 @@ namespace DAL
         {
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO IDIOMAS (Nombre, Codigo) VALUES (@nom, @cod); SELECT SCOPE_IDENTITY();", con);
-                cmd.Parameters.AddWithValue("@nom", idioma.Nombre);
-                cmd.Parameters.AddWithValue("@cod", idioma.Codigo ?? "");
                 con.Open();
-                int newId = System.Convert.ToInt32(cmd.ExecuteScalar());
-                idioma.Id = newId;
-                return true;
+                SqlTransaction tx = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(
+                        "INSERT INTO IDIOMAS (Nombre, Codigo) VALUES (@nom, @cod); SELECT SCOPE_IDENTITY();", con, tx);
+                    cmd.Parameters.AddWithValue("@nom", idioma.Nombre);
+                    cmd.Parameters.AddWithValue("@cod", idioma.Codigo ?? "");
+                    int newId = System.Convert.ToInt32(cmd.ExecuteScalar());
+                    idioma.Id = newId;
+
+                    RecalcularDigitos(con, tx);
+
+                    tx.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tx.Rollback();
+                    return false;
+                }
             }
         }
 
@@ -90,11 +277,25 @@ namespace DAL
         {
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                SqlCommand cmd = new SqlCommand("UPDATE IDIOMAS SET Nombre = @nom WHERE Id = @id", con);
-                cmd.Parameters.AddWithValue("@nom", nuevoNombre);
-                cmd.Parameters.AddWithValue("@id", id);
                 con.Open();
-                return cmd.ExecuteNonQuery() > 0;
+                SqlTransaction tx = con.BeginTransaction();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("UPDATE IDIOMAS SET Nombre = @nom WHERE Id = @id", con, tx);
+                    cmd.Parameters.AddWithValue("@nom", nuevoNombre);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    int filas = cmd.ExecuteNonQuery();
+
+                    RecalcularDigitos(con, tx);
+
+                    tx.Commit();
+                    return filas > 0;
+                }
+                catch
+                {
+                    tx.Rollback();
+                    return false;
+                }
             }
         }
 
@@ -113,6 +314,8 @@ namespace DAL
                     SqlCommand cmd2 = new SqlCommand("DELETE FROM IDIOMAS WHERE Id = @id", con, tx);
                     cmd2.Parameters.AddWithValue("@id", id);
                     cmd2.ExecuteNonQuery();
+
+                    RecalcularDigitos(con, tx);
 
                     tx.Commit();
                     return true;
@@ -139,9 +342,9 @@ namespace DAL
 
                     foreach (var t in traducciones)
                     {
-                        if (string.IsNullOrWhiteSpace(t.Valor)) continue; // Don't insert empty values if not filled
+                        if (string.IsNullOrWhiteSpace(t.Valor)) continue; 
                         
-                        SqlCommand cmdIns = new SqlCommand("INSERT INTO TRADUCCIONES (IdiomaId, Clave, Valor) VALUES (@id, @clave, @valor)", con, tx);
+                        SqlCommand cmdIns = new SqlCommand("INSERT INTO TRADUCCIONES (IdiomaId, Tag, Traduccion) VALUES (@id, @clave, @valor)", con, tx);
                         cmdIns.Parameters.AddWithValue("@id", idiomaId);
                         cmdIns.Parameters.AddWithValue("@clave", t.Clave);
                         cmdIns.Parameters.AddWithValue("@valor", t.Valor);

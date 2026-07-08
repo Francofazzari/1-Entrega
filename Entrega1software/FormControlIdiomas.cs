@@ -7,38 +7,40 @@ using BLL;
 
 namespace Entrega1software
 {
-    public class FormControlIdiomas : Form, IObservadorIdioma
+    public partial class FormControlIdiomas : Form, IObservadorIdioma
     {
-        private DataGridView dgvIdiomas;
-        private DataGridView dgvTraducciones;
-        private TextBox txtNuevoIdioma;
-        private Button btnAgregarIdioma;
-        private Button btnRenombrar;
-        private Button btnEliminar;
-        private Button btnGuardarTraducciones;
-        private Label lblTitulo;
-        private Label lblNuevoIdioma;
-        private Label lblTraducciones;
-        
+        private System.Windows.Forms.Label lblTitulo;
+        private System.Windows.Forms.DataGridView dgvIdiomas;
+        private System.Windows.Forms.Label lblNuevoIdioma;
+        private System.Windows.Forms.TextBox txtNuevoIdioma;
+        private System.Windows.Forms.Button btnAgregarIdioma;
+        private System.Windows.Forms.Button btnRenombrar;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Label lblTraducciones;
+        private System.Windows.Forms.DataGridView dgvTraducciones;
+        private System.Windows.Forms.Button btnGuardarTraducciones;
+        private System.Windows.Forms.Button btnAplicarIdioma;
+
         public FormControlIdiomas()
         {
             InitializeComponent();
-            IdiomaManager.Instancia.Suscribir(this);
             CargarIdiomas();
+            IdiomaManager.Instancia.Suscribir(this);
         }
 
         private void InitializeComponent()
         {
+            this.lblTitulo = new System.Windows.Forms.Label();
             this.dgvIdiomas = new System.Windows.Forms.DataGridView();
-            this.dgvTraducciones = new System.Windows.Forms.DataGridView();
+            this.lblNuevoIdioma = new System.Windows.Forms.Label();
             this.txtNuevoIdioma = new System.Windows.Forms.TextBox();
             this.btnAgregarIdioma = new System.Windows.Forms.Button();
             this.btnRenombrar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
-            this.btnGuardarTraducciones = new System.Windows.Forms.Button();
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblNuevoIdioma = new System.Windows.Forms.Label();
             this.lblTraducciones = new System.Windows.Forms.Label();
+            this.dgvTraducciones = new System.Windows.Forms.DataGridView();
+            this.btnGuardarTraducciones = new System.Windows.Forms.Button();
+            this.btnAplicarIdioma = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIdiomas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTraducciones)).BeginInit();
             this.SuspendLayout();
@@ -49,38 +51,37 @@ namespace Entrega1software
             this.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(31, 78, 121);
             this.lblTitulo.Location = new System.Drawing.Point(20, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(188, 22);
+            this.lblTitulo.Size = new System.Drawing.Size(185, 22);
             this.lblTitulo.Text = "Gestion de Idiomas";
             
             // dgvIdiomas
             this.dgvIdiomas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvIdiomas.Location = new System.Drawing.Point(20, 60);
             this.dgvIdiomas.Name = "dgvIdiomas";
+            this.dgvIdiomas.Size = new System.Drawing.Size(340, 200);
             this.dgvIdiomas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvIdiomas.MultiSelect = false;
-            this.dgvIdiomas.ReadOnly = true;
-            this.dgvIdiomas.Size = new System.Drawing.Size(350, 200);
             this.dgvIdiomas.SelectionChanged += new System.EventHandler(this.dgvIdiomas_SelectionChanged);
             
             // lblNuevoIdioma
             this.lblNuevoIdioma.AutoSize = true;
             this.lblNuevoIdioma.Location = new System.Drawing.Point(20, 280);
             this.lblNuevoIdioma.Name = "lblNuevoIdioma";
-            this.lblNuevoIdioma.Size = new System.Drawing.Size(74, 13);
+            this.lblNuevoIdioma.Size = new System.Drawing.Size(76, 13);
             this.lblNuevoIdioma.Text = "Nuevo idioma:";
             
             // txtNuevoIdioma
             this.txtNuevoIdioma.Location = new System.Drawing.Point(100, 277);
             this.txtNuevoIdioma.Name = "txtNuevoIdioma";
-            this.txtNuevoIdioma.Size = new System.Drawing.Size(150, 20);
+            this.txtNuevoIdioma.Size = new System.Drawing.Size(130, 20);
             
             // btnAgregarIdioma
-            this.btnAgregarIdioma.BackColor = System.Drawing.Color.FromArgb(29, 158, 117);
+            this.btnAgregarIdioma.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
             this.btnAgregarIdioma.ForeColor = System.Drawing.Color.White;
             this.btnAgregarIdioma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAgregarIdioma.Location = new System.Drawing.Point(260, 272);
+            this.btnAgregarIdioma.Location = new System.Drawing.Point(240, 272);
             this.btnAgregarIdioma.Name = "btnAgregarIdioma";
-            this.btnAgregarIdioma.Size = new System.Drawing.Size(110, 30);
+            this.btnAgregarIdioma.Size = new System.Drawing.Size(120, 30);
             this.btnAgregarIdioma.Text = "Agregar idioma";
             this.btnAgregarIdioma.UseVisualStyleBackColor = false;
             this.btnAgregarIdioma.Click += new System.EventHandler(this.btnAgregarIdioma_Click);
@@ -107,6 +108,17 @@ namespace Entrega1software
             this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             
+            // btnAplicarIdioma
+            this.btnAplicarIdioma.BackColor = System.Drawing.Color.FromArgb(29, 158, 117);
+            this.btnAplicarIdioma.ForeColor = System.Drawing.Color.White;
+            this.btnAplicarIdioma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAplicarIdioma.Location = new System.Drawing.Point(20, 360);
+            this.btnAplicarIdioma.Name = "btnAplicarIdioma";
+            this.btnAplicarIdioma.Size = new System.Drawing.Size(340, 30);
+            this.btnAplicarIdioma.Text = "Aplicar idioma a la app";
+            this.btnAplicarIdioma.UseVisualStyleBackColor = false;
+            this.btnAplicarIdioma.Click += new System.EventHandler(this.btnAplicarIdioma_Click);
+
             // lblTraducciones
             this.lblTraducciones.AutoSize = true;
             this.lblTraducciones.Location = new System.Drawing.Point(390, 44);
@@ -139,6 +151,7 @@ namespace Entrega1software
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnRenombrar);
             this.Controls.Add(this.btnAgregarIdioma);
+            this.Controls.Add(this.btnAplicarIdioma);
             this.Controls.Add(this.txtNuevoIdioma);
             this.Controls.Add(this.lblNuevoIdioma);
             this.Controls.Add(this.dgvIdiomas);
@@ -169,6 +182,7 @@ namespace Entrega1software
             if(dgvIdiomas.Columns.Count > 0)
             {
                 dgvIdiomas.Columns["Codigo"].Visible = false;
+                dgvIdiomas.Columns["DigitoVerificador"].Visible = false;
             }
         }
 
@@ -231,6 +245,15 @@ namespace Entrega1software
                         CargarIdiomas();
                     }
                 }
+            }
+        }
+
+        private void btnAplicarIdioma_Click(object sender, EventArgs e)
+        {
+            if (dgvIdiomas.SelectedRows.Count > 0)
+            {
+                Idioma i = (Idioma)dgvIdiomas.SelectedRows[0].DataBoundItem;
+                IdiomaManager.Instancia.CambiarIdioma(i);
             }
         }
 

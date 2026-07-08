@@ -66,6 +66,13 @@ namespace BLL
             return dal.ObtenerIdiomas();
         }
 
+        // Verifica los digitos verificadores horizontal y vertical de IDIOMAS.
+        // Devuelve la lista de inconsistencias detectadas (vacia si la integridad es correcta).
+        public List<string> VerificarIntegridad()
+        {
+            return dal.VerificarIntegridad();
+        }
+
         public List<Traduccion> ObtenerTraduccionesGrid(int idiomaId)
         {
             return dal.ObtenerTraduccionesGrid(idiomaId);

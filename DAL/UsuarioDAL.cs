@@ -1,9 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BE;
 
 namespace DAL
@@ -11,17 +8,17 @@ namespace DAL
     public class UsuarioDAL
     {
         private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
-        public Usuario ObtenerPorTerminal(string nroTerminal)
+
+        public Usuario Login(string nroTerminal, string claveHasheada)
         {
             Usuario u = null;
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                string q = @"SELECT u.Id, u.NroTerminal, u.Clave, u.Nombre, 
-                                    u.Apellido, u.Activo
-                             FROM USUARIOS u
-                             WHERE u.NroTerminal = @nro AND u.Activo = 1";
+                string q = "SELECT Id, NroTerminal, Clave, Nombre, Apellido, Activo FROM USUARIOS WHERE NroTerminal = @nt AND Clave = @cl AND Activo = 1";
                 SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@nro", nroTerminal);
+                cmd.Parameters.AddWithValue("@nt", nroTerminal);
+                cmd.Parameters.AddWithValue("@cl", claveHasheada);
+
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 if (dr.Read())
@@ -37,32 +34,7 @@ namespace DAL
                     };
                 }
             }
-            if (u != null)
-            {
-                u.Permisos = ObtenerPermisosDeUsuario(u.Id);
-            }
             return u;
-        }
-
-        public List<Permiso> ObtenerPermisosDeUsuario(int usuarioId)
-        {
-            PerfilDAL pDal = new PerfilDAL();
-            List<Permiso> lista = new List<Permiso>();
-            using (SqlConnection con = new SqlConnection(conexion))
-            {
-                string q = "SELECT IdPermiso FROM USUARIO_PERMISO WHERE IdUsuario = @id";
-                SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@id", usuarioId);
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    int permisoId = (int)dr["IdPermiso"];
-                    Permiso p = pDal.ObtenerArbol(permisoId);
-                    if (p != null) lista.Add(p);
-                }
-            }
-            return lista;
         }
 
         public List<Usuario> ObtenerTodos()
@@ -70,45 +42,61 @@ namespace DAL
             List<Usuario> lista = new List<Usuario>();
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                string q = @"SELECT u.Id, u.NroTerminal, u.Nombre, u.Apellido, u.Activo
-                             FROM USUARIOS u";
+                string q = "SELECT Id, NroTerminal, Clave, Nombre, Apellido, Activo FROM USUARIOS";
                 SqlCommand cmd = new SqlCommand(q, con);
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Usuario u = new Usuario
+                    lista.Add(new Usuario
                     {
                         Id = (int)dr["Id"],
                         NroTerminal = dr["NroTerminal"].ToString(),
+                        Clave = dr["Clave"].ToString(),
                         Nombre = dr["Nombre"].ToString(),
                         Apellido = dr["Apellido"].ToString(),
                         Activo = (bool)dr["Activo"]
-                    };
-                    lista.Add(u);
+                    });
                 }
-            }
-            foreach (var u in lista)
-            {
-                u.Permisos = ObtenerPermisosDeUsuario(u.Id);
             }
             return lista;
         }
 
-        private void GuardarHistorial(Usuario u, string operacion, string responsableNombre, SqlConnection con, SqlTransaction tx = null)
+        private void GuardarHistorial(Usuario u, string operacion, string responsable, SqlConnection con, SqlTransaction tx)
         {
-            string q = @"INSERT INTO CAMBIOS_USUARIO (UsuarioId, FechaCambio, ResponsableNombre, Operacion, NroTerminal, Clave, Nombre, Apellido, Activo)
-                         VALUES (@uid, GETDATE(), @resp, @op, @nro, @clave, @nom, @ape, @act)";
-            SqlCommand cmd = new SqlCommand(q, con, tx);
-            cmd.Parameters.AddWithValue("@uid", u.Id);
-            cmd.Parameters.AddWithValue("@resp", responsableNombre);
-            cmd.Parameters.AddWithValue("@op", operacion);
-            cmd.Parameters.AddWithValue("@nro", u.NroTerminal ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@clave", u.Clave ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@nom", u.Nombre ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@ape", u.Apellido ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("@act", u.Activo);
-            cmd.ExecuteNonQuery();
+            // Obtener roles actuales del usuario como un string separado por comas
+            string permisosIds = "";
+            string qPermisos = "SELECT IdPermiso FROM USUARIO_PERMISO WHERE IdUsuario = @uid";
+            using (SqlCommand cmdPerm = new SqlCommand(qPermisos, con, tx))
+            {
+                cmdPerm.Parameters.AddWithValue("@uid", u.Id);
+                using (SqlDataReader dr = cmdPerm.ExecuteReader())
+                {
+                    List<string> ids = new List<string>();
+                    while(dr.Read())
+                    {
+                        ids.Add(dr["IdPermiso"].ToString());
+                    }
+                    permisosIds = string.Join(",", ids);
+                }
+            }
+
+            string q = @"INSERT INTO CAMBIOS_USUARIO (UsuarioId, FechaCambio, ResponsableNombre, Operacion,
+                                                      NroTerminal, Clave, Nombre, Apellido, Activo, PermisosIds)
+                         VALUES (@uid, GETDATE(), @resp, @oper, @nro, @clave, @nom, @ape, @act, @perms)";
+            using (SqlCommand cmd = new SqlCommand(q, con, tx))
+            {
+                cmd.Parameters.AddWithValue("@uid", u.Id);
+                cmd.Parameters.AddWithValue("@resp", responsable);
+                cmd.Parameters.AddWithValue("@oper", operacion);
+                cmd.Parameters.AddWithValue("@nro", u.NroTerminal);
+                cmd.Parameters.AddWithValue("@clave", u.Clave);
+                cmd.Parameters.AddWithValue("@nom", u.Nombre);
+                cmd.Parameters.AddWithValue("@ape", u.Apellido);
+                cmd.Parameters.AddWithValue("@act", u.Activo);
+                cmd.Parameters.AddWithValue("@perms", permisosIds);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public bool Insertar(Usuario u, string responsable)
@@ -126,14 +114,14 @@ namespace DAL
                     cmd.Parameters.AddWithValue("@nro", u.NroTerminal);
                     cmd.Parameters.AddWithValue("@clave", u.Clave);
                     cmd.Parameters.AddWithValue("@nom", u.Nombre);
-                    cmd.Parameters.AddWithValue("@ape", u.Apellido);
+                    cmd.Parameters.AddWithValue("@ape", u.Apellido ?? "");
                     
                     int newId = Convert.ToInt32(cmd.ExecuteScalar());
                     u.Id = newId;
                     u.Activo = true;
-                    
+
                     GuardarHistorial(u, "ALTA", responsable, con, tx);
-                    
+
                     tx.Commit();
                     return true;
                 }
@@ -153,21 +141,8 @@ namespace DAL
                 SqlTransaction tx = con.BeginTransaction();
                 try
                 {
-                    // Recuperar el estado actual de la BD (Clave antigua y Activo actual)
-                    string qOld = "SELECT Clave, Activo FROM USUARIOS WHERE Id=@id";
-                    SqlCommand cmdOld = new SqlCommand(qOld, con, tx);
-                    cmdOld.Parameters.AddWithValue("@id", u.Id);
-                    SqlDataReader dr = cmdOld.ExecuteReader();
-                    if (dr.Read())
-                    {
-                        if (string.IsNullOrEmpty(u.Clave)) u.Clave = dr["Clave"].ToString();
-                        u.Activo = (bool)dr["Activo"];
-                    }
-                    dr.Close();
-
                     string q = @"UPDATE USUARIOS 
-                                 SET NroTerminal=@nro, Clave=@clave, Nombre=@nom, 
-                                     Apellido=@ape, Activo=@act
+                                 SET NroTerminal=@nro, Clave=@clave, Nombre=@nom, Apellido=@ape, Activo=@act 
                                  WHERE Id=@id";
                     SqlCommand cmd = new SqlCommand(q, con, tx);
                     cmd.Parameters.AddWithValue("@nro", u.NroTerminal);
@@ -238,7 +213,7 @@ namespace DAL
             using (SqlConnection con = new SqlConnection(conexion))
             {
                 string q = @"SELECT IdHistorial, UsuarioId, FechaCambio, ResponsableNombre, Operacion,
-                                    NroTerminal, Clave, Nombre, Apellido, Activo
+                                    NroTerminal, Clave, Nombre, Apellido, Activo, PermisosIds
                              FROM CAMBIOS_USUARIO
                              WHERE UsuarioId = @uid
                              ORDER BY FechaCambio DESC";
@@ -259,7 +234,8 @@ namespace DAL
                         Clave = dr["Clave"].ToString(),
                         Nombre = dr["Nombre"].ToString(),
                         Apellido = dr["Apellido"].ToString(),
-                        Activo = (bool)dr["Activo"]
+                        Activo = (bool)dr["Activo"],
+                        PermisosIds = dr["PermisosIds"] != DBNull.Value ? dr["PermisosIds"].ToString() : ""
                     };
                     lista.Add(uh);
                 }
@@ -282,6 +258,7 @@ namespace DAL
                     SqlDataReader dr = cmd1.ExecuteReader();
                     
                     Usuario u = new Usuario();
+                    string permisosIds = "";
                     if(dr.Read())
                     {
                         u.Id = (int)dr["UsuarioId"];
@@ -290,6 +267,7 @@ namespace DAL
                         u.Nombre = dr["Nombre"].ToString();
                         u.Apellido = dr["Apellido"].ToString();
                         u.Activo = (bool)dr["Activo"];
+                        permisosIds = dr["PermisosIds"] != DBNull.Value ? dr["PermisosIds"].ToString() : "";
                     }
                     dr.Close();
 
@@ -306,6 +284,26 @@ namespace DAL
                     cmd2.Parameters.AddWithValue("@act", u.Activo);
                     cmd2.Parameters.AddWithValue("@id", u.Id);
                     cmd2.ExecuteNonQuery();
+
+                    // Restaurar roles
+                    SqlCommand cmdLimpiar = new SqlCommand("DELETE FROM USUARIO_PERMISO WHERE IdUsuario = @uid", con, tx);
+                    cmdLimpiar.Parameters.AddWithValue("@uid", u.Id);
+                    cmdLimpiar.ExecuteNonQuery();
+
+                    if (!string.IsNullOrEmpty(permisosIds))
+                    {
+                        string[] ids = permisosIds.Split(',');
+                        foreach(string idRol in ids)
+                        {
+                            if (int.TryParse(idRol, out int idRolInt))
+                            {
+                                SqlCommand cmdAsignar = new SqlCommand("INSERT INTO USUARIO_PERMISO (IdUsuario, IdPermiso) VALUES (@uid, @pid)", con, tx);
+                                cmdAsignar.Parameters.AddWithValue("@uid", u.Id);
+                                cmdAsignar.Parameters.AddWithValue("@pid", idRolInt);
+                                cmdAsignar.ExecuteNonQuery();
+                            }
+                        }
+                    }
 
                     GuardarHistorial(u, "RESTAURACION", responsable, con, tx);
 

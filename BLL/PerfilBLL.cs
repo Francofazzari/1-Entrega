@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using BE;
@@ -20,6 +20,11 @@ namespace BLL
             return dal.ObtenerArbol(permisoRaizId);
         }
 
+        public List<Permiso> ObtenerPermisosDeUsuario(int usuarioId)
+        {
+            return dal.ObtenerPermisosDeUsuario(usuarioId);
+        }
+
         public int AgregarFamilia(string nombre)
         {
             if (string.IsNullOrEmpty(nombre))
@@ -28,7 +33,7 @@ namespace BLL
             Permiso p = new PermisoCompleto 
             { 
                 Nombre = nombre,
-                Codigo = nombre, // Simplificación
+                Codigo = nombre, // Simplificacion
                 EsPadre = true 
             };
             return dal.Insertar(p);
@@ -50,7 +55,6 @@ namespace BLL
 
         public bool GuardarFamilia(int familiaId, List<int> permisosIds)
         {
-            // Primero limpiamos los hijos existentes (reemplazo completo)
             dal.LimpiarHijos(familiaId);
             bool ok = true;
             foreach (int idHijo in permisosIds)

@@ -49,7 +49,7 @@
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(320, 38);
             this.btnIngresar.TabIndex = 5;
-            this.btnIngresar.Text = "Ingresar al sistema";
+            this.btnIngresar.Text = "xIngresar al sistema";
             this.btnIngresar.UseVisualStyleBackColor = false;
             this.btnIngresar.Click += new System.EventHandler(this.btnIngresar_Click);
             // 

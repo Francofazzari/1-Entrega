@@ -24,6 +24,7 @@
             this.btnBitacora = new System.Windows.Forms.Button();
             this.btnCambios = new System.Windows.Forms.Button();
             this.btnIdiomas = new System.Windows.Forms.Button();
+            this.cmbIdiomas = new System.Windows.Forms.ComboBox();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
 
@@ -32,6 +33,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Height = 100;
             this.panelTop.Controls.Add(this.lblUsuario);
+            this.panelTop.Controls.Add(this.cmbIdiomas);
             this.panelTop.Controls.Add(this.btnUsuarios);
             this.panelTop.Controls.Add(this.btnLogout);
             this.panelTop.Controls.Add(this.btnPerfiles);
@@ -48,6 +50,14 @@
             this.lblUsuario.Location = new System.Drawing.Point(10, 14);
             this.lblUsuario.Size = new System.Drawing.Size(300, 22);
             this.lblUsuario.Name = "lblUsuario";
+
+            // cmbIdiomas
+            this.cmbIdiomas.FormattingEnabled = true;
+            this.cmbIdiomas.Location = new System.Drawing.Point(320, 12);
+            this.cmbIdiomas.Name = "cmbIdiomas";
+            this.cmbIdiomas.Size = new System.Drawing.Size(121, 24);
+            this.cmbIdiomas.TabIndex = 6;
+            this.cmbIdiomas.SelectedIndexChanged += new System.EventHandler(this.cmbIdiomas_SelectedIndexChanged);
 
             // btnUsuarios
             this.btnUsuarios.Text = "Gestion Usuarios";
@@ -170,6 +180,6 @@
         private System.Windows.Forms.Button btnBitacora;
         private System.Windows.Forms.Button btnCambios;
         private System.Windows.Forms.Button btnIdiomas;
-
+        private System.Windows.Forms.ComboBox cmbIdiomas;
     }
 }

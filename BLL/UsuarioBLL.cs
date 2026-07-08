@@ -18,19 +18,30 @@ namespace BLL
 
         public bool Login(string nroTerminal, string clave)
         {
-            if (string.IsNullOrEmpty(nroTerminal) || string.IsNullOrEmpty(clave))
-                throw new Exception("Complete todos los campos.");
-
-            string claveHash = Encriptador.HashSHA256(clave);
-            Usuario u = dal.ObtenerPorTerminal(nroTerminal);
-
-            if (u != null && u.Clave == claveHash)
+            try
             {
-                SesionManager.Instancia.IniciarSesion(u);
-                dal.RegistrarAuditoria(u.Id, "LOGIN");
-                return true;
+                if (string.IsNullOrEmpty(nroTerminal) || string.IsNullOrEmpty(clave))
+                    throw new Exception("Complete todos los campos.");
+
+                string claveHash = Encriptador.HashSHA256(clave);
+                Usuario u = dal.Login(nroTerminal, claveHash);
+
+                if (u != null)
+                {
+                    // Cargar Permisos
+                    PerfilBLL perfilBll = new PerfilBLL();
+                    u.Permisos = perfilBll.ObtenerPermisosDeUsuario(u.Id);
+
+                    SesionManager.Instancia.IniciarSesion(u);
+                    dal.RegistrarAuditoria(u.Id, "LOGIN");
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                throw new Exception("Error al intentar iniciar sesion: " + ex.Message);
+            }
         }
 
         public void Logout()
@@ -50,7 +61,7 @@ namespace BLL
         public bool AgregarUsuario(Usuario u)
         {
             if (string.IsNullOrEmpty(u.NroTerminal) || string.IsNullOrEmpty(u.Clave))
-                throw new Exception("Terminal y contrasea son obligatorios.");
+                throw new Exception("Terminal y contraseña son obligatorios.");
 
             u.Clave = Encriptador.HashSHA256(u.Clave);
             return dal.Insertar(u, ObtenerResponsable());
@@ -61,7 +72,7 @@ namespace BLL
             if (string.IsNullOrEmpty(u.NroTerminal))
                 throw new Exception("El numero de terminal es obligatorio.");
 
-            if (!string.IsNullOrEmpty(u.Clave))
+            if (!string.IsNullOrEmpty(u.Clave) && u.Clave.Length < 64) // Si no esta hasheada
                 u.Clave = Encriptador.HashSHA256(u.Clave);
 
             return dal.Modificar(u, ObtenerResponsable());

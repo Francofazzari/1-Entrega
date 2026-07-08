@@ -16,6 +16,7 @@ namespace Entrega1software
     {
 
         private UsuarioBLL bll = new UsuarioBLL();
+        private bool isInitializingIdioma = false;
 
         public FormPrincipal()
         {
@@ -27,6 +28,22 @@ namespace Entrega1software
                 SesionManager.Instancia.UsuarioActual.Apellido;
 
             ConfigurarSegunPerfil();
+            
+            isInitializingIdioma = true;
+            List<Idioma> idiomas = IdiomaManager.Instancia.ObtenerIdiomas();
+            cmbIdiomas.DataSource = idiomas;
+            cmbIdiomas.DisplayMember = "Nombre";
+            // Preseleccionar el idioma actual
+            if(IdiomaManager.Instancia.IdiomaActual != null) {
+                foreach(Idioma i in cmbIdiomas.Items) {
+                    if (i.Id == IdiomaManager.Instancia.IdiomaActual.Id) {
+                        cmbIdiomas.SelectedItem = i;
+                        break;
+                    }
+                }
+            }
+            isInitializingIdioma = false;
+
             IdiomaManager.Instancia.Suscribir(this);
         }
 
@@ -68,7 +85,29 @@ namespace Entrega1software
             btnApuesta.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_apuesta");
             btnLogout.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_logout");
             btnIdiomas.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_idiomas") == "btn_idiomas" ? "Gestion Idiomas" : IdiomaManager.Instancia.ObtenerMensaje("btn_idiomas");
+
+            if (!isInitializingIdioma && idioma != null)
+            {
+                isInitializingIdioma = true;
+                foreach(Idioma i in cmbIdiomas.Items) {
+                    if (i.Id == idioma.Id) {
+                        cmbIdiomas.SelectedItem = i;
+                        break;
+                    }
+                }
+                isInitializingIdioma = false;
+            }
         }
+
+        private void cmbIdiomas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isInitializingIdioma && cmbIdiomas.SelectedItem != null)
+            {
+                Idioma seleccionado = (Idioma)cmbIdiomas.SelectedItem;
+                IdiomaManager.Instancia.CambiarIdioma(seleccionado); 
+            }
+        }
+
         private void btnUsuarios_Click(object sender, System.EventArgs e)
         {
             FormUsuarios fu = new FormUsuarios();

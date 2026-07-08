@@ -1,4 +1,4 @@
-using BE;
+﻿using BE;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -39,6 +39,39 @@ namespace DAL
             return lista;
         }
 
+        public List<Permiso> ObtenerPermisosDeUsuario(int usuarioId)
+        {
+            List<Permiso> lista = new List<Permiso>();
+            using (SqlConnection con = new SqlConnection(conexion))
+            {
+                string q = @"SELECT p.Id, p.Codigo, p.Nombre, p.Descripcion, p.EsPadre 
+                             FROM PERMISOS p
+                             INNER JOIN USUARIO_PERMISO up ON p.Id = up.IdPermiso
+                             WHERE up.IdUsuario = @uid";
+                SqlCommand cmd = new SqlCommand(q, con);
+                cmd.Parameters.AddWithValue("@uid", usuarioId);
+                con.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    bool esPadre = dr["EsPadre"] != DBNull.Value && (bool)dr["EsPadre"];
+                    Permiso p;
+                    if (!esPadre)
+                        p = new PermisoSimple();
+                    else
+                        p = new PermisoCompleto();
+
+                    p.Id = (int)dr["Id"];
+                    p.Codigo = dr["Codigo"].ToString();
+                    p.Nombre = dr["Nombre"].ToString();
+                    p.Descripcion = dr["Descripcion"].ToString();
+                    p.EsPadre = esPadre;
+                    lista.Add(p);
+                }
+            }
+            return lista;
+        }
+
         public Permiso ObtenerArbol(int permisoRaizId)
         {
             List<Permiso> todos = ObtenerTodos();
@@ -50,11 +83,9 @@ namespace DAL
             Permiso raiz = todos.FirstOrDefault(p => p.Id == id);
             if (raiz == null) return null;
 
-            if (!raiz.EsPadre) return raiz; // Es patente, no tiene hijos
+            if (!raiz.EsPadre) return raiz;
 
             PermisoCompleto compuesto = (PermisoCompleto)raiz;
-
-            // Busca los hijos en PERMISO_PERMISO
             List<int> idsHijos = ObtenerIdsHijos(id);
 
             foreach (int idHijo in idsHijos)
@@ -132,7 +163,6 @@ namespace DAL
         {
             using (SqlConnection con = new SqlConnection(conexion))
             {
-                // Primero eliminar referencias en USUARIO_PERMISO y PERMISO_PERMISO
                 SqlCommand cmdDel1 = new SqlCommand("DELETE FROM USUARIO_PERMISO WHERE IdPermiso=@id", con);
                 cmdDel1.Parameters.AddWithValue("@id", id);
                 
@@ -164,4 +194,3 @@ namespace DAL
         }
     }
 }
-

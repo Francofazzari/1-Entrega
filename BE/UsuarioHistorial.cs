@@ -8,5 +8,6 @@ namespace BE
         public DateTime FechaCambio { get; set; }
         public string ResponsableNombre { get; set; }
         public string Operacion { get; set; }
+        public string PermisosIds { get; set; }
     }
 }

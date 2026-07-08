@@ -75,7 +75,8 @@ CREATE TABLE CAMBIOS_USUARIO (
     Clave VARCHAR(256),
     Nombre VARCHAR(100),
     Apellido VARCHAR(100),
-    Activo BIT
+    Activo BIT,
+    PermisosIds VARCHAR(200)
 );
 GO
 
@@ -106,7 +107,10 @@ VALUES ('t001',
 
 -- Le asignamos el rol "Administrador" al admin
 INSERT INTO USUARIO_PERMISO (IdUsuario, IdPermiso) VALUES (1, 1);
-GOIF OBJECT_ID('TRADUCCIONES', 'U') IS NOT NULL DROP TABLE TRADUCCIONES;
+GO
+
+IF OBJECT_ID('TRADUCCIONES', 'U') IS NOT NULL DROP TABLE TRADUCCIONES;
+IF OBJECT_ID('PALABRAS', 'U') IS NOT NULL DROP TABLE PALABRAS;
 IF OBJECT_ID('IDIOMAS', 'U') IS NOT NULL DROP TABLE IDIOMAS;
 GO
 
@@ -117,17 +121,30 @@ CREATE TABLE IDIOMAS (
 );
 GO
 
+CREATE TABLE PALABRAS (
+    Tag VARCHAR(50) PRIMARY KEY
+);
+GO
+
 CREATE TABLE TRADUCCIONES (
     IdiomaId INT NOT NULL FOREIGN KEY REFERENCES IDIOMAS(Id),
-    Clave VARCHAR(50) NOT NULL,
-    Valor VARCHAR(200) NOT NULL,
-    PRIMARY KEY(IdiomaId, Clave)
+    Tag VARCHAR(50) NOT NULL FOREIGN KEY REFERENCES PALABRAS(Tag),
+    Traduccion VARCHAR(200) NOT NULL,
+    PRIMARY KEY(IdiomaId, Tag)
 );
 GO
 
 INSERT INTO IDIOMAS (Nombre, Codigo) VALUES ('Espanol', 'es-AR');
 
-INSERT INTO TRADUCCIONES (IdiomaId, Clave, Valor) VALUES 
+INSERT INTO PALABRAS (Tag) VALUES 
+('btn_login'), ('btn_logout'), ('lbl_usuario'), ('lbl_clave'),
+('btn_usuarios'), ('btn_perfiles'), ('btn_ventas'), ('btn_reporte'),
+('btn_apuesta'), ('abm_agregar'), ('abm_eliminar'), ('abm_limpiar'),
+('abm_modificar'), ('abm_permisos'), ('abm_titulo'), ('btn_composite'),
+('lbl_terminal'), ('btn_ingresar'), ('btn_idiomas');
+GO
+
+INSERT INTO TRADUCCIONES (IdiomaId, Tag, Traduccion) VALUES 
 (1, 'btn_login', 'Iniciar sesion'),
 (1, 'btn_logout', 'Cerrar sesion'),
 (1, 'lbl_usuario', 'Usuario:'),
@@ -143,5 +160,61 @@ INSERT INTO TRADUCCIONES (IdiomaId, Clave, Valor) VALUES
 (1, 'abm_modificar', 'Modificar'),
 (1, 'abm_permisos', 'Editar Permisos'),
 (1, 'abm_titulo', 'Administrar Usuarios'),
-(1, 'btn_composite', 'Administrar Composite');
+(1, 'btn_composite', 'Administrar Composite'),
+(1, 'lbl_terminal', 'Numero de terminal'),
+(1, 'btn_ingresar', 'Ingresar al sistema'),
+(1, 'btn_idiomas', 'Gestion Idiomas');
+GO
+
+
+-- Digito verificador horizontal: uno por fila de IDIOMAS
+IF COL_LENGTH('IDIOMAS', 'DigitoVerificador') IS NULL
+    ALTER TABLE IDIOMAS ADD DigitoVerificador INT NULL;
+GO
+
+-- Digitos verificadores verticales: uno por columna de IDIOMAS (forma parte del DER)
+IF OBJECT_ID('IDIOMAS_DIGITO_VERTICAL', 'U') IS NULL
+CREATE TABLE IDIOMAS_DIGITO_VERTICAL (
+    Columna VARCHAR(50) PRIMARY KEY,
+    Digito  INT NOT NULL
+);
+GO
+
+
+-- Agrega el idioma Ingles si todavia no existe
+IF NOT EXISTS (SELECT 1 FROM IDIOMAS WHERE Codigo = 'en-US')
+    INSERT INTO IDIOMAS (Nombre, Codigo) VALUES ('English', 'en-US');
+GO
+
+-- Traducciones al ingles de todas las palabras existentes en PALABRAS.
+-- Usa MERGE para poder correr el script varias veces sin duplicar ni fallar.
+DECLARE @idiomaIngles INT = (SELECT Id FROM IDIOMAS WHERE Codigo = 'en-US');
+
+MERGE TRADUCCIONES AS destino
+USING (VALUES
+    ('btn_login',      'Login'),
+    ('btn_logout',     'Log out'),
+    ('lbl_usuario',    'User:'),
+    ('lbl_clave',      'Password:'),
+    ('btn_usuarios',   'Manage Users'),
+    ('btn_perfiles',   'Profiles'),
+    ('btn_ventas',     'Online Sales'),
+    ('btn_reporte',    'Weekly Report'),
+    ('btn_apuesta',    'Place Bet'),
+    ('abm_agregar',    'Add'),
+    ('abm_eliminar',   'Delete'),
+    ('abm_limpiar',    'Clear'),
+    ('abm_modificar',  'Modify'),
+    ('abm_permisos',   'Edit Permissions'),
+    ('abm_titulo',     'Manage Users'),
+    ('btn_composite',  'Manage Composite'),
+    ('lbl_terminal',   'Terminal number'),
+    ('btn_ingresar',   'Log in'),
+    ('btn_idiomas',    'Manage Languages')
+) AS origen (Tag, Traduccion)
+ON destino.IdiomaId = @idiomaIngles AND destino.Tag = origen.Tag
+WHEN MATCHED THEN
+    UPDATE SET Traduccion = origen.Traduccion
+WHEN NOT MATCHED THEN
+    INSERT (IdiomaId, Tag, Traduccion) VALUES (@idiomaIngles, origen.Tag, origen.Traduccion);
 GO
