@@ -73,6 +73,13 @@ namespace BLL
             return dal.VerificarIntegridad();
         }
 
+        // Recalcula a la fuerza el digito horizontal de cada fila y el vertical, a pedido del
+        // administrador (por ejemplo desde el aviso de integridad al iniciar sesion).
+        public bool RecalcularTodosLosDigitos()
+        {
+            return dal.RecalcularTodosLosDigitos();
+        }
+
         public List<Traduccion> ObtenerTraduccionesGrid(int idiomaId)
         {
             return dal.ObtenerTraduccionesGrid(idiomaId);

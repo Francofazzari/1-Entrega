@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using BE;
 using BLL;
@@ -9,6 +10,7 @@ namespace Entrega1software
     public class FormControlCambios : Form
     {
         private UsuarioBLL usuarioBLL = new UsuarioBLL();
+        private PerfilBLL perfilBLL = new PerfilBLL();
         
         private ComboBox cmbUsuarios;
         private DataGridView dgvHistorial;
@@ -18,6 +20,10 @@ namespace Entrega1software
         public FormControlCambios()
         {
             InitializeComponent();
+            // DataBindingComplete se dispara siempre que dgvHistorial termina de enlazar su
+            // DataSource (sin importar el orden con el constructor/Load) - ahi se agrega la
+            // columna calculada "Perfil".
+            dgvHistorial.DataBindingComplete += DgvHistorial_DataBindingComplete;
             CargarUsuarios();
         }
 
@@ -88,6 +94,25 @@ namespace Entrega1software
             {
                 Usuario u = (Usuario)cmbUsuarios.SelectedItem;
                 dgvHistorial.DataSource = usuarioBLL.ObtenerHistorial(u.Id);
+            }
+        }
+
+        private void DgvHistorial_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            if (!dgvHistorial.Columns.Contains("Perfil"))
+                dgvHistorial.Columns.Add("Perfil", "Perfil");
+
+            foreach (DataGridViewRow fila in dgvHistorial.Rows)
+            {
+                UsuarioHistorial uh = fila.DataBoundItem as UsuarioHistorial;
+                if (uh == null) continue;
+
+                List<int> ids = (uh.PermisosIds ?? "")
+                    .Split(',')
+                    .Where(s => int.TryParse(s, out _))
+                    .Select(int.Parse)
+                    .ToList();
+                fila.Cells["Perfil"].Value = perfilBLL.ObtenerPerfilDesdeIds(ids);
             }
         }
 

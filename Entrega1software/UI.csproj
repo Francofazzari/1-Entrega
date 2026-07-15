@@ -52,6 +52,9 @@
     <Compile Include="FormApuesta.Designer.cs">
       <DependentUpon>FormApuesta.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAvisoIntegridad.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBitacora.cs">
       <SubType>Form</SubType>
     </Compile>

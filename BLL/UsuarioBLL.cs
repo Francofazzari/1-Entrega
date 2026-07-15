@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BE;
 using DAL;
 
@@ -72,8 +73,18 @@ namespace BLL
             if (string.IsNullOrEmpty(u.NroTerminal))
                 throw new Exception("El numero de terminal es obligatorio.");
 
-            if (!string.IsNullOrEmpty(u.Clave) && u.Clave.Length < 64) // Si no esta hasheada
+            if (string.IsNullOrEmpty(u.Clave))
+            {
+                // El campo Contraseña se deja en blanco a proposito cuando no se la quiere cambiar
+                // (dgvUsuarios_CellClick lo vacia al seleccionar una fila). Si se guardara vacio tal
+                // cual, se pisaria el hash real y el usuario quedaria sin poder iniciar sesion.
+                Usuario actual = dal.ObtenerTodos().FirstOrDefault(x => x.Id == u.Id);
+                u.Clave = actual != null ? actual.Clave : "";
+            }
+            else if (u.Clave.Length < 64) // Si no esta hasheada
+            {
                 u.Clave = Encriptador.HashSHA256(u.Clave);
+            }
 
             return dal.Modificar(u, ObtenerResponsable());
         }

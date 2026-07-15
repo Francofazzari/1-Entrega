@@ -80,6 +80,37 @@ namespace BLL
             return usuarioDAL.InsertarYObtenerID(u);
         }
 
+        // Perfil = la familia raiz "Admin" u "Operador" (las dos que ya vienen sembradas en PERMISOS).
+        // Se determina mirando los permisos asignados directamente al usuario en USUARIO_PERMISO.
+        public string ObtenerPerfilDeUsuario(int usuarioId)
+        {
+            List<Permiso> permisos = ObtenerPermisosDeUsuario(usuarioId);
+            Permiso perfil = permisos.FirstOrDefault(p => p.EsPadre && (p.Codigo == "Admin" || p.Codigo == "Operador"));
+            return perfil != null ? perfil.Nombre : "Sin perfil";
+        }
+
+        // Determina el perfil de un usuario a partir de una lista de ids de permisos ya conocida
+        // (por ejemplo, el PermisosIds guardado en una fila del historial de cambios), sin ir a la base.
+        public string ObtenerPerfilDesdeIds(IEnumerable<int> permisosIds)
+        {
+            List<Permiso> todos = ObtenerTodos();
+            HashSet<int> ids = new HashSet<int>(permisosIds);
+            Permiso perfil = todos.FirstOrDefault(p => p.EsPadre && ids.Contains(p.Id) && (p.Codigo == "Admin" || p.Codigo == "Operador"));
+            return perfil != null ? perfil.Nombre : "Sin perfil";
+        }
+
+        // Asigna el perfil (familia raiz) de un usuario segun su codigo ("Admin" u "Operador"),
+        // reemplazando cualquier perfil que tuviera antes.
+        public bool AsignarPerfil(int usuarioId, string perfilCodigo)
+        {
+            List<Permiso> todos = ObtenerTodos();
+            Permiso perfil = todos.FirstOrDefault(p => p.EsPadre && p.Codigo == perfilCodigo);
+            if (perfil == null)
+                throw new Exception("No existe el perfil '" + perfilCodigo + "'.");
+
+            return AsignarPermisosUsuario(usuarioId, new List<int> { perfil.Id });
+        }
+
         public bool AsignarPermisosUsuario(int usuarioId, List<int> permisosIds)
         {
             UsuarioDAL usuarioDAL = new UsuarioDAL();

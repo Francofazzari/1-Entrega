@@ -19,14 +19,44 @@ namespace Entrega1software
         public FormUsuarios()
         {
             InitializeComponent();
+            // DataBindingComplete se dispara siempre que el grid termina de enlazar su
+            // DataSource (sin importar si el formulario ya tiene handle de ventana o no,
+            // ni cuantas veces se reabra) - es el lugar correcto para agregar una columna
+            // calculada como "Perfil", que no viene del binding.
+            dgvUsuarios.DataBindingComplete += DgvUsuarios_DataBindingComplete;
             CargarUsuarios();
         }
 
         private void CargarUsuarios()
         {
-            dgvUsuarios.DataSource = bll.ObtenerTodos();
+            List<Usuario> usuarios = bll.ObtenerTodos();
+            dgvUsuarios.DataSource = usuarios;
+        }
+
+        private void DgvUsuarios_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
             if (dgvUsuarios.Columns["Clave"] != null)
                 dgvUsuarios.Columns["Clave"].Visible = false;
+            if (dgvUsuarios.Columns["Permisos"] != null)
+                dgvUsuarios.Columns["Permisos"].Visible = false;
+
+            if (!dgvUsuarios.Columns.Contains("Perfil"))
+                dgvUsuarios.Columns.Add("Perfil", "Perfil");
+
+            PerfilBLL perfilBll = new PerfilBLL();
+            foreach (DataGridViewRow fila in dgvUsuarios.Rows)
+            {
+                Usuario u = fila.DataBoundItem as Usuario;
+                if (u == null) continue;
+                fila.Cells["Perfil"].Value = perfilBll.ObtenerPerfilDeUsuario(u.Id);
+            }
+        }
+
+        private static string CodigoPerfil(string nombrePerfil)
+        {
+            if (nombrePerfil == "Administrador") return "Admin";
+            if (nombrePerfil == "Operador") return "Operador";
+            return null;
         }
        
         
@@ -42,6 +72,7 @@ namespace Entrega1software
                     Apellido = txtApellido.Text.Trim()
                 };
                 bll.AgregarUsuario(u);
+                new PerfilBLL().AsignarPerfil(u.Id, cmbPerfil.SelectedItem.ToString());
                 MessageBox.Show("Usuario agregado correctamente.");
                 BitacoraBLL bitacora = new BitacoraBLL();
                 bitacora.Registrar(
@@ -75,9 +106,11 @@ namespace Entrega1software
                     NroTerminal = txtTerminal.Text.Trim(),
                     Clave = txtClave.Text,
                     Nombre = txtNombre.Text.Trim(),
-                    Apellido = txtApellido.Text.Trim()
+                    Apellido = txtApellido.Text.Trim(),
+                    Activo = true // este panel no tiene control para desactivar (eso lo hace "Eliminar")
                 };
                 bll.ModificarUsuario(u);
+                new PerfilBLL().AsignarPerfil(u.Id, cmbPerfil.SelectedItem.ToString());
                 MessageBox.Show("Usuario modificado correctamente.");
                 CargarUsuarios();
                 LimpiarCampos();
@@ -117,6 +150,10 @@ namespace Entrega1software
                 txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
                 txtApellido.Text = fila.Cells["Apellido"].Value.ToString();
                 txtClave.Text = "";
+
+                string perfilActual = fila.Cells["Perfil"].Value?.ToString();
+                string codigo = CodigoPerfil(perfilActual);
+                if (codigo != null) cmbPerfil.SelectedItem = codigo;
             }
         }
 
@@ -127,6 +164,7 @@ namespace Entrega1software
             txtClave.Text = "";
             txtNombre.Text = "";
             txtApellido.Text = "";
+            cmbPerfil.SelectedIndex = 1;
         }
 
     }

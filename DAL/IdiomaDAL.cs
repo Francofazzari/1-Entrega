@@ -10,45 +10,48 @@ namespace DAL
     {
         private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
 
-        // Columnas de IDIOMAS que participan del calculo de digitos verificadores,
-        // en el orden que define su "posicion de atributo".
-        private static readonly Dictionary<string, Func<Idioma, string>> ColumnasVerificadas =
-            new Dictionary<string, Func<Idioma, string>>
-            {
-                { "Nombre", i => i.Nombre },
-                { "Codigo", i => i.Codigo }
-            };
-
-        // Suma ponderada (valor de caracter x posicion del caracter x posicion del atributo/fila) modulo 11.
-        // Se usa tanto para el digito horizontal (posicion = orden del atributo dentro de la entidad)
-        // como para el vertical (posicion = orden de la fila dentro de la tabla).
-        private static int CalcularDigito(IEnumerable<string> valoresEnOrden)
+        // Digito horizontal: suma ponderada (valor de caracter x posicion del caracter x posicion
+        // del atributo dentro de la entidad: Nombre=1, Codigo=2) modulo 11.
+        private static int CalcularDigitoHorizontal(Idioma idioma)
         {
             long suma = 0;
-            int posicion = 1;
-            foreach (string valor in valoresEnOrden)
+            int posicionAtributo = 1;
+            foreach (string valor in new[] { idioma.Nombre, idioma.Codigo })
             {
                 if (!string.IsNullOrEmpty(valor))
                 {
                     for (int i = 0; i < valor.Length; i++)
                     {
                         int posicionCaracter = i + 1;
-                        suma += (long)valor[i] * posicionCaracter * posicion;
+                        suma += (long)valor[i] * posicionCaracter * posicionAtributo;
                     }
                 }
-                posicion++;
+                posicionAtributo++;
             }
             return (int)(suma % 11);
         }
 
-        private static int CalcularDigitoHorizontal(Idioma idioma)
+        // Digito vertical: se calcula directamente sobre los digitos verificadores horizontales
+        // (la columna DigitoVerificador de IDIOMAS), no sobre Nombre/Codigo. Cada digito horizontal
+        // se pondera por la posicion de su fila (orden por Id) y se suma; el resultado va modulo 11.
+        // Como usa los digitos horizontales ya calculados, detecta tanto filas agregadas/eliminadas
+        // (cambia cuantos terminos entran en la suma) como una alteracion directa del propio
+        // DigitoVerificador hecha por fuera del sistema.
+        private static int CalcularDigitoVertical(IEnumerable<int> digitosHorizontalesEnOrden)
         {
-            return CalcularDigito(ColumnasVerificadas.Values.Select(f => f(idioma)));
+            long suma = 0;
+            int posicionFila = 1;
+            foreach (int digito in digitosHorizontalesEnOrden)
+            {
+                suma += (long)digito * posicionFila;
+                posicionFila++;
+            }
+            return (int)(suma % 11);
         }
 
-        // Recalcula y persiste el digito horizontal de cada fila y el vertical de cada columna.
-        // Se ejecuta dentro de la misma transaccion que cualquier alta/baja/modificacion legitima,
-        // de forma que la unica manera de que los digitos queden "desactualizados" sea una
+        // Recalcula y persiste el digito horizontal de cada fila y el vertical (unico, de toda la
+        // tabla). Se ejecuta dentro de la misma transaccion que cualquier alta/baja/modificacion
+        // legitima, de forma que la unica manera de que los digitos queden "desactualizados" sea una
         // modificacion hecha por fuera del sistema.
         private void RecalcularDigitos(SqlConnection con, SqlTransaction tx)
         {
@@ -67,10 +70,14 @@ namespace DAL
                 }
             }
 
+            List<int> digitosHorizontales = new List<int>();
             foreach (Idioma i in idiomas)
             {
+                int digitoHorizontal = CalcularDigitoHorizontal(i);
+                digitosHorizontales.Add(digitoHorizontal);
+
                 SqlCommand cmdUpd = new SqlCommand("UPDATE IDIOMAS SET DigitoVerificador = @d WHERE Id = @id", con, tx);
-                cmdUpd.Parameters.AddWithValue("@d", CalcularDigitoHorizontal(i));
+                cmdUpd.Parameters.AddWithValue("@d", digitoHorizontal);
                 cmdUpd.Parameters.AddWithValue("@id", i.Id);
                 cmdUpd.ExecuteNonQuery();
             }
@@ -78,13 +85,32 @@ namespace DAL
             SqlCommand cmdDel = new SqlCommand("DELETE FROM IDIOMAS_DIGITO_VERTICAL", con, tx);
             cmdDel.ExecuteNonQuery();
 
-            foreach (var columna in ColumnasVerificadas)
+            SqlCommand cmdIns = new SqlCommand("INSERT INTO IDIOMAS_DIGITO_VERTICAL (Digito) VALUES (@d)", con, tx);
+            cmdIns.Parameters.AddWithValue("@d", CalcularDigitoVertical(digitosHorizontales));
+            cmdIns.ExecuteNonQuery();
+        }
+
+        // Recalculo forzado (horizontal y vertical) a pedido del administrador, por ejemplo
+        // despues de corregir a mano en la base un dato que disparo un error de integridad.
+        // Abre su propia conexion/transaccion porque, a diferencia de RecalcularDigitos, no se
+        // llama desde dentro de otra operacion (Insertar/Renombrar/Eliminar) que ya tenga una.
+        public bool RecalcularTodosLosDigitos()
+        {
+            using (SqlConnection con = new SqlConnection(conexion))
             {
-                SqlCommand cmdIns = new SqlCommand(
-                    "INSERT INTO IDIOMAS_DIGITO_VERTICAL (Columna, Digito) VALUES (@col, @d)", con, tx);
-                cmdIns.Parameters.AddWithValue("@col", columna.Key);
-                cmdIns.Parameters.AddWithValue("@d", CalcularDigito(idiomas.Select(columna.Value)));
-                cmdIns.ExecuteNonQuery();
+                con.Open();
+                SqlTransaction tx = con.BeginTransaction();
+                try
+                {
+                    RecalcularDigitos(con, tx);
+                    tx.Commit();
+                    return true;
+                }
+                catch
+                {
+                    tx.Rollback();
+                    return false;
+                }
             }
         }
 
@@ -117,21 +143,19 @@ namespace DAL
                         }
                     }
 
-                    Dictionary<string, int> verticalesGuardados = new Dictionary<string, int>();
-                    SqlCommand cmdVert = new SqlCommand("SELECT Columna, Digito FROM IDIOMAS_DIGITO_VERTICAL", con, tx);
-                    using (SqlDataReader dr = cmdVert.ExecuteReader())
+                    int? verticalGuardado = null;
+                    SqlCommand cmdVert = new SqlCommand("SELECT TOP 1 Digito FROM IDIOMAS_DIGITO_VERTICAL", con, tx);
+                    object verticalObj = cmdVert.ExecuteScalar();
+                    if (verticalObj != null && verticalObj != DBNull.Value)
                     {
-                        while (dr.Read())
-                        {
-                            verticalesGuardados[dr["Columna"].ToString()] = (int)dr["Digito"];
-                        }
+                        verticalGuardado = Convert.ToInt32(verticalObj);
                     }
 
-                    // La linea base solo se establece la primera vez que corre (todavia no
-                    // existen digitos verticales). Una vez establecida, cualquier fila sin
-                    // digito horizontal (por ejemplo insertada por fuera del sistema) es un error,
-                    // no un caso a adoptar silenciosamente.
-                    bool primeraVez = ColumnasVerificadas.Keys.Any(c => !verticalesGuardados.ContainsKey(c));
+                    // La linea base solo se establece la primera vez que corre (todavia no existe
+                    // el digito vertical). Una vez establecida, cualquier fila sin digito horizontal
+                    // (por ejemplo insertada por fuera del sistema) es un error, no un caso a
+                    // adoptar silenciosamente.
+                    bool primeraVez = verticalGuardado == null;
 
                     if (primeraVez)
                     {
@@ -156,15 +180,16 @@ namespace DAL
                             }
                         }
 
-                        foreach (var columna in ColumnasVerificadas)
+                        // El vertical se calcula sobre los DigitoVerificador guardados; si falta
+                        // alguno, ya quedo reportado arriba y no tiene sentido sumar un hueco.
+                        if (idiomas.All(i => i.DigitoVerificador.HasValue))
                         {
-                            int esperado = CalcularDigito(idiomas.Select(columna.Value));
-                            if (verticalesGuardados[columna.Key] != esperado)
+                            int esperado = CalcularDigitoVertical(idiomas.Select(i => i.DigitoVerificador.Value));
+                            if (esperado != verticalGuardado.Value)
                             {
-                                errores.Add(string.Format(
-                                    "IDIOMAS: el digito verificador vertical de la columna '{0}' no coincide " +
-                                    "(posible fila agregada, eliminada o modificada fuera del sistema).",
-                                    columna.Key));
+                                errores.Add(
+                                    "IDIOMAS: el digito verificador vertical no coincide (posible fila agregada, " +
+                                    "eliminada, reordenada o con su DigitoVerificador alterado fuera del sistema).");
                             }
                         }
                     }
