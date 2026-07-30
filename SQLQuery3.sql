@@ -1,2 +1,0 @@
-USE AgenciaQuiniela;
-ALTER TABLE PERFILES ADD PermisoRaizId INT NULL;
