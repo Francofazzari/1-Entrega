@@ -138,9 +138,9 @@ namespace Entrega1software
 
         private void btnApuesta_Click(object sender, System.EventArgs e)
         {
-            FormApuesta fa = new FormApuesta();
-            fa.MdiParent = this;
-            fa.Show();
+            FormSeleccionLoteria fsl = new FormSeleccionLoteria();
+            fsl.MdiParent = this;
+            fsl.Show();
         }
 
         private void btnIdiomas_Click(object sender, System.EventArgs e)

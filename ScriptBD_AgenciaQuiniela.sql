@@ -2,6 +2,12 @@ USE AgenciaQuiniela;
 GO
 
 -- Eliminar tablas viejas si existen para no tener conflictos
+IF OBJECT_ID('APUESTA_NUMERO', 'U') IS NOT NULL DROP TABLE APUESTA_NUMERO;
+IF OBJECT_ID('APUESTA_LOTERIA', 'U') IS NOT NULL DROP TABLE APUESTA_LOTERIA;
+IF OBJECT_ID('APUESTA_TURNO', 'U') IS NOT NULL DROP TABLE APUESTA_TURNO;
+IF OBJECT_ID('APUESTAS', 'U') IS NOT NULL DROP TABLE APUESTAS;
+IF OBJECT_ID('LOTERIAS', 'U') IS NOT NULL DROP TABLE LOTERIAS;
+IF OBJECT_ID('TURNOS', 'U') IS NOT NULL DROP TABLE TURNOS;
 IF OBJECT_ID('AUDITORIA_LOGIN', 'U') IS NOT NULL DROP TABLE AUDITORIA_LOGIN;
 IF OBJECT_ID('USUARIO_PERMISO', 'U') IS NOT NULL DROP TABLE USUARIO_PERMISO;
 IF OBJECT_ID('PERMISO_PERMISO', 'U') IS NOT NULL DROP TABLE PERMISO_PERMISO;
@@ -217,4 +223,82 @@ WHEN MATCHED THEN
     UPDATE SET Traduccion = origen.Traduccion
 WHEN NOT MATCHED THEN
     INSERT (IdiomaId, Tag, Traduccion) VALUES (@idiomaIngles, origen.Tag, origen.Traduccion);
+GO
+
+-- ============================================================
+-- T08. Gestion Comercial de Quiniela
+-- ============================================================
+
+CREATE TABLE LOTERIAS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Codigo VARCHAR(20) NOT NULL,
+    Activa BIT NOT NULL DEFAULT 1
+);
+GO
+
+-- Horarios de sorteo sobre los que se puede apostar (Primera, Matutina, Vespertina,
+-- Nocturna). Se seleccionan igual que las loterias, uno o varios por apuesta.
+CREATE TABLE TURNOS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(30) NOT NULL,
+    Activo BIT NOT NULL DEFAULT 1
+);
+GO
+
+-- Cabecera de una apuesta (un "ticket"): agrupa el tipo de jugada y el total
+-- (suma del monto de cada numero, multiplicado por la cantidad de loterias y
+-- de turnos seleccionados).
+CREATE TABLE APUESTAS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UsuarioId INT NOT NULL FOREIGN KEY REFERENCES USUARIOS(Id),
+    FechaHora DATETIME NOT NULL DEFAULT GETDATE(),
+    Tipo VARCHAR(20) NOT NULL,
+    Total DECIMAL(10,2) NOT NULL,
+    Activa BIT NOT NULL DEFAULT 1
+);
+GO
+
+-- Loterias sobre las que aplica la apuesta (permite elegir varias, o "Todos").
+CREATE TABLE APUESTA_LOTERIA (
+    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
+    IdLoteria INT NOT NULL FOREIGN KEY REFERENCES LOTERIAS(Id),
+    PRIMARY KEY (IdApuesta, IdLoteria)
+);
+GO
+
+-- Horarios sobre los que aplica la apuesta (permite elegir varios).
+CREATE TABLE APUESTA_TURNO (
+    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
+    IdTurno INT NOT NULL FOREIGN KEY REFERENCES TURNOS(Id),
+    PRIMARY KEY (IdApuesta, IdTurno)
+);
+GO
+
+-- Cada numero cargado dentro de la apuesta (de 1 a 4 cifras), con el rango
+-- (posicion del sorteo a la que apunta: 1 = a la primera, 5, 10 o 20) y el
+-- monto con el que se juega ese numero en particular (entre $100 y $5000).
+CREATE TABLE APUESTA_NUMERO (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
+    Numero VARCHAR(4) NOT NULL,
+    Rango INT NOT NULL,
+    Monto DECIMAL(10,2) NOT NULL,
+    Orden INT NOT NULL
+);
+GO
+
+INSERT INTO LOTERIAS (Nombre, Codigo, Activa) VALUES
+    ('Provincia', 'PBA', 1),
+    ('La Ciudad', 'CABA', 1),
+    ('Cordoba', 'COR', 1),
+    ('Santa Fe', 'SFE', 1),
+    ('Entre Rios', 'ERI', 1);
+GO
+
+INSERT INTO TURNOS (Nombre, Activo) VALUES
+    ('Primera', 1),
+    ('Matutina', 1),
+    ('Vespertina', 1),
+    ('Nocturna', 1);
 GO

@@ -1,0 +1,77 @@
+USE AgenciaQuiniela;
+GO
+
+-- Script incremental (no destructivo) para agregar la Gestion Comercial de Quiniela
+-- a una base ya existente, sin tener que volver a correr ScriptBD_AgenciaQuiniela.sql completo.
+
+IF OBJECT_ID('LOTERIAS', 'U') IS NULL
+CREATE TABLE LOTERIAS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Codigo VARCHAR(20) NOT NULL,
+    Activa BIT NOT NULL DEFAULT 1
+);
+GO
+
+IF OBJECT_ID('TURNOS', 'U') IS NULL
+CREATE TABLE TURNOS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(30) NOT NULL,
+    Activo BIT NOT NULL DEFAULT 1
+);
+GO
+
+IF OBJECT_ID('APUESTAS', 'U') IS NULL
+CREATE TABLE APUESTAS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    UsuarioId INT NOT NULL FOREIGN KEY REFERENCES USUARIOS(Id),
+    FechaHora DATETIME NOT NULL DEFAULT GETDATE(),
+    Tipo VARCHAR(20) NOT NULL,
+    Total DECIMAL(10,2) NOT NULL,
+    Activa BIT NOT NULL DEFAULT 1
+);
+GO
+
+IF OBJECT_ID('APUESTA_LOTERIA', 'U') IS NULL
+CREATE TABLE APUESTA_LOTERIA (
+    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
+    IdLoteria INT NOT NULL FOREIGN KEY REFERENCES LOTERIAS(Id),
+    PRIMARY KEY (IdApuesta, IdLoteria)
+);
+GO
+
+IF OBJECT_ID('APUESTA_TURNO', 'U') IS NULL
+CREATE TABLE APUESTA_TURNO (
+    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
+    IdTurno INT NOT NULL FOREIGN KEY REFERENCES TURNOS(Id),
+    PRIMARY KEY (IdApuesta, IdTurno)
+);
+GO
+
+IF OBJECT_ID('APUESTA_NUMERO', 'U') IS NULL
+CREATE TABLE APUESTA_NUMERO (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
+    Numero VARCHAR(4) NOT NULL,
+    Rango INT NOT NULL,
+    Monto DECIMAL(10,2) NOT NULL,
+    Orden INT NOT NULL
+);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM LOTERIAS)
+INSERT INTO LOTERIAS (Nombre, Codigo, Activa) VALUES
+    ('Provincia', 'PBA', 1),
+    ('La Ciudad', 'CABA', 1),
+    ('Cordoba', 'COR', 1),
+    ('Santa Fe', 'SFE', 1),
+    ('Entre Rios', 'ERI', 1);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM TURNOS)
+INSERT INTO TURNOS (Nombre, Activo) VALUES
+    ('Primera', 1),
+    ('Matutina', 1),
+    ('Vespertina', 1),
+    ('Nocturna', 1);
+GO

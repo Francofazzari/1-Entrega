@@ -41,8 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApuestaDAL.cs" />
     <Compile Include="BitacoraDAL.cs" />
     <Compile Include="IdiomaDAL.cs" />
+    <Compile Include="LoteriaDAL.cs" />
+    <Compile Include="TurnoDAL.cs" />
     <Compile Include="PerfilDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

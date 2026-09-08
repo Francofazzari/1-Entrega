@@ -91,6 +91,12 @@
     <Compile Include="FormReporte.Designer.cs">
       <DependentUpon>FormReporte.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSeleccionLoteria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSeleccionLoteria.Designer.cs">
+      <DependentUpon>FormSeleccionLoteria.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormUsuarios.cs">
       <SubType>Form</SubType>
     </Compile>

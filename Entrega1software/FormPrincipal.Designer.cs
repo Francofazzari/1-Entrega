@@ -25,7 +25,13 @@
             this.btnCambios = new System.Windows.Forms.Button();
             this.btnIdiomas = new System.Windows.Forms.Button();
             this.cmbIdiomas = new System.Windows.Forms.ComboBox();
+            this.panelIzquierdo = new System.Windows.Forms.Panel();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnPagar = new System.Windows.Forms.Button();
+            this.btnReimprimir = new System.Windows.Forms.Button();
+            this.btnReportes = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
+            this.panelIzquierdo.SuspendLayout();
             this.SuspendLayout();
 
             // panelTop
@@ -158,14 +164,71 @@
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
 
+            // panelIzquierdo (menu general de la agencia: comun a todos los juegos, no
+            // solo a la Quiniela. Por ahora es solo visual, sin funcionalidad todavia).
+            this.panelIzquierdo.BackColor = System.Drawing.Color.White;
+            this.panelIzquierdo.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelIzquierdo.Width = 170;
+            this.panelIzquierdo.Controls.Add(this.btnCancelar);
+            this.panelIzquierdo.Controls.Add(this.btnPagar);
+            this.panelIzquierdo.Controls.Add(this.btnReimprimir);
+            this.panelIzquierdo.Controls.Add(this.btnReportes);
+            this.panelIzquierdo.Name = "panelIzquierdo";
+
+            // btnCancelar
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.Location = new System.Drawing.Point(10, 15);
+            this.btnCancelar.Size = new System.Drawing.Size(150, 45);
+            this.btnCancelar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(163, 45, 45);
+            this.btnCancelar.ForeColor = System.Drawing.Color.White;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Name = "btnCancelar";
+
+            // btnPagar
+            this.btnPagar.Text = "Pagar";
+            this.btnPagar.Location = new System.Drawing.Point(10, 70);
+            this.btnPagar.Size = new System.Drawing.Size(150, 45);
+            this.btnPagar.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.btnPagar.BackColor = System.Drawing.Color.FromArgb(29, 158, 117);
+            this.btnPagar.ForeColor = System.Drawing.Color.White;
+            this.btnPagar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPagar.Name = "btnPagar";
+
+            // btnReimprimir
+            this.btnReimprimir.Text = "Reimprimir";
+            this.btnReimprimir.Location = new System.Drawing.Point(10, 125);
+            this.btnReimprimir.Size = new System.Drawing.Size(150, 45);
+            this.btnReimprimir.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReimprimir.BackColor = System.Drawing.Color.FromArgb(24, 95, 165);
+            this.btnReimprimir.ForeColor = System.Drawing.Color.White;
+            this.btnReimprimir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReimprimir.Name = "btnReimprimir";
+
+            // btnReportes
+            this.btnReportes.Text = "Reportes";
+            this.btnReportes.Location = new System.Drawing.Point(10, 180);
+            this.btnReportes.Size = new System.Drawing.Size(150, 45);
+            this.btnReportes.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReportes.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
+            this.btnReportes.ForeColor = System.Drawing.Color.White;
+            this.btnReportes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReportes.Name = "btnReportes";
+
             // FormPrincipal
+            // Importante: panelTop (Dock=Top) se agrega ANTES que panelIzquierdo (Dock=Left).
+            // En WinForms, el control agregado primero al mismo "nivel" de docking queda mas
+            // cerca del borde correspondiente; si panelIzquierdo se agregara antes, tomaria
+            // toda la altura del formulario y panelTop dejaria de ocupar el ancho completo.
             this.ClientSize = new System.Drawing.Size(1400, 600);
             this.Controls.Add(this.panelTop);
+            this.Controls.Add(this.panelIzquierdo);
             this.Text = "Sistema Agencia de Quiniela";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Name = "FormPrincipal";
             this.panelTop.ResumeLayout(false);
+            this.panelIzquierdo.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
@@ -181,5 +244,10 @@
         private System.Windows.Forms.Button btnCambios;
         private System.Windows.Forms.Button btnIdiomas;
         private System.Windows.Forms.ComboBox cmbIdiomas;
+        private System.Windows.Forms.Panel panelIzquierdo;
+        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Button btnPagar;
+        private System.Windows.Forms.Button btnReimprimir;
+        private System.Windows.Forms.Button btnReportes;
     }
 }

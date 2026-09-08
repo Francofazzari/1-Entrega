@@ -43,7 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BE.cs" />
+    <Compile Include="Apuesta.cs" />
     <Compile Include="Bitacora.cs" />
+    <Compile Include="Jugada.cs" />
+    <Compile Include="Loteria.cs" />
+    <Compile Include="Turno.cs" />
     <Compile Include="Idioma.cs" />
     <Compile Include="IObservadorIdioma.cs" />
     <Compile Include="Perfil.cs" />
