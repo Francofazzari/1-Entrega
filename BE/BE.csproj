@@ -45,8 +45,14 @@
     <Compile Include="BE.cs" />
     <Compile Include="Apuesta.cs" />
     <Compile Include="Bitacora.cs" />
+    <Compile Include="Juego.cs" />
     <Compile Include="Jugada.cs" />
     <Compile Include="Loteria.cs" />
+    <Compile Include="NumeroElegido.cs" />
+    <Compile Include="NumeroGanador.cs" />
+    <Compile Include="Pago.cs" />
+    <Compile Include="Premio.cs" />
+    <Compile Include="Sorteo.cs" />
     <Compile Include="Turno.cs" />
     <Compile Include="Idioma.cs" />
     <Compile Include="IObservadorIdioma.cs" />

@@ -8,7 +8,7 @@ namespace DAL
     public class BitacoraDAL
     {
         
-        private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
+        private string conexion = Conexion.Cadena;
 
         public void Registrar(Bitacora b)
         {

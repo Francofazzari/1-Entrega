@@ -1,12 +1,17 @@
+using System.Collections.Generic;
+
 namespace BE
 {
-    // Un numero cargado dentro de una Apuesta: de 1 a 4 cifras, con el rango
-    // (posicion del sorteo a la que apunta: 1, 5, 10 o 20) y el monto con el
-    // que se juega ese numero en particular.
+    // Una apuesta concreta a UN sorteo, dentro de un ticket. En Quiniela tiene tipo (Directa o
+    // Redoblona); en todos los juegos puede ser manual o automatica (la maquina elige).
     public class Jugada
     {
-        public string Numero { get; set; }
-        public int Rango { get; set; }
+        public int Id { get; set; }
+        public Sorteo Sorteo { get; set; }
+        public string Tipo { get; set; }            // Directa / Redoblona (solo Quiniela); null en los demas
+        public bool EsAutomatica { get; set; }
         public decimal Monto { get; set; }
+        public int Orden { get; set; }
+        public List<NumeroElegido> Numeros { get; set; } = new List<NumeroElegido>();
     }
 }

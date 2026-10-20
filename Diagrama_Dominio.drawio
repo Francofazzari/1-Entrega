@@ -1,0 +1,352 @@
+<mxfile host="app.diagrams.net" agent="python">
+  <diagram id="dominio" name="Diagrama de Dominio">
+    <mxGraphModel dx="1649" dy="653" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2480" pageHeight="1600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="n101" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#0D47A1;" value="DIAGRAMA DE DOMINIO &amp;#8212; Agencia de Quiniela" vertex="1">
+          <mxGeometry height="34" width="1030" x="400" y="5" as="geometry" />
+        </mxCell>
+        <mxCell id="n104" parent="1" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=13;verticalAlign=middle;" value="&lt;b&gt;Quiniela&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#555&quot;&gt;1 a 4 cifras, por loter&amp;#237;a y turno&lt;/font&gt;" vertex="1">
+          <mxGeometry height="76" width="190" x="400" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n105" parent="1" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=13;verticalAlign=middle;" value="&lt;b&gt;Quiniela Plus&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#555&quot;&gt;8 números del 00 al 99&lt;/font&gt;" vertex="1">
+          <mxGeometry height="76" width="190" x="610" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n106" parent="1" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=13;verticalAlign=middle;" value="&lt;b&gt;Quini 6&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#555&quot;&gt;6 n&amp;#250;meros del 00 al 45&lt;/font&gt;" vertex="1">
+          <mxGeometry height="76" width="190" x="820" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n107" parent="1" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=13;verticalAlign=middle;" value="&lt;b&gt;Loto 5&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#555&quot;&gt;5 n&amp;#250;meros del 01 al 36&lt;/font&gt;" vertex="1">
+          <mxGeometry height="76" width="190" x="1030" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n108" parent="1" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=13;verticalAlign=middle;" value="&lt;b&gt;Telekino&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;color:#555&quot;&gt;15 n&amp;#250;meros del 01 al 25&lt;/font&gt;" vertex="1">
+          <mxGeometry height="76" width="190" x="1240" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="n110" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#2E7D32;strokeColor=#2E7D32;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="JUEGO" vertex="1">
+          <mxGeometry height="42" width="360" x="735" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="n111" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Define las reglas. Nadie juega “un juego”: se juega un SORTEO de ese juego.&lt;/i&gt;&lt;br&gt;&lt;br&gt;• nombre&lt;br&gt;• cuántos números se eligen&lt;br&gt;• de qué rango son válidos&lt;br&gt;• ¿usa posición? (a la primera, a los 5…)&lt;br&gt;• se juega por lotería y turno&lt;br&gt;• cuántos números salen en el sorteo&lt;br&gt;• precio de la jugada" vertex="1">
+          <mxGeometry height="168" width="360" x="735" y="272" as="geometry" />
+        </mxCell>
+        <mxCell id="n112" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#2E7D32;strokeColor=#2E7D32;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="LOTER&amp;#205;A" vertex="1">
+          <mxGeometry height="42" width="340" x="60" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="n113" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;El organismo que organiza y sortea: Provincia, La Ciudad, C&amp;#243;rdoba, Santa Fe, Entre R&amp;#237;os.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; nombre&lt;br&gt;&amp;#8226; sigla&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#B71C1C&quot;&gt;&lt;b&gt;Solo aplica a juegos por jurisdicci&amp;#243;n. Quini 6 o Telekino son nacionales: no tienen loter&amp;#237;a.&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="148" width="340" x="60" y="532" as="geometry" />
+        </mxCell>
+        <mxCell id="n114" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#2E7D32;strokeColor=#2E7D32;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="TURNO" vertex="1">
+          <mxGeometry height="42" width="340" x="60" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="n115" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;La franja horaria en la que se sortea.&lt;/i&gt;&lt;br&gt;&lt;br&gt;• nombre: Primera, Matutina, Vespertina, Nocturna&lt;br&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="128" width="340" x="60" y="772" as="geometry" />
+        </mxCell>
+        <mxCell id="n116" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#C62828;strokeWidth=4;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="SORTEO" vertex="1">
+          <mxGeometry height="42" width="440" x="695" y="527" as="geometry" />
+        </mxCell>
+        <mxCell id="n117" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#C62828;strokeWidth=4;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;UN evento concreto: un juego, en una fecha y hora y &amp;#8212; si el juego lo necesita &amp;#8212; de una loter&amp;#237;a y un turno.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; fecha y hora&lt;br&gt;&amp;#8226; estado: abierto &amp;#8594; cerrado &amp;#8594; sorteado&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#B71C1C&quot;&gt;&lt;b&gt;Es el punto de encuentro de todo el sistema: cualquier juego, viejo o nuevo, se concreta ac&amp;#225;.&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="268" width="440" x="695" y="572" as="geometry" />
+        </mxCell>
+        <mxCell id="n118" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;strokeWidth=2;fontSize=11;align=left;verticalAlign=top;fontColor=#333333;spacingLeft=8;spacingTop=4;spacingRight=8;" value="&lt;b&gt;Ejemplos:&lt;/b&gt; &amp;#8220;Quiniela &amp;#183; Provincia &amp;#183; Nocturna &amp;#183; 22/09&amp;#8221;&amp;#160;&amp;#160;|&amp;#160;&amp;#160;&amp;#8220;Quini 6 &amp;#183; 22/09&amp;#8221; (sin loter&amp;#237;a ni turno)" vertex="1">
+          <mxGeometry height="68" width="410" x="710" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="n119" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#1565C0;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="RESULTADO DEL SORTEO" vertex="1">
+          <mxGeometry height="42" width="440" x="695" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="n120" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Lo que sali&amp;#243; en ese sorteo. Existe reci&amp;#233;n cuando el sorteo ya se realiz&amp;#243;.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; fecha y hora de carga&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#B71C1C&quot;&gt;&lt;b&gt;Si el sorteo est&amp;#225; abierto o cerrado, todav&amp;#237;a no hay resultado.&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="138" width="440" x="695" y="992" as="geometry" />
+        </mxCell>
+        <mxCell id="n121" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#1565C0;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="N&amp;#218;MERO GANADOR" vertex="1">
+          <mxGeometry height="42" width="360" x="735" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="n122" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Cada n&amp;#250;mero que sali&amp;#243;, con el puesto en que sali&amp;#243;.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; n&amp;#250;mero&lt;br&gt;&amp;#8226; posici&amp;#243;n (1&amp;#186; a 20&amp;#186; en Quiniela)" vertex="1">
+          <mxGeometry height="118" width="360" x="735" y="1282" as="geometry" />
+        </mxCell>
+        <mxCell id="n123" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EF6C00;strokeColor=#EF6C00;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="CLIENTE" vertex="1">
+          <mxGeometry height="42" width="300" x="2080" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="n124" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#EF6C00;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Quien apuesta.&lt;/i&gt;&lt;br&gt;&lt;br&gt;• no se registran sus datos&lt;br&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="118" width="300" x="2080" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="n125" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EF6C00;strokeColor=#EF6C00;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="VENDEDOR" vertex="1">
+          <mxGeometry height="42" width="300" x="2080" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="n126" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#EF6C00;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;El empleado de la agencia que opera la terminal.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; nombre y usuario&lt;br&gt;&amp;#8226; perfil: Administrador / Operador" vertex="1">
+          <mxGeometry height="138" width="300" x="2080" y="412" as="geometry" />
+        </mxCell>
+        <mxCell id="n127" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EF6C00;strokeColor=#EF6C00;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="APUESTA (TICKET)" vertex="1">
+          <mxGeometry height="42" width="420" x="1520" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="n128" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#EF6C00;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;El comprobante que se lleva el cliente. Cada ticket es de un solo juego: si juega Quiniela y Quini 6, se lleva dos tickets.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; c&amp;#243;digo de ticket (&amp;#250;nico)&lt;br&gt;&amp;#8226; fecha y hora&lt;br&gt;&amp;#8226; importe total&lt;br&gt;&amp;#8226; estado: vigente / pagada / anulada&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#B71C1C&quot;&gt;&lt;b&gt;Se paga, se cancela y se reimprime por su c&amp;#243;digo, sea el juego que sea.&lt;/b&gt;&lt;/font&gt;" vertex="1">
+          <mxGeometry height="288" width="420" x="1520" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="n129" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EF6C00;strokeColor=#C62828;strokeWidth=4;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="JUGADA" vertex="1">
+          <mxGeometry height="42" width="420" x="1520" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="n130" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#C62828;strokeWidth=4;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Una apuesta concreta a UN sorteo. Es el concepto que hace que todos los juegos se traten igual.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; modalidad: manual o autom&amp;#225;tica&lt;br&gt;&amp;#8226; importe apostado&lt;br&gt;&amp;#8226; tipo (solo Quiniela): directa o redoblona" vertex="1">
+          <mxGeometry height="248" width="420" x="1520" y="672" as="geometry" />
+        </mxCell>
+        <mxCell id="n131" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EF6C00;strokeColor=#EF6C00;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="N&amp;#218;MEROS ELEGIDOS" vertex="1">
+          <mxGeometry height="42" width="300" x="2080" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="n132" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#EF6C00;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Los n&amp;#250;meros que eligi&amp;#243; el cliente, o que sorte&amp;#243; la m&amp;#225;quina si la jugada es autom&amp;#225;tica.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; n&amp;#250;mero&lt;br&gt;&amp;#8226; orden&lt;br&gt;&amp;#8226; posici&amp;#243;n buscada (solo Quiniela): a la primera / a los 5 / 10 / 20" vertex="1">
+          <mxGeometry height="138" width="300" x="2080" y="692" as="geometry" />
+        </mxCell>
+        <mxCell id="n133" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6A1B9A;strokeColor=#6A1B9A;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="PREMIO" vertex="1">
+          <mxGeometry height="42" width="400" x="1240" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="n134" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Lo que le corresponde a una jugada que acert&amp;#243;. Surge de comparar la jugada con el resultado.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; importe a pagar" vertex="1">
+          <mxGeometry height="148" width="400" x="1240" y="992" as="geometry" />
+        </mxCell>
+        <mxCell id="n135" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6A1B9A;strokeColor=#6A1B9A;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="COBRO" vertex="1">
+          <mxGeometry height="42" width="400" x="1240" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="n136" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;br&gt;• fecha y hora&lt;br&gt;• importe pagado&lt;br&gt;• empleado que lo abonó" vertex="1">
+          <mxGeometry height="148" width="400" x="1240" y="1282" as="geometry" />
+        </mxCell>
+        <mxCell id="n137" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#455A64;strokeColor=#455A64;strokeWidth=2;fontColor=#FFFFFF;fontSize=16;fontStyle=1;verticalAlign=middle;" value="REPORTE" vertex="1">
+          <mxGeometry height="42" width="440" x="1820" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="n138" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#455A64;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;spacingRight=6;" value="&lt;i&gt;Una consulta, no algo que se guarde. Se arma leyendo lo que ya pas&amp;#243;.&lt;/i&gt;&lt;br&gt;&lt;br&gt;&amp;#8226; Ventas en l&amp;#237;nea: qu&amp;#233; se vendi&amp;#243; y cu&amp;#225;nto&lt;br&gt;&amp;#8226; Pagos en l&amp;#237;nea: qu&amp;#233; premios se abonaron&lt;br&gt;&amp;#8226; N&amp;#250;meros ganadores: la lista de los 20" vertex="1">
+          <mxGeometry height="268" width="440" x="1820" y="1142" as="geometry" />
+        </mxCell>
+        <mxCell id="n139" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#C62828;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;fontColor=#333333;spacingLeft=8;spacingTop=4;spacingRight=8;" value="&lt;b style=&quot;font-size:14px;color:#C62828&quot;&gt;&amp;#9660; LA RELACI&amp;#211;N CLAVE&lt;/b&gt;&lt;br&gt;&lt;br&gt;Una jugada de Quiniela y una de Quini 6 son &lt;b&gt;el mismo concepto&lt;/b&gt;: cambia el sorteo al que apuntan, nada m&amp;#225;s.&lt;br&gt;&lt;br&gt;Por eso la JUGADA no necesita saber de qu&amp;#233; juego es: le alcanza con saber &lt;b&gt;a qu&amp;#233; sorteo apuesta&lt;/b&gt;." vertex="1">
+          <mxGeometry height="185" width="340" x="1170" y="430" as="geometry" />
+        </mxCell>
+        <mxCell id="n140" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F9A825;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;fontColor=#333333;spacingLeft=8;spacingTop=4;spacingRight=8;" value="&lt;b&gt;El c&amp;#243;digo del ticket&lt;/b&gt;&lt;br&gt;&lt;br&gt;Es la llave de toda la post-venta. Con ese c&amp;#243;digo el operador puede &lt;b&gt;pagar&lt;/b&gt;, &lt;b&gt;cancelar&lt;/b&gt; o &lt;b&gt;reimprimir&lt;/b&gt; una apuesta sin tener que saber de qu&amp;#233; juego es." vertex="1">
+          <mxGeometry height="190" width="300" x="2080" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="n141" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#EF6C00;strokeWidth=2;fontSize=12;align=left;verticalAlign=top;fontColor=#333333;spacingLeft=8;spacingTop=4;spacingRight=8;" value="&lt;b style=&quot;font-size:15px&quot;&gt;Cómo se lee una venta real&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color: rgb(239, 108, 0);&quot;&gt;Ejemplo 1 — Quiniela&lt;/b&gt;&lt;br&gt;“Al 232 le juego $400 a los 10, Provincia, Nocturna.”&lt;br&gt;• se crea una &lt;b&gt;APUESTA&lt;/b&gt; con su código&lt;br&gt;• con &lt;b&gt;una JUGADA&lt;/b&gt;, modalidad manual, importe $400&lt;br&gt;• esa jugada apunta al &lt;b&gt;SORTEO&lt;/b&gt; “Quiniela · Provincia · Nocturna · 22/09”&lt;br&gt;• con &lt;b&gt;un NÚMERO ELEGIDO&lt;/b&gt;: 232, a los 10&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color: rgb(239, 108, 0);&quot;&gt;Ejemplo 2 — Quini 6 automático&lt;/b&gt;&lt;br&gt;“Dame un Quini 6 automático.”&lt;br&gt;• se crea una &lt;b&gt;APUESTA&lt;/b&gt; con su código&lt;br&gt;• con &lt;b&gt;una JUGADA&lt;/b&gt;, modalidad automática&lt;br&gt;• esa jugada apunta al &lt;b&gt;SORTEO&lt;/b&gt; “Quini 6 · 22/09” (sin lotería ni turno)&lt;br&gt;• con &lt;b&gt;seis NÚMEROS ELEGIDOS&lt;/b&gt; que generó la máquina, sin posición&lt;br&gt;&lt;br&gt;&lt;b style=&quot;color: rgb(239, 108, 0);&quot;&gt;Si juega los dos en la misma visita&lt;/b&gt;&lt;br&gt;Se lleva &lt;b&gt;dos tickets&lt;/b&gt;, cada uno con su código: uno de Quiniela y uno de Quini 6.&lt;div&gt;&lt;br/&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="470" width="580" x="60" y="950" as="geometry" />
+        </mxCell>
+        <mxCell id="n142" edge="1" parent="1" source="n104" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=2;strokeColor=#2E7D32;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n110" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n143" edge="1" parent="1" source="n105" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=2;strokeColor=#2E7D32;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n110" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n144" edge="1" parent="1" source="n106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=2;strokeColor=#2E7D32;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n110" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n145" edge="1" parent="1" source="n107" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=2;strokeColor=#2E7D32;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n110" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n146" edge="1" parent="1" source="n108" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=12;strokeWidth=2;strokeColor=#2E7D32;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n110" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n147" edge="1" parent="1" source="n111" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n116" value="se concreta en">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n148" connectable="0" parent="n147" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n149" connectable="0" parent="n147" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n150" edge="1" parent="1" source="n113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.15;entryDx=0;entryDy=0;" target="n117" value="organiza">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n151" connectable="0" parent="n150" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n152" connectable="0" parent="n150" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n153" edge="1" parent="1" source="n115" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.62;entryDx=0;entryDy=0;" target="n117" value="fija el horario de">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n154" connectable="0" parent="n153" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n155" connectable="0" parent="n153" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n156" edge="1" parent="1" source="n117" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n119" value="produce">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n157" connectable="0" parent="n156" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n158" connectable="0" parent="n156" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..1" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n159" edge="1" parent="1" source="n120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n121" value="se compone de">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n160" connectable="0" parent="n159" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n161" connectable="0" parent="n159" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n162" edge="1" parent="1" source="n124" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.35;exitDx=0;exitDy=0;entryX=1;entryY=0.12;entryDx=0;entryDy=0;" target="n128" value="realiza">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n163" connectable="0" parent="n162" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n164" connectable="0" parent="n162" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n165" edge="1" parent="1" source="n126" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.4;exitDx=0;exitDy=0;entryX=1;entryY=0.62;entryDx=0;entryDy=0;" target="n128" value="registra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n166" connectable="0" parent="n165" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n167" connectable="0" parent="n165" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n168" edge="1" parent="1" source="n128" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n129" value="contiene">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n169" connectable="0" parent="n168" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n170" connectable="0" parent="n168" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n171" edge="1" parent="1" source="n130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.45;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" target="n132" value="se juega con">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n172" connectable="0" parent="n171" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n173" connectable="0" parent="n171" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n174" edge="1" parent="1" source="n130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=5;strokeColor=#C62828;fontSize=15;fontStyle=1;fontColor=#C62828;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.28;exitDx=0;exitDy=0;entryX=1;entryY=0.58;entryDx=0;entryDy=0;" target="n117" value="apuesta a">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n175" connectable="0" parent="n174" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n176" connectable="0" parent="n174" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n177" edge="1" parent="1" style="edgeStyle=none;html=1;endArrow=none;dashed=1;strokeWidth=2;strokeColor=#C62828;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1340" y="615" as="sourcePoint" />
+            <mxPoint x="1340" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n178" edge="1" parent="1" source="n120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.35;exitDx=0;exitDy=0;entryX=0;entryY=0.35;entryDx=0;entryDy=0;" target="n134" value="determina">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n179" connectable="0" parent="n178" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n180" connectable="0" parent="n178" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n181" edge="1" parent="1" source="n130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.607;entryY=0.048;entryDx=0;entryDy=0;entryPerimeter=0;" target="n133" value="puede generar">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n182" connectable="0" parent="n181" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n183" connectable="0" parent="n181" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..1" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n184" edge="1" parent="1" source="n134" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="n135" value="se abona mediante">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n185" connectable="0" parent="n184" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n186" connectable="0" parent="n184" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..1" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n187" edge="1" parent="1" source="n136" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;strokeWidth=2;strokeColor=#455A64;fontSize=12;fontStyle=2;fontColor=#455A64;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.62;entryDx=0;entryDy=0;" target="n138" value="pagos en l&amp;#237;nea">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="n188" edge="1" parent="1" source="n127" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;strokeWidth=2;strokeColor=#455A64;fontSize=12;fontStyle=2;fontColor=#455A64;labelBackgroundColor=#FFFFFF;exitX=0.9;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.4216;entryDx=0;entryDy=0;" target="n138" value="ventas en l&amp;#237;nea">
+          <mxGeometry relative="1" x="0.916" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="1898" y="120" />
+              <mxPoint x="2420" y="120" />
+              <mxPoint x="2420" y="1255" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n189" edge="1" parent="1" source="n120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;dashed=1;strokeWidth=2;strokeColor=#455A64;fontSize=12;fontStyle=2;fontColor=#455A64;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="n138" value="n&amp;#250;meros ganadores">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="1105" />
+              <mxPoint x="1180" y="1500" />
+              <mxPoint x="2040" y="1500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="derivJT" edge="1" parent="1" source="n111" style="edgeStyle=none;rounded=0;html=1;endArrow=none;strokeWidth=2;strokeColor=#37474F;fontSize=13;fontStyle=2;fontColor=#37474F;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.405;exitDx=0;exitDy=0;entryX=0;entryY=0.3056;entryDx=0;entryDy=0;" target="n128" value="◀ /es de">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="derivJT_m1" connectable="0" parent="derivJT" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="derivJT_m2" connectable="0" parent="derivJT" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;fontStyle=1;fontColor=#1A237E;labelBackgroundColor=#FFFFFF;" value="0..*" vertex="1">
+          <mxGeometry relative="1" x="0.78" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="derivJT_txt" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=11;fontStyle=0;fontColor=#37474F;" value="&lt;b&gt;/&lt;/b&gt; = relación derivada: no es un dato nuevo,&lt;br&gt;se deduce de Ticket → Jugada → Sorteo → Juego&lt;br&gt;&lt;i&gt;{todas las jugadas de un ticket son del mismo juego}&lt;/i&gt;" vertex="1">
+          <mxGeometry height="50" width="400" x="1110" y="352" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

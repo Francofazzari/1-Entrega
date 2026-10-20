@@ -8,7 +8,7 @@ namespace DAL
 {
     public class PerfilDAL
     {
-        private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
+        private string conexion = Conexion.Cadena;
 
         public List<Permiso> ObtenerTodos()
         {

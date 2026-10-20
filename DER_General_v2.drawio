@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" agent="claude-code">
+  <diagram name="DER General - Agencia" id="pg59">
+    <mxGraphModel dx="1717" dy="937" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2580" pageHeight="2420" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" parent="1" style="text;html=1;fontSize=26;fontStyle=1;align=left;verticalAlign=middle;" value="DER General - Agencia de Quiniela (todos los juegos)" vertex="1">
+          <mxGeometry height="36" width="1600" x="60" y="25" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F5C3D;strokeColor=#000000;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" value="1) QUE SE PUEDE JUGAR  (catalogo y sorteos)" vertex="1">
+          <mxGeometry height="36" width="480" x="60" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="eh4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F5C3D;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="LOTERIAS" vertex="1">
+          <mxGeometry height="42" width="300" x="140" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="er5" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;Nombre : varchar(50) &#xa;Codigo : varchar(20) &#xa;Activa : bit" vertex="1">
+          <mxGeometry height="134" width="300" x="140" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="eh6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F5C3D;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="TURNOS" vertex="1">
+          <mxGeometry height="42" width="300" x="520" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="er7" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;Nombre : varchar(30) &#xa;Activo : bit" vertex="1">
+          <mxGeometry height="104" width="300" x="520" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="eh8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F5C3D;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="JUEGOS" vertex="1">
+          <mxGeometry height="42" width="400" x="900" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="er9" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;Nombre : varchar(50) &#xa;Codigo : varchar(20) (UQ) &#xa;CantidadNumeros : int &#xa;NumeroMin : int &#xa;NumeroMax : int &#xa;CantidadSorteados : int &#xa;UsaRango : bit &#xa;UsaLoteriaTurno : bit &#xa;Precio : decimal(10,2) (null) &#xa;Activo : bit" vertex="1">
+          <mxGeometry height="254" width="400" x="900" y="262" as="geometry" />
+        </mxCell>
+        <mxCell id="eh10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F5C3D;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="SORTEOS" vertex="1">
+          <mxGeometry height="42" width="400" x="520" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="er11" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;FK  IdJuego : int &#xa;FK  IdLoteria : int (null) &#xa;FK  IdTurno : int (null) &#xa;Fecha : date &#xa;Estado : varchar(20)" vertex="1">
+          <mxGeometry height="194" width="400" x="520" y="682" as="geometry" />
+        </mxCell>
+        <mxCell id="eh12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F5C3D;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="NUMERO_GANADOR" vertex="1">
+          <mxGeometry height="42" width="380" x="1180" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="er13" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;FK  IdSorteo : int &#xa;Numero : varchar(4) &#xa;Posicion : int" vertex="1">
+          <mxGeometry height="134" width="380" x="1180" y="702" as="geometry" />
+        </mxCell>
+        <mxCell id="l14" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="290" y="396" as="sourcePoint" />
+            <mxPoint x="600" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb15" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="170" y="402" as="geometry" />
+        </mxCell>
+        <mxCell id="lb16" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="510" y="606" as="geometry" />
+        </mxCell>
+        <mxCell id="l17" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="366" as="sourcePoint" />
+            <mxPoint x="720" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb18" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="682" y="372" as="geometry" />
+        </mxCell>
+        <mxCell id="lb19" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="732" y="606" as="geometry" />
+        </mxCell>
+        <mxCell id="l20" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1100" y="516" as="sourcePoint" />
+            <mxPoint x="840" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb21" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="1112" y="522" as="geometry" />
+        </mxCell>
+        <mxCell id="lb22" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="880" y="606" as="geometry" />
+        </mxCell>
+        <mxCell id="l23" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="920" y="758" as="sourcePoint" />
+            <mxPoint x="1180" y="748" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb24" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="932" y="722" as="geometry" />
+        </mxCell>
+        <mxCell id="lb25" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="1068" y="712" as="geometry" />
+        </mxCell>
+        <mxCell id="b26" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F4E79;strokeColor=#000000;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" value="2) LO QUE SE VENDE  (el ticket)" vertex="1">
+          <mxGeometry height="36" width="480" x="60" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="eh27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F4E79;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="USUARIOS (*)" vertex="1">
+          <mxGeometry height="42" width="260" x="60" y="1170" as="geometry" />
+        </mxCell>
+        <mxCell id="er28" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int" vertex="1">
+          <mxGeometry height="44" width="260" x="60" y="1212" as="geometry" />
+        </mxCell>
+        <mxCell id="eh29" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F4E79;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="APUESTAS" vertex="1">
+          <mxGeometry height="42" width="400" x="560" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="er30" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;CodigoTicket : uniqueidentifier (UQ) &#xa;FK  UsuarioId : int &#xa;FechaHora : datetime &#xa;Total : decimal(10,2) &#xa;Estado : varchar(20)" vertex="1">
+          <mxGeometry height="224" width="400" x="560" y="1122" as="geometry" />
+        </mxCell>
+        <mxCell id="eh31" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F4E79;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="JUGADAS" vertex="1">
+          <mxGeometry height="42" width="420" x="1220" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="er32" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;FK  IdApuesta : int &#xa;FK  IdSorteo : int &#xa;Tipo : varchar(20) (null) &#xa;EsAutomatica : bit &#xa;Monto : decimal(10,2) &#xa;Orden : int" vertex="1">
+          <mxGeometry height="224" width="420" x="1220" y="1122" as="geometry" />
+        </mxCell>
+        <mxCell id="eh33" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1F4E79;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="JUGADA_NUMERO" vertex="1">
+          <mxGeometry height="42" width="420" x="1220" y="1520" as="geometry" />
+        </mxCell>
+        <mxCell id="er34" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;FK  IdJugada : int &#xa;Numero : varchar(4) &#xa;Orden : int &#xa;Rango : int (null)" vertex="1">
+          <mxGeometry height="164" width="420" x="1220" y="1562" as="geometry" />
+        </mxCell>
+        <mxCell id="l35" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="1213" as="sourcePoint" />
+            <mxPoint x="560" y="1213" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb36" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="332" y="1177" as="geometry" />
+        </mxCell>
+        <mxCell id="lb37" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="448" y="1177" as="geometry" />
+        </mxCell>
+        <mxCell id="l38" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="1213" as="sourcePoint" />
+            <mxPoint x="1220" y="1213" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb39" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="972" y="1177" as="geometry" />
+        </mxCell>
+        <mxCell id="lb40" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="1108" y="1177" as="geometry" />
+        </mxCell>
+        <mxCell id="l41" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1430" y="1346" as="sourcePoint" />
+            <mxPoint x="1430" y="1520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb42" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="1442" y="1352" as="geometry" />
+        </mxCell>
+        <mxCell id="lb43" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="1442" y="1486" as="geometry" />
+        </mxCell>
+        <mxCell id="l44" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=5;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="876" as="sourcePoint" />
+            <mxPoint x="1340" y="1080" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb45" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="792" y="884" as="geometry" />
+        </mxCell>
+        <mxCell id="lb46" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="1230" y="1046" as="geometry" />
+        </mxCell>
+        <mxCell id="n47" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#B22222;strokeWidth=2;fontSize=13;align=center;verticalAlign=top;spacing=12;" value="ESTE ES EL VINCULO ENTRE LOS JUEGOS Y LA VENTA: cada jugada se hace sobre UN sorteo, y ese sorteo ya dice de que juego es." vertex="1">
+          <mxGeometry height="76" width="480" x="1150" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="b48" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#8A5A00;strokeColor=#000000;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" value="3) EL COBRO" vertex="1">
+          <mxGeometry height="36" width="480" x="60" y="1800" as="geometry" />
+        </mxCell>
+        <mxCell id="eh49" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#8A5A00;strokeColor=#000000;strokeWidth=2;fontColor=#FFFFFF;fontStyle=1;fontSize=17;align=center;verticalAlign=middle;" value="PAGOS" vertex="1">
+          <mxGeometry height="42" width="340" x="140" y="1880" as="geometry" />
+        </mxCell>
+        <mxCell id="er50" parent="1" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#FFFFFF;strokeColor=#000000;strokeWidth=2;fontSize=15;align=left;verticalAlign=top;spacing=8;fontFamily=Consolas;" value="PK  Id : int &#xa;FK  IdApuesta : int (UQ) &#xa;FK  UsuarioId : int &#xa;FechaHora : datetime &#xa;Monto : decimal(10,2)" vertex="1">
+          <mxGeometry height="164" width="340" x="140" y="1922" as="geometry" />
+        </mxCell>
+        <mxCell id="l51" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="1256" as="sourcePoint" />
+            <mxPoint x="200" y="1880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb52" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,N)" vertex="1">
+          <mxGeometry height="26" width="100" x="40" y="1262" as="geometry" />
+        </mxCell>
+        <mxCell id="lb53" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="90" y="1846" as="geometry" />
+        </mxCell>
+        <mxCell id="l54" edge="1" parent="1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=3;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="1346" as="sourcePoint" />
+            <mxPoint x="420" y="1880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lb55" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(0,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="570" y="1352" as="geometry" />
+        </mxCell>
+        <mxCell id="lb56" parent="1" style="text;html=1;fontSize=15;align=center;verticalAlign=middle;fontColor=#B22222;fontStyle=1;" value="(1,1)" vertex="1">
+          <mxGeometry height="26" width="100" x="430" y="1846" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

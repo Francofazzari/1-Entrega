@@ -3,307 +3,300 @@ namespace Entrega1software
     partial class FormApuesta
     {
         private System.ComponentModel.IContainer components = null;
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && components != null) components.Dispose();
             base.Dispose(disposing);
         }
+
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblLoterias = new System.Windows.Forms.Label();
-            this.lblTurnos = new System.Windows.Forms.Label();
+            this.tlpRaiz = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlEncabezado = Estilos.Encabezado(Estilos.AzulMedio, out this.lblTitulo, out this.lblSubtitulo);
+            this.pnlIzquierda = Estilos.Tarjeta();
+            this.tlpIzquierda = new System.Windows.Forms.TableLayoutPanel();
+            this.lblJugadasTitulo = Estilos.Seccion("Jugadas del ticket");
             this.dgvJugadas = new System.Windows.Forms.DataGridView();
-            this.pnlDerecha = new System.Windows.Forms.Panel();
-            this.lblTipo = new System.Windows.Forms.Label();
-            this.cmbTipo = new System.Windows.Forms.ComboBox();
-            this.lblMonto = new System.Windows.Forms.Label();
-            this.nudMonto = new System.Windows.Forms.NumericUpDown();
-            this.lblNumero = new System.Windows.Forms.Label();
-            this.txtNumero = new System.Windows.Forms.TextBox();
-            this.btnAgregarNumero = new System.Windows.Forms.Button();
-            this.lblRango = new System.Windows.Forms.Label();
-            this.tlpRango = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpTeclado = new System.Windows.Forms.TableLayoutPanel();
-            this.lblApuestaCaption = new System.Windows.Forms.Label();
-            this.lblApuestaValor = new System.Windows.Forms.Label();
-            this.lblTotalCaption = new System.Windows.Forms.Label();
+            this.tlpPie = new System.Windows.Forms.TableLayoutPanel();
+            this.btnQuitar = Estilos.BotonSecundario("Quitar jugada", Estilos.Rojo);
+            this.tlpTotal = new System.Windows.Forms.TableLayoutPanel();
+            this.lblResumen = new System.Windows.Forms.Label();
             this.lblTotalValor = new System.Windows.Forms.Label();
-            this.btnEnviar = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
+            this.btnEnviar = Estilos.Boton("CONFIRMAR VENTA", Estilos.Verde, 12F);
+            this.pnlDerecha = Estilos.Tarjeta();
+            this.tlpDerecha = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTipoTitulo = Estilos.Seccion("Tipo de jugada");
+            this.tlpTipo = new System.Windows.Forms.TableLayoutPanel();
+            this.btnDirecta = Estilos.Toggle("Directa", 10.5F);
+            this.btnRedoblona = Estilos.Toggle("Redoblona", 10.5F);
+            this.lblAyudaTipo = new System.Windows.Forms.Label();
+            this.lblNumeroTitulo = Estilos.Seccion("Número");
+            this.lblNumero = new System.Windows.Forms.Label();
+            this.lblRedoblona = new System.Windows.Forms.Label();
+            this.tlpTeclado = new System.Windows.Forms.TableLayoutPanel();
+            this.lblPosicionTitulo = Estilos.Seccion("Posición");
+            this.tlpRango = new System.Windows.Forms.TableLayoutPanel();
+            this.lblMontoTitulo = Estilos.Seccion("Monto por jugada");
+            this.nudMonto = new System.Windows.Forms.NumericUpDown();
+            this.btnAgregar = Estilos.Boton("AGREGAR AL TICKET", Estilos.AzulMedio, 11F);
+            this.lblAviso = new System.Windows.Forms.Label();
+            this.tlpRaiz.SuspendLayout();
+            this.pnlIzquierda.SuspendLayout();
+            this.tlpIzquierda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvJugadas)).BeginInit();
+            this.tlpPie.SuspendLayout();
+            this.tlpTotal.SuspendLayout();
             this.pnlDerecha.SuspendLayout();
+            this.tlpDerecha.SuspendLayout();
+            this.tlpTipo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMonto)).BeginInit();
             this.SuspendLayout();
 
-            // pnlHeader (Dock=Top: siempre ocupa todo el ancho disponible)
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Height = 85;
-            this.pnlHeader.Controls.Add(this.lblTitulo);
-            this.pnlHeader.Controls.Add(this.lblLoterias);
-            this.pnlHeader.Controls.Add(this.lblTurnos);
-            this.pnlHeader.Name = "pnlHeader";
+            // tlpRaiz: encabezado arriba (dos columnas) y abajo la lista del ticket (crece) y el
+            // panel de carga (ancho fijo)
+            this.tlpRaiz.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpRaiz.ColumnCount = 2;
+            this.tlpRaiz.RowCount = 2;
+            this.tlpRaiz.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpRaiz.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 410F));
+            this.tlpRaiz.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
+            this.tlpRaiz.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpRaiz.Controls.Add(this.pnlEncabezado, 0, 0);
+            this.tlpRaiz.SetColumnSpan(this.pnlEncabezado, 2);
+            this.tlpRaiz.Controls.Add(this.pnlIzquierda, 0, 1);
+            this.tlpRaiz.Controls.Add(this.pnlDerecha, 1, 1);
+            this.tlpRaiz.Name = "tlpRaiz";
 
-            // lblTitulo
-            this.lblTitulo.Text = "Quiniela";
-            this.lblTitulo.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(31, 78, 121);
-            this.lblTitulo.Location = new System.Drawing.Point(15, 10);
-            this.lblTitulo.Size = new System.Drawing.Size(500, 32);
-            this.lblTitulo.Name = "lblTitulo";
+            // ---------------- izquierda: jugadas del ticket ----------------
+            this.pnlIzquierda.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlIzquierda.Margin = new System.Windows.Forms.Padding(16, 16, 8, 16);
+            this.pnlIzquierda.Controls.Add(this.tlpIzquierda);
+            this.pnlIzquierda.Name = "pnlIzquierda";
 
-            // lblLoterias
-            this.lblLoterias.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic);
-            this.lblLoterias.Location = new System.Drawing.Point(15, 45);
-            this.lblLoterias.Size = new System.Drawing.Size(600, 18);
-            this.lblLoterias.Name = "lblLoterias";
+            this.tlpIzquierda.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpIzquierda.ColumnCount = 1;
+            this.tlpIzquierda.RowCount = 3;
+            this.tlpIzquierda.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpIzquierda.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpIzquierda.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpIzquierda.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
+            this.tlpIzquierda.Controls.Add(this.lblJugadasTitulo, 0, 0);
+            this.tlpIzquierda.Controls.Add(this.dgvJugadas, 0, 1);
+            this.tlpIzquierda.Controls.Add(this.tlpPie, 0, 2);
+            this.tlpIzquierda.Name = "tlpIzquierda";
 
-            // lblTurnos
-            this.lblTurnos.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Italic);
-            this.lblTurnos.Location = new System.Drawing.Point(15, 63);
-            this.lblTurnos.Size = new System.Drawing.Size(600, 18);
-            this.lblTurnos.Name = "lblTurnos";
-
-            // dgvJugadas (Dock=Fill: crece con el formulario en ambas direcciones)
             this.dgvJugadas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvJugadas.Margin = new System.Windows.Forms.Padding(0, 4, 0, 4);
             this.dgvJugadas.Name = "dgvJugadas";
-            this.dgvJugadas.ReadOnly = true;
-            this.dgvJugadas.AllowUserToAddRows = false;
-            this.dgvJugadas.AllowUserToDeleteRows = false;
-            this.dgvJugadas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvJugadas.BackgroundColor = System.Drawing.Color.White;
-            this.dgvJugadas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            // AutoSizeColumnsMode se setea en el constructor (FormApuesta.cs), despues de
-            // asignar el DataSource: hacerlo aca, antes de que existan columnas y antes de
-            // que el Dock=Fill resuelva el ancho real del control, dejaba las columnas con
-            // ancho cero y la grilla se veia en blanco.
-            this.dgvJugadas.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(31, 78, 121);
-            this.dgvJugadas.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvJugadas.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.dgvJugadas.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvJugadas_Paint);
 
-            // pnlDerecha (Dock=Right: ancho fijo, con scroll si el alto no alcanza)
-            this.pnlDerecha.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlDerecha.Width = 380;
-            this.pnlDerecha.AutoScroll = true;
-            this.pnlDerecha.Padding = new System.Windows.Forms.Padding(15);
-            this.pnlDerecha.Controls.Add(this.lblTipo);
-            this.pnlDerecha.Controls.Add(this.cmbTipo);
-            this.pnlDerecha.Controls.Add(this.lblMonto);
-            this.pnlDerecha.Controls.Add(this.nudMonto);
-            this.pnlDerecha.Controls.Add(this.lblNumero);
-            this.pnlDerecha.Controls.Add(this.txtNumero);
-            this.pnlDerecha.Controls.Add(this.btnAgregarNumero);
-            this.pnlDerecha.Controls.Add(this.lblRango);
-            this.pnlDerecha.Controls.Add(this.tlpRango);
-            this.pnlDerecha.Controls.Add(this.tlpTeclado);
-            this.pnlDerecha.Controls.Add(this.lblApuestaCaption);
-            this.pnlDerecha.Controls.Add(this.lblApuestaValor);
-            this.pnlDerecha.Controls.Add(this.lblTotalCaption);
-            this.pnlDerecha.Controls.Add(this.lblTotalValor);
-            this.pnlDerecha.Controls.Add(this.btnEnviar);
-            this.pnlDerecha.Name = "pnlDerecha";
+            // pie: [Quitar seleccionada] ...... resumen y total ...... [CONFIRMAR VENTA]
+            this.tlpPie.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpPie.ColumnCount = 3;
+            this.tlpPie.RowCount = 1;
+            this.tlpPie.Padding = new System.Windows.Forms.Padding(0, 12, 0, 0);
+            this.tlpPie.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26F));
+            this.tlpPie.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlpPie.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34F));
+            this.tlpPie.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPie.Controls.Add(this.btnQuitar, 0, 0);
+            this.tlpPie.Controls.Add(this.tlpTotal, 1, 0);
+            this.tlpPie.Controls.Add(this.btnEnviar, 2, 0);
+            this.tlpPie.Name = "tlpPie";
 
-            // lblTipo
-            this.lblTipo.Text = "Tipo";
-            this.lblTipo.Location = new System.Drawing.Point(15, 15);
-            this.lblTipo.Size = new System.Drawing.Size(150, 18);
-            this.lblTipo.Name = "lblTipo";
+            this.btnQuitar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnQuitar.Margin = new System.Windows.Forms.Padding(0, 6, 0, 6);
+            this.btnQuitar.Name = "btnQuitar";
+            this.btnQuitar.Click += new System.EventHandler(this.btnQuitar_Click);
 
-            // cmbTipo
-            this.cmbTipo.Location = new System.Drawing.Point(15, 35);
-            this.cmbTipo.Size = new System.Drawing.Size(170, 26);
-            this.cmbTipo.Name = "cmbTipo";
-            this.cmbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTipo.Items.AddRange(new object[] { "Directa", "Redoblona" });
-            this.cmbTipo.SelectedIndex = 0;
+            this.tlpTotal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTotal.ColumnCount = 1;
+            this.tlpTotal.RowCount = 2;
+            this.tlpTotal.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTotal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.tlpTotal.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTotal.Controls.Add(this.lblResumen, 0, 0);
+            this.tlpTotal.Controls.Add(this.lblTotalValor, 0, 1);
+            this.tlpTotal.Name = "tlpTotal";
 
-            // lblMonto
-            this.lblMonto.Text = "Monto $ (min 100 - max 5000)";
-            this.lblMonto.Location = new System.Drawing.Point(15, 75);
-            this.lblMonto.Size = new System.Drawing.Size(250, 18);
-            this.lblMonto.Name = "lblMonto";
+            this.lblResumen.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblResumen.Font = Estilos.Fuente(9.5F);
+            this.lblResumen.ForeColor = Estilos.TextoSuave;
+            this.lblResumen.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.lblResumen.Margin = new System.Windows.Forms.Padding(0, 0, 16, 0);
+            this.lblResumen.Name = "lblResumen";
 
-            // nudMonto
-            this.nudMonto.Location = new System.Drawing.Point(15, 95);
-            this.nudMonto.Size = new System.Drawing.Size(170, 26);
-            this.nudMonto.Name = "nudMonto";
-            this.nudMonto.Minimum = 100;
-            this.nudMonto.Maximum = 5000;
-            this.nudMonto.Increment = 50;
-            this.nudMonto.DecimalPlaces = 2;
-            this.nudMonto.Value = 100;
-            this.nudMonto.ThousandsSeparator = true;
-            this.nudMonto.ValueChanged += new System.EventHandler(this.nudMonto_ValueChanged);
-
-            // lblNumero
-            this.lblNumero.Text = "Numero (1 a 4 cifras)";
-            this.lblNumero.Location = new System.Drawing.Point(15, 135);
-            this.lblNumero.Size = new System.Drawing.Size(180, 18);
-            this.lblNumero.Name = "lblNumero";
-
-            // lblRango
-            this.lblRango.Text = "Rango";
-            this.lblRango.Location = new System.Drawing.Point(200, 135);
-            this.lblRango.Size = new System.Drawing.Size(150, 18);
-            this.lblRango.Name = "lblRango";
-
-            // txtNumero
-            this.txtNumero.Location = new System.Drawing.Point(15, 155);
-            this.txtNumero.Size = new System.Drawing.Size(90, 40);
-            this.txtNumero.Name = "txtNumero";
-            this.txtNumero.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
-            this.txtNumero.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtNumero.MaxLength = 4;
-            this.txtNumero.ReadOnly = true;
-
-            // btnAgregarNumero
-            this.btnAgregarNumero.Text = "Agregar";
-            this.btnAgregarNumero.Location = new System.Drawing.Point(15, 200);
-            this.btnAgregarNumero.Size = new System.Drawing.Size(90, 32);
-            this.btnAgregarNumero.BackColor = System.Drawing.Color.FromArgb(24, 95, 165);
-            this.btnAgregarNumero.ForeColor = System.Drawing.Color.White;
-            this.btnAgregarNumero.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAgregarNumero.Name = "btnAgregarNumero";
-            this.btnAgregarNumero.Click += new System.EventHandler(this.btnAgregarNumero_Click);
-
-            // tlpRango (2x2: 1 / 5 / 10 / 20 - posicion del sorteo a la que apunta el numero)
-            this.tlpRango.Location = new System.Drawing.Point(200, 155);
-            this.tlpRango.Size = new System.Drawing.Size(165, 110);
-            this.tlpRango.Name = "tlpRango";
-            this.tlpRango.ColumnCount = 2;
-            this.tlpRango.RowCount = 2;
-            this.tlpRango.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpRango.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpRango.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpRango.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-
-            int[] rangos = { 1, 5, 10, 20 };
-            for (int i = 0; i < rangos.Length; i++)
-            {
-                System.Windows.Forms.Button btnRango = new System.Windows.Forms.Button();
-                btnRango.Text = rangos[i].ToString("00");
-                btnRango.Tag = rangos[i];
-                btnRango.Dock = System.Windows.Forms.DockStyle.Fill;
-                btnRango.Margin = new System.Windows.Forms.Padding(4);
-                btnRango.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
-                btnRango.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                btnRango.BackColor = i == 0
-                    ? System.Drawing.Color.FromArgb(29, 158, 117)
-                    : System.Drawing.Color.FromArgb(240, 244, 248);
-                btnRango.ForeColor = i == 0 ? System.Drawing.Color.White : System.Drawing.Color.Black;
-                btnRango.Click += new System.EventHandler(this.BtnRango_Click);
-                this.tlpRango.Controls.Add(btnRango, i % 2, i / 2);
-            }
-
-            // tlpTeclado (teclado numerico: 1-9, borrar, 0)
-            this.tlpTeclado.Location = new System.Drawing.Point(15, 280);
-            this.tlpTeclado.Size = new System.Drawing.Size(240, 180);
-            this.tlpTeclado.Name = "tlpTeclado";
-            this.tlpTeclado.ColumnCount = 3;
-            this.tlpTeclado.RowCount = 4;
-            for (int i = 0; i < 3; i++)
-                this.tlpTeclado.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.3F));
-            for (int i = 0; i < 4; i++)
-                this.tlpTeclado.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-
-            string[] teclas = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "←", "0", "" };
-            for (int i = 0; i < teclas.Length; i++)
-            {
-                if (teclas[i] == "") continue;
-                System.Windows.Forms.Button tecla = new System.Windows.Forms.Button();
-                tecla.Text = teclas[i];
-                tecla.Dock = System.Windows.Forms.DockStyle.Fill;
-                tecla.Margin = new System.Windows.Forms.Padding(3);
-                tecla.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-                tecla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                tecla.BackColor = System.Drawing.Color.FromArgb(240, 244, 248);
-                if (teclas[i] == "←")
-                    tecla.Click += new System.EventHandler(this.btnBorrar_Click);
-                else
-                    tecla.Click += new System.EventHandler(this.TeclaNumerica_Click);
-                this.tlpTeclado.Controls.Add(tecla, i % 3, i / 3);
-            }
-
-            // lblApuestaCaption / lblApuestaValor
-            this.lblApuestaCaption.Text = "Apuesta $";
-            this.lblApuestaCaption.Location = new System.Drawing.Point(15, 475);
-            this.lblApuestaCaption.Size = new System.Drawing.Size(100, 22);
-            this.lblApuestaCaption.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.lblApuestaCaption.Name = "lblApuestaCaption";
-
-            this.lblApuestaValor.Location = new System.Drawing.Point(115, 475);
-            this.lblApuestaValor.Size = new System.Drawing.Size(140, 22);
-            this.lblApuestaValor.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.lblApuestaValor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.lblApuestaValor.Name = "lblApuestaValor";
-
-            // lblTotalCaption / lblTotalValor
-            this.lblTotalCaption.Text = "Total $";
-            this.lblTotalCaption.Location = new System.Drawing.Point(15, 500);
-            this.lblTotalCaption.Size = new System.Drawing.Size(100, 26);
-            this.lblTotalCaption.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTotalCaption.ForeColor = System.Drawing.Color.FromArgb(31, 78, 121);
-            this.lblTotalCaption.Name = "lblTotalCaption";
-
-            this.lblTotalValor.Location = new System.Drawing.Point(115, 500);
-            this.lblTotalValor.Size = new System.Drawing.Size(140, 26);
-            this.lblTotalValor.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTotalValor.ForeColor = System.Drawing.Color.FromArgb(31, 78, 121);
+            this.lblTotalValor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTotalValor.Font = Estilos.Negrita(20F);
+            this.lblTotalValor.ForeColor = Estilos.Texto;
             this.lblTotalValor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblTotalValor.Margin = new System.Windows.Forms.Padding(0, 0, 16, 0);
             this.lblTotalValor.Name = "lblTotalValor";
 
-            // btnEnviar
-            this.btnEnviar.Text = "ENVIAR";
-            this.btnEnviar.Location = new System.Drawing.Point(15, 540);
-            this.btnEnviar.Size = new System.Drawing.Size(320, 42);
-            this.btnEnviar.BackColor = System.Drawing.Color.FromArgb(29, 158, 117);
-            this.btnEnviar.ForeColor = System.Drawing.Color.White;
-            this.btnEnviar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEnviar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
+            this.btnEnviar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnEnviar.Margin = new System.Windows.Forms.Padding(0, 4, 0, 4);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
 
+            // ---------------- derecha: carga de la jugada ----------------
+            this.pnlDerecha.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDerecha.Margin = new System.Windows.Forms.Padding(8, 16, 16, 16);
+            this.pnlDerecha.AutoScroll = true;
+            this.pnlDerecha.AutoScrollMinSize = new System.Drawing.Size(0, 630);
+            this.pnlDerecha.Controls.Add(this.tlpDerecha);
+            this.pnlDerecha.Name = "pnlDerecha";
+
+            // tlpDerecha ocupa todo el alto del panel: la fila del teclado (alto 0 en la lista) toma
+            // el espacio que sobra (minimo 160 px), y si no entra aparece la barra de desplazamiento.
+            this.tlpDerecha.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpDerecha.ColumnCount = 1;
+            this.tlpDerecha.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            float[] altos = { 26F, 44F, 36F, 28F, 56F, 24F, 0F, 30F, 44F, 30F, 40F, 52F, 28F };
+            this.tlpDerecha.RowCount = altos.Length;
+            foreach (float alto in altos)
+                this.tlpDerecha.RowStyles.Add(alto > 0
+                    ? new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, alto)
+                    : new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpDerecha.Controls.Add(this.lblTipoTitulo, 0, 0);
+            this.tlpDerecha.Controls.Add(this.tlpTipo, 0, 1);
+            this.tlpDerecha.Controls.Add(this.lblAyudaTipo, 0, 2);
+            this.tlpDerecha.Controls.Add(this.lblNumeroTitulo, 0, 3);
+            this.tlpDerecha.Controls.Add(this.lblNumero, 0, 4);
+            this.tlpDerecha.Controls.Add(this.lblRedoblona, 0, 5);
+            this.tlpDerecha.Controls.Add(this.tlpTeclado, 0, 6);
+            this.tlpDerecha.Controls.Add(this.lblPosicionTitulo, 0, 7);
+            this.tlpDerecha.Controls.Add(this.tlpRango, 0, 8);
+            this.tlpDerecha.Controls.Add(this.lblMontoTitulo, 0, 9);
+            this.tlpDerecha.Controls.Add(this.nudMonto, 0, 10);
+            this.tlpDerecha.Controls.Add(this.btnAgregar, 0, 11);
+            this.tlpDerecha.Controls.Add(this.lblAviso, 0, 12);
+            this.tlpDerecha.Name = "tlpDerecha";
+
+            this.tlpTipo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTipo.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpTipo.ColumnCount = 2;
+            this.tlpTipo.RowCount = 1;
+            this.tlpTipo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTipo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTipo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpTipo.Controls.Add(this.btnDirecta, 0, 0);
+            this.tlpTipo.Controls.Add(this.btnRedoblona, 1, 0);
+            this.tlpTipo.Name = "tlpTipo";
+
+            this.btnDirecta.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDirecta.Margin = new System.Windows.Forms.Padding(0, 3, 4, 3);
+            this.btnDirecta.Name = "btnDirecta";
+            this.btnDirecta.Click += new System.EventHandler(this.btnDirecta_Click);
+
+            this.btnRedoblona.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnRedoblona.Margin = new System.Windows.Forms.Padding(4, 3, 0, 3);
+            this.btnRedoblona.Name = "btnRedoblona";
+            this.btnRedoblona.Click += new System.EventHandler(this.btnRedoblona_Click);
+
+            this.lblAyudaTipo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAyudaTipo.Font = Estilos.Fuente(8.75F);
+            this.lblAyudaTipo.ForeColor = Estilos.TextoSuave;
+            this.lblAyudaTipo.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.lblAyudaTipo.Name = "lblAyudaTipo";
+
+            // lblNumero: "visor" del numero que se va tipeando
+            this.lblNumero.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblNumero.Font = Estilos.Mono(30F, true);
+            this.lblNumero.BackColor = Estilos.Fondo;
+            this.lblNumero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblNumero.Margin = new System.Windows.Forms.Padding(0, 2, 0, 2);
+            this.lblNumero.Name = "lblNumero";
+            this.lblNumero.Paint += new System.Windows.Forms.PaintEventHandler(this.lblNumero_Paint);
+
+            this.lblRedoblona.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRedoblona.Font = Estilos.Negrita(9F);
+            this.lblRedoblona.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblRedoblona.Margin = new System.Windows.Forms.Padding(0);
+            this.lblRedoblona.Name = "lblRedoblona";
+
+            // tlpTeclado y tlpRango: los botones se crean en el constructor
+            this.tlpTeclado.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpTeclado.Margin = new System.Windows.Forms.Padding(0, 2, 0, 2);
+            this.tlpTeclado.Name = "tlpTeclado";
+
+            this.tlpRango.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpRango.Margin = new System.Windows.Forms.Padding(0);
+            this.tlpRango.Name = "tlpRango";
+
+            this.nudMonto.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nudMonto.Font = Estilos.Negrita(13F);
+            this.nudMonto.Increment = 50;
+            this.nudMonto.DecimalPlaces = 2;
+            this.nudMonto.ThousandsSeparator = true;
+            this.nudMonto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudMonto.Margin = new System.Windows.Forms.Padding(0, 2, 0, 2);
+            this.nudMonto.Name = "nudMonto";
+
+            this.btnAgregar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAgregar.Margin = new System.Windows.Forms.Padding(0, 10, 0, 2);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
+
+            this.lblAviso.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAviso.Font = Estilos.Negrita(9F);
+            this.lblAviso.ForeColor = Estilos.Rojo;
+            this.lblAviso.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAviso.Name = "lblAviso";
+
             // FormApuesta
-            // Orden de Controls.Add importante para el docking: pnlHeader (Top) primero, para
-            // que ocupe todo el ancho; pnlDerecha (Right) despues, dentro del espacio restante;
-            // dgvJugadas (Fill) al final, para que tome todo lo que sobra y crezca con el form.
-            this.ClientSize = new System.Drawing.Size(900, 650);
-            this.MinimumSize = new System.Drawing.Size(820, 600);
-            this.Controls.Add(this.pnlHeader);
-            this.Controls.Add(this.pnlDerecha);
-            this.Controls.Add(this.dgvJugadas);
-            this.Text = "Cargar Apuesta";
+            this.ClientSize = new System.Drawing.Size(1100, 800);
+            this.MinimumSize = new System.Drawing.Size(960, 600);
+            this.Controls.Add(this.tlpRaiz);
+            this.BackColor = Estilos.Fondo;
+            this.Font = Estilos.Fuente(9.75F);
+            this.KeyPreview = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.BackColor = System.Drawing.Color.White;
+            this.Text = "Quiniela - Cargar jugadas";
             this.Name = "FormApuesta";
-            this.pnlHeader.ResumeLayout(false);
+            this.tlpRaiz.ResumeLayout(false);
+            this.pnlIzquierda.ResumeLayout(false);
+            this.tlpIzquierda.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvJugadas)).EndInit();
+            this.tlpPie.ResumeLayout(false);
+            this.tlpTotal.ResumeLayout(false);
             this.pnlDerecha.ResumeLayout(false);
+            this.tlpDerecha.ResumeLayout(false);
+            this.tlpTipo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudMonto)).EndInit();
             this.ResumeLayout(false);
         }
 
-        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.TableLayoutPanel tlpRaiz;
+        private System.Windows.Forms.Panel pnlEncabezado;
         private System.Windows.Forms.Label lblTitulo;
-        private System.Windows.Forms.Label lblLoterias;
-        private System.Windows.Forms.Label lblTurnos;
+        private System.Windows.Forms.Label lblSubtitulo;
+        private System.Windows.Forms.Panel pnlIzquierda;
+        private System.Windows.Forms.TableLayoutPanel tlpIzquierda;
+        private System.Windows.Forms.Label lblJugadasTitulo;
         private System.Windows.Forms.DataGridView dgvJugadas;
-        private System.Windows.Forms.Panel pnlDerecha;
-        private System.Windows.Forms.Label lblTipo;
-        private System.Windows.Forms.ComboBox cmbTipo;
-        private System.Windows.Forms.Label lblMonto;
-        private System.Windows.Forms.NumericUpDown nudMonto;
-        private System.Windows.Forms.Label lblNumero;
-        private System.Windows.Forms.TextBox txtNumero;
-        private System.Windows.Forms.Button btnAgregarNumero;
-        private System.Windows.Forms.Label lblRango;
-        private System.Windows.Forms.TableLayoutPanel tlpRango;
-        private System.Windows.Forms.TableLayoutPanel tlpTeclado;
-        private System.Windows.Forms.Label lblApuestaCaption;
-        private System.Windows.Forms.Label lblApuestaValor;
-        private System.Windows.Forms.Label lblTotalCaption;
+        private System.Windows.Forms.TableLayoutPanel tlpPie;
+        private System.Windows.Forms.Button btnQuitar;
+        private System.Windows.Forms.TableLayoutPanel tlpTotal;
+        private System.Windows.Forms.Label lblResumen;
         private System.Windows.Forms.Label lblTotalValor;
         private System.Windows.Forms.Button btnEnviar;
+        private System.Windows.Forms.Panel pnlDerecha;
+        private System.Windows.Forms.TableLayoutPanel tlpDerecha;
+        private System.Windows.Forms.Label lblTipoTitulo;
+        private System.Windows.Forms.TableLayoutPanel tlpTipo;
+        private System.Windows.Forms.Button btnDirecta;
+        private System.Windows.Forms.Button btnRedoblona;
+        private System.Windows.Forms.Label lblAyudaTipo;
+        private System.Windows.Forms.Label lblNumeroTitulo;
+        private System.Windows.Forms.Label lblNumero;
+        private System.Windows.Forms.Label lblRedoblona;
+        private System.Windows.Forms.TableLayoutPanel tlpTeclado;
+        private System.Windows.Forms.Label lblPosicionTitulo;
+        private System.Windows.Forms.TableLayoutPanel tlpRango;
+        private System.Windows.Forms.Label lblMontoTitulo;
+        private System.Windows.Forms.NumericUpDown nudMonto;
+        private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.Label lblAviso;
     }
 }

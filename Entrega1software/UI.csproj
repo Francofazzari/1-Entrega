@@ -46,6 +46,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Estilos.cs" />
+    <Compile Include="FormFelicitaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFelicitaciones.Designer.cs">
+      <DependentUpon>FormFelicitaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormJuego.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormJuego.Designer.cs">
+      <DependentUpon>FormJuego.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormOperacionTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormOperacionTicket.Designer.cs">
+      <DependentUpon>FormOperacionTicket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTicket.Designer.cs">
+      <DependentUpon>FormTicket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TicketRenderer.cs" />
     <Compile Include="FormApuesta.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +117,12 @@
     <Compile Include="FormReporte.Designer.cs">
       <DependentUpon>FormReporte.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormResultado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormResultado.Designer.cs">
+      <DependentUpon>FormResultado.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSeleccionLoteria.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,12 +134,6 @@
     </Compile>
     <Compile Include="FormUsuarios.Designer.cs">
       <DependentUpon>FormUsuarios.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormVentas.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormVentas.Designer.cs">
-      <DependentUpon>FormVentas.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,6 +161,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <!-- Manual de usuario: se copia junto al ejecutable (carpeta Ayuda) y lo abre el boton Ayuda (F1). -->
+    <Content Include="Ayuda\ManualDeUsuario.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">

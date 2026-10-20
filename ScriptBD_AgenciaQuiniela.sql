@@ -2,10 +2,17 @@ USE AgenciaQuiniela;
 GO
 
 -- Eliminar tablas viejas si existen para no tener conflictos
-IF OBJECT_ID('APUESTA_NUMERO', 'U') IS NOT NULL DROP TABLE APUESTA_NUMERO;
-IF OBJECT_ID('APUESTA_LOTERIA', 'U') IS NOT NULL DROP TABLE APUESTA_LOTERIA;
-IF OBJECT_ID('APUESTA_TURNO', 'U') IS NOT NULL DROP TABLE APUESTA_TURNO;
+-- Gestion comercial (primero las tablas que dependen de otras)
+IF OBJECT_ID('PAGOS', 'U') IS NOT NULL DROP TABLE PAGOS;
+IF OBJECT_ID('JUGADA_NUMERO', 'U') IS NOT NULL DROP TABLE JUGADA_NUMERO;
+IF OBJECT_ID('JUGADAS', 'U') IS NOT NULL DROP TABLE JUGADAS;
+IF OBJECT_ID('NUMERO_GANADOR', 'U') IS NOT NULL DROP TABLE NUMERO_GANADOR;
+IF OBJECT_ID('APUESTA_NUMERO', 'U') IS NOT NULL DROP TABLE APUESTA_NUMERO;   -- modelo anterior
+IF OBJECT_ID('APUESTA_LOTERIA', 'U') IS NOT NULL DROP TABLE APUESTA_LOTERIA; -- modelo anterior
+IF OBJECT_ID('APUESTA_TURNO', 'U') IS NOT NULL DROP TABLE APUESTA_TURNO;     -- modelo anterior
 IF OBJECT_ID('APUESTAS', 'U') IS NOT NULL DROP TABLE APUESTAS;
+IF OBJECT_ID('SORTEOS', 'U') IS NOT NULL DROP TABLE SORTEOS;
+IF OBJECT_ID('JUEGOS', 'U') IS NOT NULL DROP TABLE JUEGOS;
 IF OBJECT_ID('LOTERIAS', 'U') IS NOT NULL DROP TABLE LOTERIAS;
 IF OBJECT_ID('TURNOS', 'U') IS NOT NULL DROP TABLE TURNOS;
 IF OBJECT_ID('AUDITORIA_LOGIN', 'U') IS NOT NULL DROP TABLE AUDITORIA_LOGIN;
@@ -226,8 +233,29 @@ WHEN NOT MATCHED THEN
 GO
 
 -- ============================================================
--- T08. Gestion Comercial de Quiniela
+-- T08. Gestion Comercial: todos los juegos de la agencia
 -- ============================================================
+-- Modelo: cada JUEGO define sus reglas; cada SORTEO es un evento concreto de un juego
+-- (en Quiniela, ademas, de una loteria y un turno). El cliente se lleva un ticket
+-- (APUESTAS) con un codigo unico (GUID); el ticket contiene JUGADAS, cada jugada apunta
+-- a UN sorteo y se juega con sus numeros (JUGADA_NUMERO). Cuando el sorteo se realiza
+-- se guardan sus NUMERO_GANADOR, y si el ticket gano se registra el PAGO.
+
+-- Juegos que vende la agencia y sus reglas.
+CREATE TABLE JUEGOS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(50) NOT NULL,
+    Codigo VARCHAR(20) NOT NULL UNIQUE,      -- identificador fijo que usa el sistema
+    CantidadNumeros INT NOT NULL,            -- cuantos numeros se eligen por jugada
+    NumeroMin INT NOT NULL,                  -- numero valido mas chico
+    NumeroMax INT NOT NULL,                  -- numero valido mas grande
+    CantidadSorteados INT NOT NULL,          -- cuantos numeros salen en cada sorteo
+    UsaRango BIT NOT NULL,                   -- se juega a una posicion (solo Quiniela)
+    UsaLoteriaTurno BIT NOT NULL,            -- se sortea por loteria y turno (solo Quiniela)
+    Precio DECIMAL(10,2) NULL,               -- precio fijo de la jugada (NULL: lo elige el cliente)
+    Activo BIT NOT NULL DEFAULT 1
+);
+GO
 
 CREATE TABLE LOTERIAS (
     Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -237,8 +265,7 @@ CREATE TABLE LOTERIAS (
 );
 GO
 
--- Horarios de sorteo sobre los que se puede apostar (Primera, Matutina, Vespertina,
--- Nocturna). Se seleccionan igual que las loterias, uno o varios por apuesta.
+-- Horarios de sorteo de la Quiniela (Primera, Matutina, Vespertina, Nocturna).
 CREATE TABLE TURNOS (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Nombre VARCHAR(30) NOT NULL,
@@ -246,46 +273,81 @@ CREATE TABLE TURNOS (
 );
 GO
 
--- Cabecera de una apuesta (un "ticket"): agrupa el tipo de jugada y el total
--- (suma del monto de cada numero, multiplicado por la cantidad de loterias y
--- de turnos seleccionados).
+-- Cada sorteo concreto. Loteria y turno quedan en NULL en los juegos que no los usan.
+-- Hay un solo sorteo por juego + loteria + turno + fecha.
+CREATE TABLE SORTEOS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdJuego INT NOT NULL FOREIGN KEY REFERENCES JUEGOS(Id),
+    IdLoteria INT NULL FOREIGN KEY REFERENCES LOTERIAS(Id),
+    IdTurno INT NULL FOREIGN KEY REFERENCES TURNOS(Id),
+    Fecha DATE NOT NULL,
+    Estado VARCHAR(20) NOT NULL DEFAULT 'Abierto'
+        CHECK (Estado IN ('Abierto', 'Cerrado', 'Sorteado')),
+    CONSTRAINT UQ_SORTEOS UNIQUE (IdJuego, IdLoteria, IdTurno, Fecha)
+);
+GO
+
+-- Numeros que salieron en un sorteo, con su posicion (en Quiniela, del 1 al 20).
+CREATE TABLE NUMERO_GANADOR (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdSorteo INT NOT NULL FOREIGN KEY REFERENCES SORTEOS(Id),
+    Numero VARCHAR(4) NOT NULL,
+    Posicion INT NOT NULL
+);
+GO
+
+-- El ticket. CodigoTicket es un GUID: con el se paga, se cancela o se reimprime.
 CREATE TABLE APUESTAS (
     Id INT IDENTITY(1,1) PRIMARY KEY,
+    CodigoTicket UNIQUEIDENTIFIER NOT NULL UNIQUE,
     UsuarioId INT NOT NULL FOREIGN KEY REFERENCES USUARIOS(Id),
     FechaHora DATETIME NOT NULL DEFAULT GETDATE(),
-    Tipo VARCHAR(20) NOT NULL,
     Total DECIMAL(10,2) NOT NULL,
-    Activa BIT NOT NULL DEFAULT 1
+    Estado VARCHAR(20) NOT NULL DEFAULT 'Vigente'
+        CHECK (Estado IN ('Vigente', 'Pagada', 'Anulada'))
 );
 GO
 
--- Loterias sobre las que aplica la apuesta (permite elegir varias, o "Todos").
-CREATE TABLE APUESTA_LOTERIA (
-    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
-    IdLoteria INT NOT NULL FOREIGN KEY REFERENCES LOTERIAS(Id),
-    PRIMARY KEY (IdApuesta, IdLoteria)
-);
-GO
-
--- Horarios sobre los que aplica la apuesta (permite elegir varios).
-CREATE TABLE APUESTA_TURNO (
-    IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
-    IdTurno INT NOT NULL FOREIGN KEY REFERENCES TURNOS(Id),
-    PRIMARY KEY (IdApuesta, IdTurno)
-);
-GO
-
--- Cada numero cargado dentro de la apuesta (de 1 a 4 cifras), con el rango
--- (posicion del sorteo a la que apunta: 1 = a la primera, 5, 10 o 20) y el
--- monto con el que se juega ese numero en particular (entre $100 y $5000).
-CREATE TABLE APUESTA_NUMERO (
+-- Cada jugada del ticket, siempre sobre UN sorteo. Tipo (Directa o Redoblona) solo se
+-- usa en Quiniela; EsAutomatica indica si los numeros los eligio la maquina.
+CREATE TABLE JUGADAS (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     IdApuesta INT NOT NULL FOREIGN KEY REFERENCES APUESTAS(Id),
-    Numero VARCHAR(4) NOT NULL,
-    Rango INT NOT NULL,
+    IdSorteo INT NOT NULL FOREIGN KEY REFERENCES SORTEOS(Id),
+    Tipo VARCHAR(20) NULL CHECK (Tipo IS NULL OR Tipo IN ('Directa', 'Redoblona')),
+    EsAutomatica BIT NOT NULL DEFAULT 0,
     Monto DECIMAL(10,2) NOT NULL,
     Orden INT NOT NULL
 );
+GO
+
+-- Numeros elegidos de cada jugada. Rango es la posicion buscada (solo Quiniela):
+-- 1 = a la primera, 5, 10 o 20. En la redoblona cada numero tiene la suya.
+CREATE TABLE JUGADA_NUMERO (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdJugada INT NOT NULL FOREIGN KEY REFERENCES JUGADAS(Id),
+    Numero VARCHAR(4) NOT NULL,
+    Orden INT NOT NULL,
+    Rango INT NULL CHECK (Rango IS NULL OR Rango IN (1, 5, 10, 20))
+);
+GO
+
+-- Cobro de un ticket premiado (un ticket se paga una sola vez).
+CREATE TABLE PAGOS (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdApuesta INT NOT NULL UNIQUE FOREIGN KEY REFERENCES APUESTAS(Id),
+    UsuarioId INT NOT NULL FOREIGN KEY REFERENCES USUARIOS(Id),
+    FechaHora DATETIME NOT NULL DEFAULT GETDATE(),
+    Monto DECIMAL(10,2) NOT NULL
+);
+GO
+
+INSERT INTO JUEGOS (Nombre, Codigo, CantidadNumeros, NumeroMin, NumeroMax, CantidadSorteados, UsaRango, UsaLoteriaTurno, Precio, Activo) VALUES
+    ('Quiniela',      'QUINIELA',  1, 0, 9999, 20, 1, 1, NULL, 1),
+    ('Quiniela Plus', 'QPLUS',     8, 0,   99, 20, 0, 0,  500, 1),
+    ('Quini 6',       'QUINI6',    6, 0,   45,  6, 0, 0, 1000, 1),
+    ('Loto 5',        'LOTO5',     5, 1,   36,  5, 0, 0,  800, 1),
+    ('Telekino',      'TELEKINO', 15, 1,   25, 15, 0, 0, 1500, 1);
 GO
 
 INSERT INTO LOTERIAS (Nombre, Codigo, Activa) VALUES

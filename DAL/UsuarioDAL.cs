@@ -7,7 +7,7 @@ namespace DAL
 {
     public class UsuarioDAL
     {
-        private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
+        private string conexion = Conexion.Cadena;
 
         public Usuario Login(string nroTerminal, string claveHasheada)
         {

@@ -6,7 +6,7 @@ namespace DAL
 {
     public class LoteriaDAL
     {
-        private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
+        private string conexion = Conexion.Cadena;
 
         public List<Loteria> ObtenerActivas()
         {

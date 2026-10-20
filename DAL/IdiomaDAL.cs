@@ -8,7 +8,7 @@ namespace DAL
 {
     public class IdiomaDAL
     {
-        private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
+        private string conexion = Conexion.Cadena;
 
         // Digito horizontal: suma ponderada (valor de caracter x posicion del caracter x posicion
         // del atributo dentro de la entidad: Nombre=1, Codigo=2) modulo 11.

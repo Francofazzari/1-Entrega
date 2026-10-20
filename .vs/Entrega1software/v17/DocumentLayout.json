@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\franco\\source\\repos\\Entrega1software\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|c:\\users\\franco\\source\\repos\\entrega1software\\dal\\perfildal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|solutionrelative:dal\\perfildal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|c:\\users\\franco\\source\\repos\\entrega1software\\entrega1software\\formseleccionloteria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formseleccionloteria.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\iobservadoridioma.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\iobservadoridioma.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\bll\\idiomamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|solutionrelative:bll\\idiomamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\idioma.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,12 +19,36 @@
       "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\bitacora.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\be.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\be.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\dal\\idiomadal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|solutionrelative:dal\\idiomadal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\iobservadoridioma.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\iobservadoridioma.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\permisosimple.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\permisosimple.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\bll\\usuariobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|solutionrelative:bll\\usuariobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\dal\\perfildal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|solutionrelative:dal\\perfildal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\be.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\be.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\permisocompleto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -33,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\be\\permiso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F010B6C5-BA9D-458E-AA1C-7D469A7073B7}|BE\\BE.csproj|solutionrelative:be\\permiso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\bll\\usuariobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|solutionrelative:bll\\usuariobll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\bll\\sesionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -49,18 +69,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formperfiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formperfiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\bll\\idiomamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|solutionrelative:bll\\idiomamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\dal\\idiomadal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{855B053A-F07A-4DCB-9104-8F2DC53E92BB}|DAL\\DAL.csproj|solutionrelative:dal\\idiomadal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{161A9933-EF7E-4F02-9DDC-FDF6736BFBD4}|BLL\\BLL.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\bll\\bitacorabll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -96,10 +104,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|BE||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formperfiles.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -138,18 +142,6 @@
       "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formreporte.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formventas.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formventas.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formventas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formventas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formventas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formventas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formperfiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A3FAA779-071E-4F0E-BDC3-4865A4484756}|Entrega1software\\UI.csproj|solutionrelative:entrega1software\\formperfiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -160,6 +152,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:entrega1software\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormVentas.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Entrega1software\\FormVentas.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormVentas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Entrega1software\\FormVentas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\franco\\source\\repos\\Entrega1software\\entrega1software\\formventas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:entrega1software\\formventas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -169,67 +173,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Permiso.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Permiso.cs",
-              "RelativeDocumentMoniker": "BE\\Permiso.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Permiso.cs",
-              "RelativeToolTip": "BE\\Permiso.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAwAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "FormSeleccionLoteria.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormSeleccionLoteria.cs",
+              "RelativeDocumentMoniker": "Entrega1software\\FormSeleccionLoteria.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormSeleccionLoteria.cs",
+              "RelativeToolTip": "Entrega1software\\FormSeleccionLoteria.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-27T21:44:55.898Z"
+              "WhenOpened": "2026-09-15T23:06:30.402Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "PermisoCompleto.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoCompleto.cs",
-              "RelativeDocumentMoniker": "BE\\PermisoCompleto.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoCompleto.cs",
-              "RelativeToolTip": "BE\\PermisoCompleto.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Title": "FormLogin.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs",
+              "RelativeDocumentMoniker": "Entrega1software\\FormLogin.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs",
+              "RelativeToolTip": "Entrega1software\\FormLogin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAABPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-27T21:46:41.014Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PermisoSimple.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoSimple.cs",
-              "RelativeDocumentMoniker": "BE\\PermisoSimple.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoSimple.cs",
-              "RelativeToolTip": "BE\\PermisoSimple.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-27T21:45:57.755Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "BE.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\BE.cs",
-              "RelativeDocumentMoniker": "BE\\BE.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\BE.cs",
-              "RelativeToolTip": "BE\\BE.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-20T02:55:08.784Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Bitacora.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Bitacora.cs",
-              "RelativeDocumentMoniker": "BE\\Bitacora.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Bitacora.cs",
-              "RelativeToolTip": "BE\\Bitacora.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-10T05:44:01.346Z"
+              "WhenOpened": "2026-06-08T14:04:28.503Z"
             },
             {
               "$type": "Document",
@@ -245,20 +214,43 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PerfilDAL.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\PerfilDAL.cs",
-              "RelativeDocumentMoniker": "DAL\\PerfilDAL.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\PerfilDAL.cs",
-              "RelativeToolTip": "DAL\\PerfilDAL.cs",
-              "ViewState": "AgIAAH0AAAAAAAAAAAAuwIQAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "Bitacora.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Bitacora.cs",
+              "RelativeDocumentMoniker": "BE\\Bitacora.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Bitacora.cs",
+              "RelativeToolTip": "BE\\Bitacora.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-27T21:53:09.495Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-10T05:44:01.346Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "BE.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\BE.cs",
+              "RelativeDocumentMoniker": "BE\\BE.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\BE.cs",
+              "RelativeToolTip": "BE\\BE.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-20T02:55:08.784Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "IdiomaManager.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\IdiomaManager.cs",
+              "RelativeDocumentMoniker": "BLL\\IdiomaManager.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\IdiomaManager.cs",
+              "RelativeToolTip": "BLL\\IdiomaManager.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAiwGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-08T14:00:59.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "IObservadorIdioma.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\IObservadorIdioma.cs",
               "RelativeDocumentMoniker": "BE\\IObservadorIdioma.cs",
@@ -270,19 +262,90 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
+              "Title": "IdiomaDAL.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\IdiomaDAL.cs",
+              "RelativeDocumentMoniker": "DAL\\IdiomaDAL.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\IdiomaDAL.cs",
+              "RelativeToolTip": "DAL\\IdiomaDAL.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwDAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-08T14:00:25.756Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FormLogin.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs",
+              "RelativeDocumentMoniker": "Entrega1software\\FormLogin.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs [Dise\u00F1o]",
+              "RelativeToolTip": "Entrega1software\\FormLogin.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-04T01:02:57.873Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "UsuarioBLL.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\UsuarioBLL.cs",
               "RelativeDocumentMoniker": "BLL\\UsuarioBLL.cs",
               "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\UsuarioBLL.cs",
               "RelativeToolTip": "BLL\\UsuarioBLL.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAkwAoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADEAAAAAAAAAAAA5wAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-20T02:58:02.774Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
+              "Title": "PerfilDAL.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\PerfilDAL.cs",
+              "RelativeDocumentMoniker": "DAL\\PerfilDAL.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\PerfilDAL.cs",
+              "RelativeToolTip": "DAL\\PerfilDAL.cs",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAuwIQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-27T21:53:09.495Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PermisoSimple.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoSimple.cs",
+              "RelativeDocumentMoniker": "BE\\PermisoSimple.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoSimple.cs",
+              "RelativeToolTip": "BE\\PermisoSimple.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-27T21:45:57.755Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PermisoCompleto.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoCompleto.cs",
+              "RelativeDocumentMoniker": "BE\\PermisoCompleto.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\PermisoCompleto.cs",
+              "RelativeToolTip": "BE\\PermisoCompleto.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-27T21:46:41.014Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Permiso.cs",
+              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Permiso.cs",
+              "RelativeDocumentMoniker": "BE\\Permiso.cs",
+              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Permiso.cs",
+              "RelativeToolTip": "BE\\Permiso.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-27T21:44:55.898Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "SesionManager.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\SesionManager.cs",
               "RelativeDocumentMoniker": "BLL\\SesionManager.cs",
@@ -294,7 +357,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "PerfilBLL.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\PerfilBLL.cs",
               "RelativeDocumentMoniker": "BLL\\PerfilBLL.cs",
@@ -306,7 +369,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 16,
               "Title": "FormPerfiles.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormPerfiles.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormPerfiles.cs",
@@ -318,7 +381,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "BitacoraDAL.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\BitacoraDAL.cs",
               "RelativeDocumentMoniker": "DAL\\BitacoraDAL.cs",
@@ -330,43 +393,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "FormLogin.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs",
-              "RelativeDocumentMoniker": "Entrega1software\\FormLogin.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs",
-              "RelativeToolTip": "Entrega1software\\FormLogin.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAYwDsAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-08T14:04:28.503Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "IdiomaManager.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\IdiomaManager.cs",
-              "RelativeDocumentMoniker": "BLL\\IdiomaManager.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\IdiomaManager.cs",
-              "RelativeToolTip": "BLL\\IdiomaManager.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAowDIAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-08T14:00:59.478Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "IdiomaDAL.cs",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\IdiomaDAL.cs",
-              "RelativeDocumentMoniker": "DAL\\IdiomaDAL.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\IdiomaDAL.cs",
-              "RelativeToolTip": "DAL\\IdiomaDAL.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwDAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-08T14:00:25.756Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "BitacoraBLL.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\BitacoraBLL.cs",
               "RelativeDocumentMoniker": "BLL\\BitacoraBLL.cs",
@@ -378,7 +405,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 19,
               "Title": "FormUsuarios.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormUsuarios.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormUsuarios.cs",
@@ -390,7 +417,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 20,
               "Title": "FormPrincipal.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormPrincipal.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormPrincipal.cs",
@@ -402,7 +429,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 21,
               "Title": "FormPrincipal.Designer.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormPrincipal.Designer.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormPrincipal.Designer.cs",
@@ -414,7 +441,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 23,
               "Title": "FormBitacora.Designer.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormBitacora.Designer.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormBitacora.Designer.cs",
@@ -426,7 +453,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 22,
               "Title": "FormBitacora.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormBitacora.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormBitacora.cs",
@@ -438,7 +465,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 24,
               "Title": "FormBitacora.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormBitacora.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormBitacora.cs",
@@ -449,7 +476,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 25,
               "Title": "BE",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\BE.csproj",
               "RelativeDocumentMoniker": "BE\\BE.csproj",
@@ -460,7 +487,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 28,
               "Title": "UsuarioDAL.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\DAL\\UsuarioDAL.cs",
               "RelativeDocumentMoniker": "DAL\\UsuarioDAL.cs",
@@ -472,18 +499,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "FormLogin.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs",
-              "RelativeDocumentMoniker": "Entrega1software\\FormLogin.cs",
-              "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormLogin.cs [Dise\u00F1o]",
-              "RelativeToolTip": "Entrega1software\\FormLogin.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-04T01:02:57.873Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 27,
               "Title": "FormReporte.Designer.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormReporte.Designer.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormReporte.Designer.cs",
@@ -495,7 +511,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "FormPerfiles.Designer.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormPerfiles.Designer.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormPerfiles.Designer.cs",
@@ -507,7 +523,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "FormUsuarios.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormUsuarios.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormUsuarios.cs",
@@ -518,7 +534,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "FormPrincipal.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormPrincipal.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormPrincipal.cs",
@@ -529,7 +545,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "Perfil.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BE\\Perfil.cs",
               "RelativeDocumentMoniker": "BE\\Perfil.cs",
@@ -541,7 +557,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "FormApuesta.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormApuesta.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormApuesta.cs",
@@ -552,7 +568,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "FormApuesta.Designer.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormApuesta.Designer.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormApuesta.Designer.cs",
@@ -564,7 +580,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "FormReporte.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormReporte.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormReporte.cs",
@@ -575,7 +591,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 38,
               "Title": "FormVentas.Designer.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormVentas.Designer.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormVentas.Designer.cs",
@@ -587,19 +603,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 39,
               "Title": "FormVentas.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormVentas.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormVentas.cs",
               "ToolTip": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormVentas.cs",
               "RelativeToolTip": "Entrega1software\\FormVentas.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-04T00:20:12.591Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 40,
               "Title": "FormVentas.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormVentas.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormVentas.cs",
@@ -610,7 +625,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 35,
               "Title": "FormPerfiles.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\FormPerfiles.cs",
               "RelativeDocumentMoniker": "Entrega1software\\FormPerfiles.cs",
@@ -621,7 +636,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 36,
               "Title": "Encriptador.cs",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\BLL\\Encriptador.cs",
               "RelativeDocumentMoniker": "BLL\\Encriptador.cs",
@@ -633,7 +648,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 37,
               "Title": "Form1.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\franco\\source\\repos\\Entrega1software\\Entrega1software\\Form1.cs",
               "RelativeDocumentMoniker": "Entrega1software\\Form1.cs",

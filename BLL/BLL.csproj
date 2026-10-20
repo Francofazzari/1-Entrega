@@ -42,9 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApuestaBLL.cs" />
+    <Compile Include="Azar.cs" />
     <Compile Include="BitacoraBLL.cs" />
     <Compile Include="IdiomaManager.cs" />
+    <Compile Include="JuegoBLL.cs" />
     <Compile Include="LoteriaBLL.cs" />
+    <Compile Include="PagoBLL.cs" />
+    <Compile Include="PremioBLL.cs" />
+    <Compile Include="SorteoBLL.cs" />
     <Compile Include="TurnoBLL.cs" />
     <Compile Include="PerfilBLL.cs" />
     <Compile Include="UsuarioBLL.cs" />

@@ -6,7 +6,7 @@ namespace DAL
 {
     public class TurnoDAL
     {
-        private string conexion = "Server=.;Database=AgenciaQuiniela;Integrated Security=True;";
+        private string conexion = Conexion.Cadena;
 
         public List<Turno> ObtenerActivos()
         {

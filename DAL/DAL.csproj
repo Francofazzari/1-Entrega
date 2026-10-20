@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,8 +44,13 @@
   <ItemGroup>
     <Compile Include="ApuestaDAL.cs" />
     <Compile Include="BitacoraDAL.cs" />
+    <Compile Include="Conexion.cs" />
     <Compile Include="IdiomaDAL.cs" />
+    <Compile Include="JuegoDAL.cs" />
     <Compile Include="LoteriaDAL.cs" />
+    <Compile Include="Mapeo.cs" />
+    <Compile Include="PagoDAL.cs" />
+    <Compile Include="SorteoDAL.cs" />
     <Compile Include="TurnoDAL.cs" />
     <Compile Include="PerfilDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />
