@@ -55,7 +55,7 @@ class Secuencia:
 
     def clases(self):
         """Clases que aparecen como lineas de vida (para el balanceo con el diagrama de clases)."""
-        return [l['texto'].split(':')[-1].strip() for l in self.lineas if l['tipo'] == 'objeto']
+        return [l['texto'].replace('\n', '').split(':')[-1].strip() for l in self.lineas if l['tipo'] == 'objeto']
 
     # ------------------------------------------------------------ eventos
     def _agregar(self, ev):
@@ -154,6 +154,14 @@ class Secuencia:
 
     MAX_ETQ = 250
     MAX_PROPIA = 175
+    MIN_CAB = 92           # ancho minimo de la cabecera de un objeto
+    # tamanio de la letra (px) y alto de cada renglon: una subclase los puede agrandar
+    T = T                  # cabeceras de las lineas de vida
+    TC = TC                # mensajes, guardas, notas y marcos
+    LINEA_TXT = 14         # alto de un renglon de texto chico
+    FILA = FILA
+    FILA_EXTRA = FILA_EXTRA
+    ALTO_CAB = ALTO_CAB    # alto de la cabecera de cada linea de vida
 
     def _etq(self, texto, numero, propia=False):
         t = '%d: %s' % (numero, texto) if self.numerar and numero else texto
@@ -161,10 +169,10 @@ class Secuencia:
         # los saltos de renglon escritos a mano se respetan, y cada renglon que sigue siendo largo se parte
         lineas = []
         for linea in t.split('\n'):
-            if ancho(linea, TC) <= maximo:
+            if ancho(linea, self.TC) <= maximo:
                 lineas.append(linea)
             else:
-                lineas.extend(partir(linea, maximo, TC))
+                lineas.extend(partir(linea, maximo, self.TC))
         return '\n'.join(lineas)
 
     @staticmethod
@@ -172,7 +180,7 @@ class Secuencia:
         return texto.split('\n')
 
     def _ancho_etq(self, texto):
-        return max(ancho(l, TC) for l in self._lineas_texto(texto))
+        return max(ancho(l, self.TC) for l in self._lineas_texto(texto))
 
     def _indice(self):
         return {l['id']: i for i, l in enumerate(self.lineas)}
@@ -184,9 +192,9 @@ class Secuencia:
         anchos_cab = []
         for l in self.lineas:
             if l['tipo'] == 'actor':
-                anchos_cab.append(max(70, ancho(l['texto'], T, True) + 16))
+                anchos_cab.append(max(70, ancho(l['texto'], self.T, True) + 16))
             else:
-                anchos_cab.append(max(92, max(ancho(t, T, True) for t in l['texto'].split('\n')) + 20))
+                anchos_cab.append(max(self.MIN_CAB, max(ancho(t, self.T, True) for t in l['texto'].split('\n')) + 20))
         self.anchos_cab = anchos_cab
         restr = []
         for i in range(n - 1):
@@ -211,7 +219,7 @@ class Secuencia:
                 for op in ev.operandos:
                     if op.guarda:
                         L = idx[self._primera_linea(op)]
-                        w_g = self.X_GUARDA + ancho(op.guarda, TC, True) + 12
+                        w_g = self.X_GUARDA + self._ancho_guarda(op.guarda) + 12
                         if L == j:
                             m_der = max(m_der, w_g)
                         elif L + 1 < n:
@@ -278,7 +286,7 @@ class Secuencia:
         d = Diagrama(self.nombre)
         self.d = d
         n = len(self.lineas)
-        self.y = Y0 + ALTO_CAB + 22
+        self.y = Y0 + self.ALTO_CAB + 22
         self.activas = {l['id']: [] for l in self.lineas}
         self.inicio = {}
         self.fin = {}
@@ -299,24 +307,24 @@ class Secuencia:
             if l['tipo'] == 'actor':
                 est = estilo(shape='umlLifeline', participant='umlActor', perimeter='lifelinePerimeter',
                              whiteSpace='wrap', html=1, container=0, collapsible=0, recursiveResize=0,
-                             outlineConnect=0, portConstraint='eastwest', size=ALTO_CAB - 6, fillColor=CLARO,
-                             strokeColor=OSCURO, fontFamily=FUENTE, fontSize=T, fontColor=TEXTO)
+                             outlineConnect=0, portConstraint='eastwest', size=self.ALTO_CAB - 6, fillColor=CLARO,
+                             strokeColor=OSCURO, fontFamily=FUENTE, fontSize=self.T, fontColor=TEXTO)
                 d.v(cx - 15, y_ini, 30, y_f - y_ini, '', est, ident='ll_' + ident)
-                d.v(cx - w / 2, y_ini + ALTO_CAB - 4, w, 16, h(l['texto']),
-                    est_texto(T, True, extra='labelBackgroundColor=#FFFFFF;'), ident='lt_' + ident)
+                d.v(cx - w / 2, y_ini + self.ALTO_CAB - 4, w, 16, h(l['texto']),
+                    est_texto(self.T, True, extra='labelBackgroundColor=#FFFFFF;'), ident='lt_' + ident)
             elif l['tipo'] == 'bd':
                 est = estilo(shape='cylinder3', whiteSpace='wrap', html=1, boundedLbl=1, backgroundOutline=1,
-                             size=7, fillColor=CLARO, strokeColor=OSCURO, fontFamily=FUENTE, fontSize=TC,
+                             size=7, fillColor=CLARO, strokeColor=OSCURO, fontFamily=FUENTE, fontSize=self.TC,
                              fontColor=TEXTO, fontStyle=1)
-                d.v(cx - w / 2, y_ini - 4, w, ALTO_CAB + 4, '&laquo;database&raquo;<br>' + h(l['texto']), est,
+                d.v(cx - w / 2, y_ini - 4, w, self.ALTO_CAB + 4, '&laquo;database&raquo;<br>' + h(l['texto']), est,
                     ident='ll_' + ident)
                 d.e(est=estilo(endArrow='none', dashed=1, html=1, strokeColor=OSCURO, edgeStyle='none'),
-                    desde=(cx, y_ini + ALTO_CAB), hasta=(cx, y_f))
+                    desde=(cx, y_ini + self.ALTO_CAB), hasta=(cx, y_f))
             else:
                 est = estilo(shape='umlLifeline', perimeter='lifelinePerimeter', whiteSpace='wrap', html=1,
                              container=0, collapsible=0, recursiveResize=0, outlineConnect=0,
-                             portConstraint='eastwest', size=ALTO_CAB, fillColor=CLARO, strokeColor=OSCURO,
-                             fontFamily=FUENTE, fontSize=T, fontColor=TEXTO, fontStyle=1, verticalAlign='top',
+                             portConstraint='eastwest', size=self.ALTO_CAB, fillColor=CLARO, strokeColor=OSCURO,
+                             fontFamily=FUENTE, fontSize=self.T, fontColor=TEXTO, fontStyle=1, verticalAlign='top',
                              spacingTop=6 if '\n' in l['texto'] else 13)
                 texto = '<br>'.join(h(t) for t in l['texto'].split('\n'))
                 d.v(cx - w / 2, y_ini, w, y_f - y_ini, texto, est, ident='ll_' + ident)
@@ -364,7 +372,7 @@ class Secuencia:
         lineas = self._lineas_texto(texto)
         valor = '<br>'.join(h(l) for l in lineas)
         base = estilo(html=1, verticalAlign='bottom', labelBackgroundColor=BLANCO, edgeStyle='none',
-                      fontFamily=FUENTE, fontSize=TC, fontColor=TEXTO, strokeColor=LINEA, rounded=0,
+                      fontFamily=FUENTE, fontSize=self.TC, fontColor=TEXTO, strokeColor=LINEA, rounded=0,
                       spacingBottom=1)
         if tipo == 'llamada':
             est = mezclar(base, estilo(endArrow='block', endFill=1, endSize=8))
@@ -383,9 +391,9 @@ class Secuencia:
         xa = x0 + 30
         self.d.e(valor='', est=est, desde=(x0, y), hasta=(x0 + 6, y + 16), puntos=[(xa, y), (xa, y + 16)])
         w = self._ancho_etq(texto)
-        alto = 14 * len(lineas)
+        alto = self.LINEA_TXT * len(lineas)
         self.d.v(xa + 6, y + 8 - alto / 2, w + 4, alto, valor,
-                 est_texto(TC, alinear='left', extra='labelBackgroundColor=#FFFFFF;'))
+                 est_texto(self.TC, alinear='left', extra='labelBackgroundColor=#FFFFFF;'))
         self.max_x_extra = max(self.max_x_extra, xa + 12 + w)
 
     def _dibujar_nodo(self, nodo, prof):
@@ -393,12 +401,12 @@ class Secuencia:
             getattr(self, '_ev_' + ev.tipo)(ev, prof)
 
     def _alto_fila(self, texto):
-        return FILA + FILA_EXTRA * (len(self._lineas_texto(texto)) - 1)
+        return self.FILA + self.FILA_EXTRA * (len(self._lineas_texto(texto)) - 1)
 
     def _ev_llamada(self, ev, prof):
         etq = self._etq(ev.texto, ev.num, ev.origen == ev.destino)
         if ev.origen == ev.destino:
-            extra = 7 * (len(self._lineas_texto(etq)) - 1)
+            extra = (self.FILA_EXTRA + 1) // 2 * (len(self._lineas_texto(etq)) - 1)
             y = self.y + 6 + extra
             self._propia(ev.origen, y, etq)
             self.y = y + 16
@@ -440,11 +448,11 @@ class Secuencia:
         self.y += 10
         y_cab = self.y
         self.inicio[ev.destino] = y_cab
-        yc = y_cab + ALTO_CAB / 2
+        yc = y_cab + self.ALTO_CAB / 2
         x0 = self._x_act(ev.origen, lado)
         x1 = self.x[j] - lado * self.anchos_cab[j] / 2
         self._flecha(x0, x1, yc, etq, 'crear')
-        self.y = y_cab + ALTO_CAB + 4
+        self.y = y_cab + self.ALTO_CAB + 4
         if not ev.hijos:
             # constructor sin mensajes propios: no se dibuja una barra de activacion vacia
             self.y += 2
@@ -476,8 +484,8 @@ class Secuencia:
         i = self._indice()[ev.linea]
         lineas = []
         for parrafo in ev.texto.split('\n'):
-            lineas.extend(envolver(parrafo, ev.ancho - 20, TC))
-        alto = 14 + 14 * len(lineas)
+            lineas.extend(envolver(parrafo, ev.ancho - 20, self.TC))
+        alto = self.LINEA_TXT + self.LINEA_TXT * len(lineas)
         x0 = self.x[i] + 24
         y0 = self.y + 8
         self.d.v(x0, y0, ev.ancho, alto, '<br>'.join(h(l) for l in lineas), est_nota())
@@ -505,6 +513,25 @@ class Secuencia:
         return usadas
 
     X_GUARDA = 26          # las guardas empiezan a esta distancia de la linea de vida de su primer evento
+    MAX_GUARDA = None      # ancho maximo de un renglon de la guarda (None: la guarda va en un solo renglon)
+
+    def _lineas_guarda(self, guarda):
+        if not self.MAX_GUARDA or ancho(guarda, self.TC, True) <= self.MAX_GUARDA:
+            return [guarda]
+        lineas, actual = [], ''
+        for p in guarda.split(' '):
+            prueba = (actual + ' ' + p) if actual else p
+            if ancho(prueba, self.TC, True) <= self.MAX_GUARDA or not actual:
+                actual = prueba
+            else:
+                lineas.append(actual)
+                actual = p
+        if actual:
+            lineas.append(actual)
+        return lineas
+
+    def _ancho_guarda(self, guarda):
+        return max(ancho(l, self.TC, True) for l in self._lineas_guarda(guarda))
 
     def _primera_linea(self, nodo):
         """Linea de vida del primer evento de un operando (donde UML ubica la guarda)."""
@@ -519,9 +546,8 @@ class Secuencia:
                 return self._primera_linea(ev.operandos[0])
         return None
 
-    @staticmethod
-    def _ancho_tab(titulo):
-        return max(ancho(titulo, TC, True) + 24, 46)
+    def _ancho_tab(self, titulo):
+        return max(ancho(titulo, self.TC, True) + 24, 46)
 
     def _extension_derecha(self, frag, j, idx):
         """Cuanto se extienden a la derecha de la linea de vida j los mensajes a si misma y las notas que estan
@@ -553,10 +579,10 @@ class Secuencia:
     ANCHO_REF = 300
 
     def _lineas_ref(self, ev):
-        return envolver(ev.texto, self.ANCHO_REF, TC)
+        return envolver(ev.texto, self.ANCHO_REF, self.TC)
 
     def _ancho_ref(self, ev):
-        return max(ancho(l, TC) for l in self._lineas_ref(ev)) + 36
+        return max(ancho(l, self.TC) for l in self._lineas_ref(ev)) + 36
 
     def _ev_frag(self, ev, prof):
         d = self.d
@@ -578,25 +604,28 @@ class Secuencia:
         guardas = []
         for k, op in enumerate(ev.operandos):
             xg = self.x[idx[self._primera_linea(op)]] + self.X_GUARDA
+            # una guarda partida en varios renglones baja el contenido del operando
+            extra = self.LINEA_TXT * (len(self._lineas_guarda(op.guarda)) - 1) if op.guarda else 0
             if k == 0:
                 if op.guarda:
                     guardas.append((xg, y0 + 3, op.guarda))
+                self.y += extra
             else:
                 self.y += 10
                 ys = self.y
                 separadores.append(ys)
                 if op.guarda:
                     guardas.append((xg, ys + 3, op.guarda))
-                self.y = ys + 18
+                self.y = ys + 18 + extra
             self._dibujar_nodo(op, prof + 1)
         self.y += 8
         y1 = self.y
         x1 = max([x1, self.max_x_extra + 16] +
-                 [gx + ancho(g, TC, True) + 12 for gx, gy, g in guardas])
+                 [gx + self._ancho_guarda(g) + 12 for gx, gy, g in guardas])
         self.max_x_extra = max(extra_antes, x1)
         est = estilo(shape='umlFrame', whiteSpace='wrap', html=1, width=tw, height=20, boundedLbl=1,
                      verticalAlign='middle', align='left', spacingLeft=6, fillColor=CLARO, strokeColor=OSCURO,
-                     fontFamily=FUENTE, fontSize=TC, fontStyle=1, fontColor=OSCURO, swimlaneFillColor='none')
+                     fontFamily=FUENTE, fontSize=self.TC, fontStyle=1, fontColor=OSCURO, swimlaneFillColor='none')
         previas = d.celdas
         d.celdas = []
         d.v(x0, y0, x1 - x0, y1 - y0, h(titulo), est)
@@ -606,8 +635,10 @@ class Secuencia:
         marcos = d.celdas
         d.celdas = []
         for (gx, gy, guarda) in guardas:
-            d.v(gx, gy, ancho(guarda, TC, True) + 6, 15, h(guarda),
-                est_texto(TC, True, 'left', color=OSCURO, extra='labelBackgroundColor=#FFFFFF;'))
+            lineas = self._lineas_guarda(guarda)
+            d.v(gx, gy, self._ancho_guarda(guarda) + 6, 15 + self.LINEA_TXT * (len(lineas) - 1),
+                '<br>'.join(h(l) for l in lineas),
+                est_texto(self.TC, True, 'left', color=OSCURO, extra='labelBackgroundColor=#FFFFFF;'))
         self.fondo = marcos + self.fondo
         d.celdas = previas + d.celdas
         self.y += 4
@@ -619,15 +650,15 @@ class Secuencia:
         x0 = self.x[ids[0]] - 48 + 6 * prof
         x1 = max(self.x[ids[-1]] + 48 - 6 * prof, x0 + self._ancho_ref(ev))
         y0 = self.y + 10
-        alto = 24 + 14 * len(lineas) + 8
+        alto = 24 + self.LINEA_TXT * len(lineas) + 8
         # fondo blanco: la referencia tapa las lineas de vida y barras que cubre
         self.d.v(x0, y0, x1 - x0, alto, '', estilo(html=1, fillColor=BLANCO, strokeColor='none', points='[]'))
         est = estilo(shape='umlFrame', whiteSpace='wrap', html=1, width=40, height=20, boundedLbl=1,
                      verticalAlign='middle', align='left', spacingLeft=8, fillColor=CLARO, strokeColor=OSCURO,
-                     fontFamily=FUENTE, fontSize=TC, fontStyle=1, fontColor=OSCURO, swimlaneFillColor=BLANCO)
+                     fontFamily=FUENTE, fontSize=self.TC, fontStyle=1, fontColor=OSCURO, swimlaneFillColor=BLANCO)
         self.d.v(x0, y0, x1 - x0, alto, 'ref', est)
-        self.d.v(x0 + 10, y0 + 22, x1 - x0 - 20, 14 * len(lineas) + 2, '<br>'.join(h(l) for l in lineas),
-                 est_texto(TC, False))
+        self.d.v(x0 + 10, y0 + 22, x1 - x0 - 20, self.LINEA_TXT * len(lineas) + 2, '<br>'.join(h(l) for l in lineas),
+                 est_texto(self.TC, False))
         self.max_x_extra = max(self.max_x_extra, x1)
         self.y = y0 + alto + 6
 

@@ -106,7 +106,9 @@ class Word:
         normal = st['Normal']
         # Normal no se toca: lo usan los cuadros de texto del encabezado y del pie oficiales, que tienen alto fijo.
         # El cuerpo usa su propio estilo.
-        texto = st.add_style('Texto', WD_STYLE_TYPE.PARAGRAPH)
+        # si la referencia ya es un documento armado por este programa, el estilo ya existe y se reutiliza
+        existentes = {s.name for s in st}
+        texto = st['Texto'] if 'Texto' in existentes else st.add_style('Texto', WD_STYLE_TYPE.PARAGRAPH)
         texto.base_style = normal
         texto.quick_style = True
         self._fuente(texto, tam=11)
@@ -362,7 +364,9 @@ class Word:
         """Campo REF a 'Figura n' (se actualiza solo si la figura cambia de numero)."""
         self.campo(par, ' REF _Fig%03d \\h \\* MERGEFORMAT ' % n, 'Figura %d' % n)
 
-    def figura(self, fig, max_alto=ALTO_FIG, rotar=True, ancho_max=ANCHO, antes=10):
+    def figura(self, fig, max_alto=ALTO_FIG, rotar=False, ancho_max=ANCHO, antes=10):
+        # rotar=False: todos los diagramas van derechos (sin girar 90 grados), para leerlos y presentarlos sin
+        # girar la hoja
         im = Image.open(fig.ruta)
         wpx, hpx = im.size
         girada = False
@@ -395,6 +399,110 @@ class Word:
         n = self.epigrafe(fig.epigrafe)
         fig.numero = n
         self.figuras.append((n, fig, puntos, girada))
+        return n
+
+    # ------------------------------------------------------------------ diagramas de secuencia largos
+    def cortar_secuencia(self, fig, sec, alto_primera=ALTO_TRAS_TITULO, alto_resto=ALTO_FIG, ancho_max=ANCHO):
+        """Parte el PNG de un diagrama de secuencia largo en tramos que entran en una hoja vertical, a todo el ancho
+        de la hoja y sin girarlo. Cada tramo después del primero lleva arriba las cabeceras de todas las líneas de
+        vida (también las de los objetos que se crean más abajo), para que se sepa qué columna es cada una.
+
+        sec: la Secuencia ya dibujada (sec.dibujar()) que generó el PNG; de ella salen las posiciones de las
+        cabeceras. Devuelve [(ruta_png, ancho_cm)] en orden."""
+        from secuencia import Y0
+        from render import ESCALA, MARGEN
+        ALTO_CAB = sec.ALTO_CAB
+        im = Image.open(fig.ruta).convert('RGB')
+        wpx, hpx = im.size
+        s = min(ancho_max / (wpx / ESCALA), ESCALA_MAX)          # cm por px de diagrama
+        ancho_cm = wpx / ESCALA * s
+
+        def px(v):                                                 # coordenada del diagrama -> px del PNG
+            return int(round((v + MARGEN) * ESCALA))
+
+        # banda de cabeceras: el marco del diagrama y las cabeceras de la primera fila, y encima, en su columna,
+        # las cabeceras de los objetos que se crean durante la interacción
+        alto_banda = px(Y0 + ALTO_CAB + 26)
+        banda = im.crop((0, 0, wpx, alto_banda))
+        for i, l in enumerate(sec.lineas):
+            y_ini = sec.inicio.get(l['id'])
+            if y_ini is None:
+                continue
+            w = sec.anchos_cab[i]
+            caja = (px(sec.x[i] - w / 2 - 3), px(y_ini - 3), px(sec.x[i] + w / 2 + 3), px(y_ini + ALTO_CAB + 3))
+            banda.paste(im.crop(caja), (caja[0], px(Y0 - 3)))
+        sep = 6 * ESCALA
+
+        import numpy as np
+        oscuros = (np.asarray(im.convert('L')) < 170).sum(axis=1).tolist()   # tinta de cada renglón
+
+        def corte(objetivo, desde):
+            """El renglón más cercano al objetivo (hacia arriba) que no corta texto ni flechas: solo lo cruzan las
+            líneas verticales (líneas de vida, barras de activación y marcos)."""
+            ventana = range(max(desde + 200, objetivo - 420), objetivo + 1)
+            if not len(ventana):
+                return objetivo
+            minimo = min(oscuros[y] for y in ventana)
+            return max(y for y in ventana if oscuros[y] <= minimo + 6)
+
+        cap1 = int(alto_primera / s * ESCALA)
+        capn = int(alto_resto / s * ESCALA) - alto_banda - sep
+        partes, y = [], 0
+        while True:
+            cap = cap1 if not partes else capn
+            resto = hpx - y
+            if resto <= cap:
+                partes.append((y, hpx))
+                break
+            # cada hoja se llena hasta el final; solo si al último tramo le quedaría muy poco, los dos últimos se
+            # reparten a medias, para que la última hoja no lleve una tira casi vacía
+            objetivo = cap
+            if resto - cap < 0.35 * capn:
+                objetivo = min(cap, -(-resto // 2))
+            c = corte(y + objetivo, y)
+            partes.append((y, c))
+            y = c
+        rutas = []
+        carpeta = self.rotadas.parent / 'png_partes'
+        carpeta.mkdir(parents=True, exist_ok=True)
+        for k, (y0, y1) in enumerate(partes, start=1):
+            tramo = im.crop((0, y0, wpx, y1))
+            if k > 1:
+                hoja = Image.new('RGB', (wpx, alto_banda + sep + tramo.height), 'white')
+                hoja.paste(banda, (0, 0))
+                hoja.paste(tramo, (0, alto_banda + sep))
+                tramo = hoja
+            ruta = carpeta / ('%s_parte%d.png' % (Path(fig.ruta).stem, k))
+            tramo.save(ruta, optimize=True)
+            rutas.append((ruta, ancho_cm))
+        return rutas, s
+
+    def figura_partida(self, fig, partes, s):
+        """Inserta los tramos de cortar_secuencia: el primero con el epígrafe numerado de la figura y los demás con
+        un epígrafe de continuación que remite a ella."""
+        n_total = len(partes)
+        n = None
+        for k, (ruta, ancho_cm) in enumerate(partes, start=1):
+            par = self.doc.add_paragraph()
+            par.alignment = CENTRO
+            pf = par.paragraph_format
+            pf.keep_with_next = True
+            pf.space_before = Pt(6 if k > 1 else 10)
+            pf.space_after = Pt(2)
+            pf.line_spacing = 1.0
+            par.add_run().add_picture(str(ruta), width=Cm(ancho_cm))
+            if k == 1:
+                texto = fig.epigrafe + (' (parte 1 de %d)' % n_total if n_total > 1 else '')
+                n = self.epigrafe(texto)
+                self.doc.paragraphs[-1].paragraph_format.keep_together = True   # el epígrafe no se parte
+                fig.numero = n
+                puntos = fig.letra * s * 10 / 0.3528 if fig.letra else None
+                self.figuras.append((n, fig, puntos, False))
+            else:
+                cap = self.doc.add_paragraph(style=self.estilo('caption'))
+                r = cap.add_run('Continuación de la ')
+                self.referencia(cap, n)
+                cap.add_run(' (parte %d de %d)' % (k, n_total))
         return n
 
     # ------------------------------------------------------------------ tablas

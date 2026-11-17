@@ -247,7 +247,7 @@ class DiagramaClases:
     def clase(self, nombre, attrs=(), ops=(), estereotipo=None, cursiva=False, titulo=None):
         la, lo = miembros(nombre, attrs, ops, self.conceptual)
         self.vistas[nombre] = dict(la=la, lo=lo, est=estereotipo, cursiva=cursiva, titulo=titulo or nombre,
-                                   attrs=list(attrs), ops=[o.split('/')[0] for o in ops])
+                                   attrs=list(attrs), ops=[o.split('/')[0] for o in ops], ops_raw=list(ops))
 
     def rel(self, tipo, origen, destino, rol=None, mult_d=None, mult_o=None, nombre=None, lado_o=None,
             lado_d=None, canal=None, f_o=None, f_d=None, puntos=None, lado_rol=None, lado_mult_o=None, lado_nombre=1):

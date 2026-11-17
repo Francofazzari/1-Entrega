@@ -8,12 +8,20 @@ balanceados con la implementación.
 ## Pasos
 
 1. `python balanceo.py` – verifica cada caso de uso contra el código y la base de datos (tiene que dar `TOTAL 0`).
-2. `python catalogo.py` – arma los 151 diagramas, los exporta a PNG (`../png_final`) y escribe los `.drawio`
+2. `python catalogo.py` – arma los 77 diagramas, los exporta a PNG (`../png_final`) y escribe los `.drawio`
    en `Documentacion/Diagramas` (un archivo por grupo, una página por diagrama).
 3. `python armar_word.py` – arma `Documentacion/N01_N02_Agencia_de_Quiniela.docx` con todas las figuras,
-   las plantillas y las tablas.
+   las plantillas y las tablas. Todas las figuras van derechas (sin girar); cada diagrama de secuencia va a
+   todo el ancho de la hoja, partido en hojas verticales consecutivas que repiten las cabeceras de las líneas
+   de vida. Como referencia sirve también un Word ya armado por este programa (se reutilizan su encabezado,
+   su pie y sus estilos).
 4. `powershell -File actualizar_word.ps1 -docx <docx> -pdf <pdf>` – abre el documento en una instancia
    oculta de Word, actualiza el índice, el índice de figuras y las referencias, y exporta el PDF.
+5. `python modelo_completo.py [carpeta_png]` – arma el diagrama de clases y el modelo de datos (DER) de todos
+   los módulos implementados, cada uno completo en una sola página, en `Documentacion/Diagramas`, validados
+   contra el código y el script SQL; con una carpeta, deja además el PNG de cada uno.
+6. `python clases_cu.py [carpeta_png] [CU-N06 ...]` – escribe además, como archivo propio, el diagrama de clases
+   único de los casos de uso indicados (por defecto CU-N06 Cancelar ticket).
 
 ## Estructura que esperan los scripts
 
@@ -34,7 +42,8 @@ balanceados con la implementación.
 | `comun.py` | Procesos, casos de uso, requisitos funcionales y reglas de negocio. |
 | `n01.py`, `n01_diag.py` | Textos y diagramas del N01. |
 | `cu_venta.py`, `cu_venta2.py`, `cu_venta3.py`, `cu_sorteos.py`, `cu_pago_control.py` | Especificaciones CU-N01 a CU-N13. |
-| `sd_venta.py`, `sd_sorteos.py`, `sd_pagos.py`, `sd_comun.py` | Diagramas de secuencia. |
+| `sd_unicos.py` | Diagramas de secuencia: uno por caso de uso, con todo el flujo y la carga de datos de cada pantalla, por capas (actor, formularios, capa de negocio, capa de datos y base de datos; cada mensaje lleva la clase que lo recibe). |
+| `clases_unicos.py` | Diagrama de clases único de cada caso de uso: junta las clases de UI, BLL, DAL y BE que intervienen, sin recuadros de capas (de arriba hacia abajo: pantallas, negocio, datos y entidades), con la ubicación de cada caso en `LAYOUTS`; agrega las asociaciones por Id entre entidades (Usuario–Apuesta, Usuario–Pago, Pago–Apuesta). |
 | `cu.py`, `clases.py`, `secuencia.py`, `actividad.py`, `ruteo.py`, `drawio.py` | Dibujo de cada tipo de diagrama en draw.io. |
 | `render.py` | Exporta a PNG con el visor oficial de draw.io (Chrome sin ventana). |
 | `prototipos.py` | Marca las capturas de pantalla y arma las tablas de los prototipos. |

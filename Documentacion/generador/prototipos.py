@@ -79,6 +79,10 @@ TICKET_VENTA = lambda pasos: P('ticket', 'Pantalla del ticket (vista de venta)',
      'venta.', pasos[2]),
 ])
 
+MENU_REPORTES = P('principal', 'Menú principal: sección CONSULTAS', [
+    ('reportes', 'der', '«Reportes»', 'Botón del menú', 'Abre los reportes de la agencia.', '1'),
+])
+
 PROTOTIPOS = {
     'CU-N01': [
         MENU_VENDER,
@@ -200,65 +204,66 @@ PROTOTIPOS = {
         ], recorte='detalle'),
     ],
     'CU-N07': [
-        P('principal', 'Menú principal: sección CONSULTAS', [
-            ('reportes', 'der', '«Reportes»', 'Botón del menú', 'Abre los reportes de la agencia.', '1'),
-        ]),
+        MENU_REPORTES,
         P('reporte_ganadores', 'Pestaña «Números ganadores» (un sorteo de Quiniela)', [
             ('pestanias', 'esq', 'Pestañas', 'Botones de selección', '«Ventas en línea», «Pagos en línea» y «Números '
-             'ganadores».', '1'),
+             'ganadores».', '2, 3'),
             ('filtros', 'esq', 'Filtros', 'Listas y selector de fecha', 'Juego, lotería (o «Todas»), turno (o «Todos») y '
-             'fecha.', '2, 3, 3.a'),
-            ('actualizar', 'abajo', '«Actualizar»', 'Botón', 'Vuelve a leer los sorteos elegidos.', '3'),
-            ('estado', 'esq', 'Estado', 'Etiqueta', 'Descripción del sorteo y su estado.', '6'),
-            ('cerrar', 'abajo', '«Cerrar ventas»', 'Botón (solo Administrador)', 'Inicia CU-N08 (extensión).', '6'),
-            ('cargar', 'abajo', '«Cargar resultado»', 'Botón (solo Administrador)', 'Inicia CU-N09 (extensión).', '6'),
-            ('sortear', 'abajo', '«Sortear al azar»', 'Botón (solo Administrador)', 'Inicia CU-N10 (extensión).', '6'),
+             'fecha.', '4, 5, 5.a'),
+            ('actualizar', 'abajo', '«Actualizar»', 'Botón', 'Vuelve a leer los sorteos elegidos.', '5'),
+            ('estado', 'esq', 'Estado', 'Etiqueta', 'Descripción del sorteo y su estado.', '8'),
+            ('cerrar', 'abajo', '«Cerrar ventas»', 'Botón (solo Administrador)', 'Inicia CU-N08 (extensión).', '8'),
+            ('cargar', 'abajo', '«Cargar resultado»', 'Botón (solo Administrador)', 'Inicia CU-N09 (extensión).', '8'),
+            ('sortear', 'abajo', '«Sortear al azar»', 'Botón (solo Administrador)', 'Inicia CU-N10 (extensión).', '8'),
             ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Los 20 números en dos columnas, con la cabeza resaltada.',
-             '5'),
+             '7'),
         ]),
         P('ganadores_todas', 'Varios sorteos: «Todas» las loterías de un turno', [
-            ('filtros', 'esq', 'Filtros', 'Listas', 'Lotería «Todas».', '3'),
-            ('estado', 'esq', 'Resumen', 'Etiqueta', '"N de M sorteados".', '5'),
+            ('filtros', 'esq', 'Filtros', 'Listas', 'Lotería «Todas».', '5'),
+            ('estado', 'esq', 'Resumen', 'Etiqueta', '"N de M sorteados".', '7'),
             ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Una columna por sorteo; los pendientes dicen "Sin sortear".',
-             '5, 5.a'),
+             '7, 7.a'),
         ]),
         P('reporte_quini6', 'Otro juego: bolillas en el orden de salida', [
-            ('filtros', 'esq', 'Filtros', 'Listas', 'Juego Quini 6: sin lotería ni turno.', '3.a'),
-            ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Bolillas de menor a mayor y el orden de salida.', '5'),
+            ('filtros', 'esq', 'Filtros', 'Listas', 'Juego Quini 6: sin lotería ni turno.', '5.a'),
+            ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Bolillas de menor a mayor y el orden de salida.', '7'),
         ]),
     ],
     'CU-N08': [
+        MENU_REPORTES,
         P('reporte_ganadores', 'Pizarra de números ganadores: «Cerrar ventas»', [
             ('cerrar', 'abajo', '«Cerrar ventas»', 'Botón (solo Administrador)', 'Cierra las ventas de los sorteos '
-             'elegidos que están abiertos.', '1, 2'),
-            ('estado', 'esq', 'Estado', 'Etiqueta', 'Pasa a "Cerrado".', '3'),
+             'elegidos que están abiertos.', '7, 8'),
+            ('estado', 'esq', 'Estado', 'Etiqueta', 'Pasa a "Cerrado".', '9'),
         ]),
     ],
     'CU-N09': [
+        MENU_REPORTES,
         P('reporte_ganadores', 'Pizarra de números ganadores: «Cargar resultado»', [
             ('cargar', 'abajo', '«Cargar resultado»', 'Botón (solo Administrador)', 'Abre la carga del resultado del '
-             'sorteo elegido.', '1, 2'),
+             'sorteo elegido.', '7, 8'),
         ]),
         P('resultado', 'Carga del resultado', [
             ('puestos', 'esq', 'Puestos', 'Casilleros de texto', 'Uno por número que sale: en la Quiniela, 20 en dos '
-             'columnas.', '2, 3'),
+             'columnas.', '8, 9'),
             ('puesto8', 'izq', 'Puesto 8 cargado a mano', 'Casillero de texto', 'Ejemplo: el 32, que se guarda como '
-             '0032.', '3'),
-            ('azar', 'arriba', '«Completar al azar»', 'Botón', 'Completa los vacíos sin guardar.', '3.a'),
-            ('limpiar', 'arriba', '«Limpiar»', 'Botón', 'Vacía todos los casilleros.', '3.b'),
-            ('cancelar', 'arriba', '«Cancelar»', 'Botón', 'Cierra la carga sin guardar.', '3.b'),
-            ('guardar', 'arriba', '«GUARDAR RESULTADO»', 'Botón', 'Pide confirmación y guarda el resultado.', '4 a 10'),
+             '0032.', '9'),
+            ('azar', 'arriba', '«Completar al azar»', 'Botón', 'Completa los vacíos sin guardar.', '9.a'),
+            ('limpiar', 'arriba', '«Limpiar»', 'Botón', 'Vacía todos los casilleros.', '9.b'),
+            ('cancelar', 'arriba', '«Cancelar»', 'Botón', 'Cierra la carga sin guardar.', '9.b'),
+            ('guardar', 'arriba', '«GUARDAR RESULTADO»', 'Botón', 'Pide confirmación y guarda el resultado.', '10 a 16'),
         ]),
     ],
     'CU-N10': [
+        MENU_REPORTES,
         P('reporte_ganadores', 'Pizarra de números ganadores: «Sortear al azar»', [
             ('sortear', 'abajo', '«Sortear al azar»', 'Botón (solo Administrador)', 'Pide confirmación y sortea los '
-             'sorteos elegidos pendientes.', '1 a 4'),
-            ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Se actualiza con los números generados.', '5'),
+             'sorteos elegidos pendientes.', '7 a 10'),
+            ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Se actualiza con los números generados.', '11'),
         ]),
         P('ganadores_todas', 'Resultado con varias loterías', [
-            ('estado', 'esq', 'Resumen', 'Etiqueta', '"N de M sorteados".', '5'),
-            ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Una columna por sorteo.', '5'),
+            ('estado', 'esq', 'Resumen', 'Etiqueta', '"N de M sorteados".', '11'),
+            ('pizarra', 'esq', 'Pizarra', 'Panel dibujado', 'Una columna por sorteo.', '11'),
         ]),
     ],
     'CU-N11': [
@@ -306,13 +311,14 @@ PROTOTIPOS = {
         ]),
     ],
     'CU-N13': [
+        MENU_REPORTES,
         P('reporte_pagos', 'Pestaña «Pagos en línea»', [
-            ('pestanias', 'esq', 'Pestañas', 'Botones de selección', '«Pagos en línea» marcada.', '1'),
-            ('filtros', 'esq', 'Filtros', 'Selectores de fecha', 'Desde y Hasta.', '3'),
-            ('buscar', 'abajo', '«Buscar»', 'Botón', 'Lista los pagos del período.', '3 a 5, 4.a'),
-            ('tarjetas', 'esq', 'Tarjetas', 'Etiquetas', 'Pagos realizados y Total pagado.', '6'),
+            ('pestanias', 'esq', 'Pestañas', 'Botones de selección', '«Pagos en línea» marcada.', '3, 4'),
+            ('filtros', 'esq', 'Filtros', 'Selectores de fecha', 'Desde y Hasta.', '5'),
+            ('buscar', 'abajo', '«Buscar»', 'Botón', 'Lista los pagos del período.', '5 a 7, 6.a'),
+            ('tarjetas', 'esq', 'Tarjetas', 'Etiquetas', 'Pagos realizados y Total pagado.', '8'),
             ('grilla', 'esq', 'Pagos', 'Grilla', 'Fecha y hora, código, juego, quién pagó y monto; doble clic abre el '
-             'ticket.', '5, 6.a'),
+             'ticket.', '7, 8.a'),
         ]),
     ],
 }

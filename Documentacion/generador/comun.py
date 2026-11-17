@@ -7,8 +7,8 @@ Es la unica fuente de nombres y codigos: el N01, el N02 y todos los diagramas lo
 SISTEMA = 'Sistema de gestión de la Agencia de Quiniela'
 SISTEMA_CORTO = 'Sistema Agencia de Quiniela'
 AUTOR = 'Franco Tomas Fazzari'      # como figura en el encabezado oficial de la carpeta
-FECHA = '20/10/2026'
-VERSION = '1.0'
+FECHA = '16/11/2026'
+VERSION = '1.1'
 
 PROCESOS = [
     ('PN01', 'Venta de apuestas'),

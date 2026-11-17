@@ -22,7 +22,7 @@ DIAGRAMAS = REPO / 'Documentacion' / 'Diagramas'
 
 # letra (px de diagrama) del texto principal de cada tipo: sirve para calcular con que tamanio queda en la hoja
 LETRA = dict(uc=15, uc_negocio=15, uc_sistema=15, actores=15, colab=12, actividad=12, conceptual=12, flujo=12,
-             clases=11, sd=11, der=11, proto=None)
+             clases=11, sd=16, der=11, proto=None)
 
 
 class Figura:

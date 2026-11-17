@@ -106,9 +106,19 @@ namespace Entrega1software
 
             if (perfil == "Administrador")
             {
-                using (FormAvisoIntegridad dlg = new FormAvisoIntegridad(detalle))
+                // Se vuelve a mostrar el aviso hasta que el administrador elija una salida: si abre
+                // "Restaurar backup" y cierra esa ventana sin restaurar, vuelve a este aviso.
+                while (true)
                 {
-                    if (dlg.ShowDialog() == DialogResult.OK)
+                    bool eligioRestaurar;
+                    using (FormAvisoIntegridad dlg = new FormAvisoIntegridad(detalle))
+                    {
+                        if (dlg.ShowDialog(this) != DialogResult.OK)
+                            return false;
+                        eligioRestaurar = dlg.EligioRestaurar;
+                    }
+
+                    if (!eligioRestaurar)
                     {
                         IdiomaManager.Instancia.RecalcularTodosLosDigitos();
                         MessageBox.Show(
@@ -116,7 +126,9 @@ namespace Entrega1software
                             "Digito Verificador", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return true;
                     }
-                    return false;
+
+                    if (RestaurarBackup())
+                        return false; // con la base restaurada hay que volver a iniciar sesion
                 }
             }
 
@@ -124,6 +136,58 @@ namespace Entrega1software
                 detalle + "\n\nContacte al administrador del sistema. No se puede continuar.",
                 "Error de integridad", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
+        }
+
+        // Abre la pantalla de Backup / Restore (como ventana modal, todavia sin entrar al sistema).
+        // Devuelve true si se restauro la base.
+        private bool RestaurarBackup()
+        {
+            bool restauro;
+            using (FormBackupRestore dlg = new FormBackupRestore())
+            {
+                dlg.StartPosition = FormStartPosition.CenterScreen;
+                dlg.ShowDialog(this);
+                restauro = dlg.SeRestauro;
+            }
+
+            if (restauro)
+            {
+                // Los idiomas pueden haber cambiado con el restore: se recarga la lista del login.
+                RecargarIdiomas();
+                txtClave.Clear();
+                txtClave.Focus();
+            }
+            return restauro;
+        }
+
+        private void RecargarIdiomas()
+        {
+            try
+            {
+                cmbIdiomas.SelectedIndexChanged -= cmbIdiomas_SelectedIndexChanged;
+                cmbIdiomas.DataSource = IdiomaManager.Instancia.ObtenerIdiomas();
+                cmbIdiomas.DisplayMember = "Nombre";
+                Idioma actual = IdiomaManager.Instancia.IdiomaActual;
+                if (actual != null)
+                {
+                    foreach (Idioma i in cmbIdiomas.Items)
+                    {
+                        if (i.Id == actual.Id)
+                        {
+                            cmbIdiomas.SelectedItem = i;
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // si no se pudo recargar, queda la lista anterior
+            }
+            finally
+            {
+                cmbIdiomas.SelectedIndexChanged += cmbIdiomas_SelectedIndexChanged;
+            }
         }
 
         private void cmbIdiomas_SelectedIndexChanged_1(object sender, EventArgs e)

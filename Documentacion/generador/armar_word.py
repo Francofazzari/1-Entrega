@@ -78,9 +78,17 @@ def historial(w):
     w.titulo(1, 'Historial de revisión')
     w.p('Cambios del documento a lo largo del tiempo:')
     w.tabla((2.4, 1.8, 3.6, 7.7), ['Fecha', 'Versión', 'Autor', 'Descripción'], [
-        [FECHA, VERSION, AUTOR, 'Versión inicial de N01 y N02: especificación de los procesos de negocio PN01 a PN04 '
-                                 'y de los casos de uso CU-N01 a CU-N13, balanceada con el código y con la base de '
-                                 'datos del sistema.']], centradas=(0, 1))
+        ['20/10/2026', '1.0', AUTOR, 'Versión inicial de N01 y N02: especificación de los procesos de negocio PN01 a '
+                                     'PN04 y de los casos de uso CU-N01 a CU-N13, balanceada con el código y con la '
+                                     'base de datos del sistema.'],
+        [FECHA, VERSION, AUTOR, 'Correcciones de la primera entrega: cada caso de uso se modela con un único diagrama '
+                                'de secuencia, por capas, que recorre todo el flujo e incluye la carga de datos al '
+                                'abrir cada pantalla; cada caso de uso tiene un único diagrama de clases con todas '
+                                'las clases que intervienen, sin recuadros de capas, y los DER se completaron con '
+                                'las tablas que se leen en esa carga. Se agregó la asociación entre Usuario y '
+                                'Apuesta (y entre Usuario, Pago y Apuesta), que en el código es el Id guardado '
+                                '(clave foránea).']],
+           centradas=(0, 1))
 
 
 # ====================================================================== introduccion
@@ -103,10 +111,11 @@ def introduccion(w):
         'BLL, DAL y BE— y del script de la base de datos ScriptBD_AgenciaQuiniela.sql, de modo que quedan balanceados '
         'con la implementación:')
     w.vinetas([
-        'Cada mensaje de un diagrama de secuencia es un método, constructor o propiedad que existe en la clase de su '
-        'línea de vida, con la cantidad de parámetros que tiene en el código.',
+        'Cada mensaje de un diagrama de secuencia es un método, constructor o propiedad que existe en la clase que lo '
+        'recibe —la del formulario de su línea de vida o, en las capas de negocio y de datos, la que nombra el '
+        'mensaje—, con la cantidad de parámetros que tiene en el código.',
         'Las clases, los atributos, las operaciones y las relaciones de los diagramas de clases existen en el código, '
-        'y toda clase que recibe mensajes en un diagrama de secuencia figura en un diagrama de clases del mismo caso de '
+        'y toda clase que recibe mensajes en un diagrama de secuencia figura en el diagrama de clases del mismo caso de '
         'uso, relacionada con la clase que le envía el mensaje.',
         'Las tablas que se leen o se escriben en los diagramas de secuencia están en el DER del caso de uso, con las '
         'columnas, claves y relaciones del script de la base de datos.',
@@ -126,16 +135,27 @@ def introduccion(w):
         'negocio» y «trabajador».',
         '**Actividad.** Un carril por rol. Las acciones que realiza o registra el sistema llevan el código del caso de '
         'uso del sistema que las soporta (ver la leyenda de cada diagrama).',
-        '**Clases de diseño.** Paquetes por capa (UI, BLL, DAL y BE), visibilidad UML (+ público, - privado), '
+        '**Clases de diseño.** Un único diagrama por caso de uso con todas las clases que intervienen, ordenadas de '
+        'arriba hacia abajo: pantallas (UI), negocio (BLL), acceso a datos (DAL) y entidades (BE). Visibilidad UML '
+        '(+ público, - privado), '
         'estereotipos «static» y «singleton», asociaciones navegables con el nombre del atributo que las implementa '
-        '(por ejemplo, -dal) y dependencias «create» y «use». Solo se muestran los miembros que intervienen en el caso '
-        'de uso.',
-        '**Secuencia (UML 2).** Los mensajes están numerados en orden. Los mensajes de retorno (línea punteada) se '
-        'dibujan solo cuando el método devuelve un valor. Las líneas de vida sin «:» son clases estáticas. «create» '
-        'indica la creación de un objeto y la X, su destrucción (fin de un bloque using o cierre de un formulario). '
-        'Fragmentos combinados: alt (alternativas), opt (opcional), loop (repetición) y break (excepción que '
-        'interrumpe el flujo, con el texto de la excepción). Un marco ref remite a otro diagrama del mismo caso de uso '
-        'por su número. Las sentencias SQL se abrevian con «…».',
+        '(por ejemplo, -dal) y dependencias «create» y «use». Un atributo que referencia a otra clase del diagrama se '
+        'dibuja como asociación con su rol (por ejemplo, +UsuarioActual), y las asociaciones sin flecha entre '
+        'entidades (vende, registra, paga) son las que el código guarda como Id (clave foránea). Solo se muestran '
+        'los miembros que intervienen en el caso de uso.',
+        '**Secuencia (UML 2).** Cada caso de uso tiene un único diagrama de secuencia que recorre su flujo normal '
+        'completo, de principio a fin, y muestra los flujos alternativos con fragmentos combinados en el lugar donde '
+        'ocurren: alt (alternativas), opt (opcional), loop (repetición) y break (excepción que interrumpe el flujo, '
+        'con el texto de la excepción). Las líneas de vida son el actor, cada formulario que interviene, la capa de '
+        'negocio (BLL), la capa de datos (DAL) y la base de datos; cada mensaje a una capa lleva el nombre de la clase '
+        'que lo recibe (por ejemplo, LoteriaBLL.ObtenerActivas()) y una llamada entre dos clases de la misma capa se '
+        'dibuja como un mensaje a sí misma. Cuando una pantalla se abre y carga datos, la lectura se muestra completa '
+        'hasta la base de datos. Los mensajes están numerados en orden y los de retorno (línea punteada) se dibujan '
+        'solo cuando el método devuelve un valor. «create» indica la creación de un formulario y la X, su cierre. Un '
+        'marco ref remite solo al diagrama de otro caso de uso (una inclusión o una extensión). Cuando el caso de uso '
+        'empieza con una pantalla ya abierta (su precondición), el diagrama igual muestra cómo se abrió y todo lo que '
+        'leyó de la base de datos. Las sentencias SQL se abrevian con «…». Los diagramas largos ocupan varias hojas consecutivas, siempre en '
+        'vertical, y cada hoja repite las cabeceras de las líneas de vida.',
         '**Modelo conceptual.** Clases de análisis con sus atributos, sin identificadores ni operaciones, y '
         'asociaciones con nombre y multiplicidad.',
         '**DER.** Tablas con su clave primaria (PK) y sus claves foráneas (FK) y relaciones con su cardinalidad, tal '
@@ -145,9 +165,8 @@ def introduccion(w):
         '**Prototipos.** Capturas de pantalla con marcadores numerados en naranja, que se explican en la tabla que '
         'acompaña a cada figura.',
         '**Numeración.** Las figuras se numeran en todo el documento y su título empieza con el código del proceso o '
-        'del caso de uso al que pertenecen. Cuando un caso de uso tiene varios diagramas del mismo tipo, el número '
-        'entre paréntesis del marco del diagrama —por ejemplo, «sd CU-N01 (8)»— coincide con el del título de la '
-        'figura («Diagrama de secuencia 8 de 12»).',
+        'del caso de uso al que pertenecen. El marco de cada diagrama lleva el mismo código y nombre del caso de uso '
+        '(por ejemplo, «class CU-N06 Cancelar ticket»).',
     ])
     w.titulo(2, 'Organización del documento')
     w.p('El capítulo N01 presenta el modelo de casos de uso del negocio, el modelo conceptual del dominio, los '
@@ -305,8 +324,8 @@ def n02_general(w, figs, specs):
         'con la carátula (a), el historial de revisión (b), el objetivo (c), las precondiciones (d), las '
         'postcondiciones (e), los eventos disparadores (f), los puntos de extensión y condiciones (g) y la descripción '
         'analítica con el flujo normal y los flujos alternativos (i). A continuación, cada uno en una nueva carilla, '
-        'siguen el diagrama de flujo (j, solo cuando el algoritmo es complejo), los diagramas de clases (k), los '
-        'diagramas de secuencia (l), el DER (m) y los prototipos de interfaz de usuario (n).')
+        'siguen el diagrama de flujo (j, solo cuando el algoritmo es complejo), el diagrama de clases (k), el '
+        'diagrama de secuencia (l), el DER (m) y los prototipos de interfaz de usuario (n).')
     w.titulo(2, 'Modelo de casos de uso del sistema')
     w.p('El modelo reúne los trece casos de uso de la gestión comercial. El Operador usa los casos de venta, de '
         'post-venta, de pago y de consulta; el Administrador lo especializa, de modo que puede usar todos ellos y, '
@@ -452,24 +471,29 @@ def n02_caso(w, figs, spec, flujos):
             w.referencia(par, flujos[otro])
             par.add_run('.')
 
-    # k. clases
-    w.titulo(3, 'k. Diagramas de clases', nueva_pagina=True)
-    cls = figs[(c, 'clases')]
-    w.p('Clases de diseño que intervienen en el caso de uso, agrupadas por capa (UI, BLL, DAL y BE), con los atributos '
-        'y las operaciones del código que se usan en sus diagramas de secuencia%s.'
-        % ('' if len(cls) == 1 else ' (%d diagramas)' % len(cls)), mantener=True)
-    for k, f in enumerate(cls):
-        w.figura(f, max_alto=ALTO_TRAS_TITULO if k == 0 else 19.0)
+    # k. clases: un único diagrama por caso de uso, en una hoja vertical
+    w.titulo(3, 'k. Diagrama de clases', nueva_pagina=True)
+    w.p('Todas las clases que intervienen en el caso de uso, con los atributos y las operaciones del código que se '
+        'usan en su diagrama de secuencia: arriba las pantallas, debajo las clases de negocio y de acceso a datos y, '
+        'al final, las entidades.', mantener=True)
+    w.figura(figs[(c, 'clases')][0], max_alto=17.6)
 
-    # l. secuencia
-    w.titulo(3, 'l. Diagramas de secuencia', nueva_pagina=True)
-    sds = figs[(c, 'sd')]
-    w.p('El caso de uso se modela con %s. El título de cada figura indica los pasos y los flujos alternativos de la '
-        'descripción analítica que cubre; el número entre paréntesis del marco coincide con el del título y es el que '
-        'usan los marcos ref para remitir de un diagrama a otro.'
-        % ('un diagrama de secuencia' if len(sds) == 1 else '%d diagramas de secuencia' % len(sds)), mantener=True)
-    for k, f in enumerate(sds):
-        w.figura(f, max_alto=ALTO_TRAS_TITULO if k == 0 else 19.0)
+    # l. secuencia: un único diagrama por caso de uso, en hojas verticales consecutivas
+    w.titulo(3, 'l. Diagrama de secuencia', nueva_pagina=True)
+    f = figs[(c, 'sd')][0]
+    sec = spec['secuencias'][0][1]()
+    sec.dibujar()
+    # la primera parte comparte la hoja con el título y la introducción
+    partes, escala = w.cortar_secuencia(f, sec, alto_primera=14.3, alto_resto=19.8)
+    w.p('El caso de uso se modela con un único diagrama de secuencia que recorre el flujo normal completo, del paso 1 '
+        'al %d, y muestra cada flujo alternativo con un fragmento combinado (alt, opt, break o loop) en el lugar donde '
+        'ocurre. Las líneas de vida son el actor, los formularios que intervienen, la capa de negocio (BLL), la capa '
+        'de datos (DAL) y la base de datos; cada mensaje a una capa lleva el nombre de la clase que lo recibe. Cuando '
+        'una pantalla se abre y carga datos, la lectura se muestra completa hasta la base de datos.%s'
+        % (len(spec['flujo']),
+           ' Por su extensión, el diagrama ocupa %d hojas consecutivas; en cada una se repiten las cabeceras de las '
+           'líneas de vida.' % len(partes) if len(partes) > 1 else ''), mantener=True)
+    w.figura_partida(f, partes, escala)
 
     # m. DER
     w.titulo(3, 'm. DER', nueva_pagina=True)
@@ -507,7 +531,8 @@ def apendice_balanceo(w, specs, figs):
         'antes de armar el documento. Para cada caso de uso se verifica que:')
     w.vinetas([
         'cada mensaje sincrónico o de creación de un diagrama de secuencia sea un método, un constructor o una '
-        'propiedad que existe en la clase de la línea de vida, con una cantidad de parámetros válida;',
+        'propiedad que existe en la clase que lo recibe (en las capas de negocio y de datos, la que nombra el '
+        'mensaje), con una cantidad de parámetros válida;',
         'cada clase que recibe mensajes y cada operación que recibe figuren en un diagrama de clases del caso de uso, '
         'y que entre las clases que se envían mensajes haya una relación dibujada;',
         'cada tabla que se lee o se escribe en los mensajes a la base de datos esté en el DER del caso de uso;',
@@ -573,16 +598,21 @@ def armar(salida=SALIDA):
     specs = especificaciones()
 
     w = Word(REF, LOGO, ROTADAS)
-    pendientes = w.encabezado('rId9', {
+    # el encabezado y el pie oficiales de la entrega de referencia (su rId depende del documento de referencia)
+    rels = w.doc.part.rels
+    rid_enc = next(rid for rid, r in rels.items() if r.reltype.endswith('/header'))
+    rid_pie = next(rid for rid, r in rels.items() if r.reltype.endswith('/footer'))
+    pendientes = w.encabezado(rid_enc, {
         '<Nombre del Sistema>': SISTEMA_CORTO,
         '<Nombre de Sección / Etapa> 1 Entrega': 'N01 y N02 - 1 Entrega',
         'Fecha 8/9/2026': 'Fecha %s' % FECHA,
+        'Fecha 20/10/2026': 'Fecha %s' % FECHA,
         # "Versión" queda como en la plantilla: el número no entra en su cuadro (la versión está en la portada
         # y en el historial de revisión)
-    }, achicar={'Fecha 8/9/2026'})
+    }, achicar={'Fecha 8/9/2026', 'Fecha 20/10/2026'})
     if pendientes:
         print('AVISO: textos del encabezado que no se encontraron:', pendientes)
-    w.pie_centrado('rId10')
+    w.pie_centrado(rid_pie)
     cp = w.doc.core_properties
     cp.title = '%s - N01 y N02' % SISTEMA_CORTO
     cp.subject = 'N01 Especificación funcional por proceso de negocio y N02 Especificaciones de casos de uso'
@@ -606,7 +636,7 @@ def armar(salida=SALIDA):
         n02_caso(w, figs, s, flujos)
     tot = apendice_balanceo(w, specs, figs)
     apendice_archivos(w, figs_todas)
-    w.seccion_final(w.seccion(True, 'rId9', 'rId10', inicio=2))
+    w.seccion_final(w.seccion(True, rid_enc, rid_pie, inicio=2))
     quitadas = w.limpiar_relaciones()
     w.guardar(salida)
     return w, tot, quitadas

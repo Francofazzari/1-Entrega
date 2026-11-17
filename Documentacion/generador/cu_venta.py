@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """PN01 Venta de apuestas: especificaciones CU-N01 a CU-N06 con sus diagramas."""
-import sd_venta as SD
+import clases_unicos as CLU
+import sd_unicos as SDU
 from clases import DiagramaClases
 from cu import DiagramaCU
 from actividad import DiagramaFlujo
@@ -260,35 +261,11 @@ CU_N01 = dict(
     diagrama_cu=n01_cu,
     flujo_alg=('Armado y registro del ticket (ApuestaBLL.Vender). El mismo método atiende a todos los juegos: la rama '
                '"No" de la lotería y el turno es la de CU-N02.', n01_flujo),
-    clases=[('Clases que intervienen en la selección de loterías y horarios', n01_clases_seleccion),
+    clases=CLU.unir('CU-N01', [('Clases que intervienen en la selección de loterías y horarios', n01_clases_seleccion),
             ('Clases de presentación y de negocio de la carga y la confirmación de la venta', n01_clases_venta),
             ('Clases de negocio y de acceso a datos de la venta', n01_clases_datos),
-            ('Clases de entidad (BE) del caso de uso', n01_be)],
-    secuencias=[
-                ('Apertura de la venta de Quiniela (pasos 1 y 2)',
-                 SD.n01_sd_abrir),
-                ('Lectura de las loterías y los turnos activos (paso 2)',
-                 SD.n01_sd_leer),
-                ('Elección de las loterías y los horarios (pasos 3 y 4 y flujo 3.a)',
-                 SD.n01_sd_elegir),
-                ('Paso a la carga de jugadas (pasos 5 y 6 y flujo 6.a)',
-                 SD.n01_sd_continuar),
-                ('Ingreso del número y de las posiciones (paso 7 y flujo 7.a)',
-                 SD.n01_sd_numero),
-                ('Agregado de la jugada al ticket (pasos 7 y 8 y flujos 7.a y 7.b)',
-                 SD.n01_sd_agregar),
-                ('Quitar una jugada (flujo 8.a)',
-                 SD.n01_sd_quitar),
-                ('Confirmación de la venta (pasos 9 a 16 y flujos 9.a, 10.a, 11.a y 13.a)',
-                 SD.n01_sd_confirmar),
-                ('Pantalla del ticket (pasos 14 y 15 y flujo 14.a)',
-                 SD.n01_sd_ticket),
-                ('Armado y registro del ticket en la capa de negocio (pasos 10 a 13)',
-                 SD.n01_sd_vender),
-                ('Obtención del sorteo del día (paso 11 y flujo 11.a)',
-                 SD.n01_sd_sorteo),
-                ('Guardado del ticket y registro en la bitácora (paso 13 y flujo 13.a)',
-                 SD.n01_sd_guardar)],
+            ('Clases de entidad (BE) del caso de uso', n01_be)]),
+    secuencias=[('flujo completo, pasos 1 a 16, con sus flujos alternativos', SDU.n01_sd)],
     der=n01_der,
     der_nota='USUARIOS no se escribe: el ticket guarda el Id del vendedor en APUESTAS.UsuarioId (clave foránea).',
     correspondencia=['Apuesta', 'Jugada', 'NumeroElegido', 'Sorteo', 'Juego', 'Loteria', 'Turno', 'Usuario',

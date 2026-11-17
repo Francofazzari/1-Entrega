@@ -28,6 +28,7 @@ namespace Entrega1software
             this.btnIdiomas = new System.Windows.Forms.Button();
             this.btnBitacora = new System.Windows.Forms.Button();
             this.btnCambios = new System.Windows.Forms.Button();
+            this.btnBackup = new System.Windows.Forms.Button();
             this.flpSesion = new System.Windows.Forms.FlowLayoutPanel();
             this.btnAyuda = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
@@ -113,6 +114,7 @@ namespace Entrega1software
             this.flpAdmin.Controls.Add(this.btnIdiomas);
             this.flpAdmin.Controls.Add(this.btnBitacora);
             this.flpAdmin.Controls.Add(this.btnCambios);
+            this.flpAdmin.Controls.Add(this.btnBackup);
             this.flpAdmin.Name = "flpAdmin";
 
             EstilizarBotonBarra(this.btnUsuarios, "Gestion Usuarios");
@@ -146,6 +148,11 @@ namespace Entrega1software
             EstilizarBotonBarra(this.btnCambios, "Control Cambios");
             this.btnCambios.Name = "btnCambios";
             this.btnCambios.Click += new System.EventHandler(this.btnCambios_Click);
+
+            // "Backup" a secas para que la barra entre en pantallas de 1366 px; adentro estan backup y restore
+            EstilizarBotonBarra(this.btnBackup, "Backup");
+            this.btnBackup.Name = "btnBackup";
+            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
 
             // flpSesion: ayuda en linea y cerrar sesion, a la derecha de la barra
             this.flpSesion.AutoSize = true;
@@ -266,6 +273,7 @@ namespace Entrega1software
         private System.Windows.Forms.Button btnIdiomas;
         private System.Windows.Forms.Button btnBitacora;
         private System.Windows.Forms.Button btnCambios;
+        private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.FlowLayoutPanel flpSesion;
         private System.Windows.Forms.Button btnAyuda;
         private System.Windows.Forms.Button btnLogout;

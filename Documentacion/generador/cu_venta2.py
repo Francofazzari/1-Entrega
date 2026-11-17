@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """PN01 Venta de apuestas: CU-N02 a CU-N06."""
-import sd_venta as SD
+import clases_unicos as CLU
+import sd_unicos as SDU
 from clases import DiagramaClases
 from cu import DiagramaCU
 from actividad import DiagramaFlujo
@@ -161,33 +162,13 @@ CU_N02 = dict(
     flujo_no_aplica='El armado y registro del ticket lo hace el mismo método que en la Quiniela (ApuestaBLL.Vender), '
                     'cuyo diagrama de flujo está en CU-N01: en este caso de uso se recorre la rama "No" (el juego no se '
                     'sortea por lotería y turno).',
-    clases=[('Clases de presentación y de negocio de la venta', n02_clases_ui),
+    clases=CLU.unir('CU-N02', [('Clases de presentación y de negocio de la venta', n02_clases_ui),
             ('Clases de negocio y de acceso a datos de la venta', n02_clases_datos),
             ('Clases de entidad (BE) del caso de uso',
              lambda: diagrama_be('class CU-N02 (3) Entidades (BE)',
                                  ['Usuario', 'Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno',
-                                  'Bitacora']))],
-    secuencias=[
-                ('Apertura del juego (pasos 1 y 2)',
-                 SD.n02_sd_abrir),
-                ('Elección de los números en el tablero (pasos 3 y 4 y flujo 3.b)',
-                 SD.n02_sd_elegir),
-                ('Jugada automática (flujo 3.a)',
-                 SD.n02_sd_automatica),
-                ('Agregado de la jugada al ticket (pasos 5 y 6 y flujo 5.a)',
-                 SD.n02_sd_agregar),
-                ('Quitar una jugada (flujo 6.a)',
-                 SD.n02_sd_quitar),
-                ('Confirmación de la venta (pasos 7 a 14 y flujos 8.a, 9.a y 11.a)',
-                 SD.n02_sd_confirmar),
-                ('Pantalla del ticket (pasos 12 y 13 y flujo 12.a)',
-                 SD.n02_sd_ticket),
-                ('Armado y registro del ticket en la capa de negocio (pasos 8 a 11)',
-                 SD.n02_sd_vender),
-                ('Obtención del sorteo del día (paso 9 y flujo 9.a)',
-                 SD.n02_sd_sorteo),
-                ('Guardado del ticket y registro en la bitácora (paso 11 y flujo 11.a)',
-                 SD.n02_sd_guardar)],
+                                  'Bitacora']))]),
+    secuencias=[('flujo completo, pasos 1 a 14, con sus flujos alternativos', SDU.n02_sd)],
     der=lambda: diagrama_der('DER CU-N02 Vender apuesta de juego de números',
                              ['USUARIOS', 'APUESTAS', 'JUGADAS', 'JUGADA_NUMERO', 'SORTEOS', 'JUEGOS', 'LOTERIAS',
                               'TURNOS', 'Bitacora']),
@@ -287,15 +268,11 @@ CU_N03 = dict(
     flujo_alg=None,
     flujo_no_aplica='No corresponde: el caso de uso no tiene un algoritmo propio (el dibujo del ticket lo hace '
                     'TicketRenderer.Dibujar, igual que en pantalla).',
-    clases=[('Clases que intervienen en la impresión', n03_clases),
+    clases=CLU.unir('CU-N03', [('Clases que intervienen en la impresión', n03_clases),
             ('Clases de entidad (BE) que se imprimen',
              lambda: diagrama_be('class CU-N03 (2) Entidades (BE) que se imprimen',
-                                 ['Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno']))],
-    secuencias=[
-                ('Impresión del ticket con vista previa (pasos 1 a 6 y flujos 2.a y 4.a)',
-                 SD.n03_sd_imprimir),
-                ('Dibujo del ticket en la página (paso 2)',
-                 SD.n03_sd_dibujar)],
+                                 ['Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno']))]),
+    secuencias=[('flujo completo, pasos 1 a 6, con sus flujos alternativos', SDU.n03_sd)],
     der=lambda: diagrama_der('DER CU-N03 Imprimir ticket (tablas de origen de los datos impresos)',
                              ['APUESTAS', 'JUGADAS', 'JUGADA_NUMERO', 'SORTEOS', 'JUEGOS', 'LOTERIAS', 'TURNOS']),
     der_nota='El caso de uso no accede a la base de datos: imprime el ticket que ya está en memoria, leído al venderlo '
@@ -432,19 +409,11 @@ CU_N04 = dict(
     reglas=['RN-07'],
     diagrama_cu=n04_cu,
     flujo_alg=('Búsqueda del ticket por código completo o por prefijo (ApuestaBLL.BuscarPorCodigo).', n04_flujo),
-    clases=[('Clases que intervienen en la búsqueda del ticket', n04_clases),
+    clases=CLU.unir('CU-N04', [('Clases que intervienen en la búsqueda del ticket', n04_clases),
             ('Clases de entidad (BE) que se leen',
              lambda: diagrama_be('class CU-N04 (2) Entidades (BE)',
-                                 ['Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno']))],
-    secuencias=[
-                ('Apertura de la operación y lista de tickets de hoy (pasos 1 y 2)',
-                 SD.n04_sd_abrir),
-                ('Lectura de los tickets vendidos hoy (paso 2)',
-                 SD.n04_sd_listar),
-                ('Búsqueda del ticket y detalle (pasos 3 a 6 y flujo 3.a)',
-                 SD.n04_sd_buscar),
-                ('Búsqueda por código completo o por prefijo (pasos 4 y 5 y flujos 4.a a 4.d)',
-                 SD.n04_sd_codigo)],
+                                 ['Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno']))]),
+    secuencias=[('flujo completo, pasos 1 a 6, con sus flujos alternativos', SDU.n04_sd)],
     der=lambda: diagrama_der('DER CU-N04 Buscar ticket',
                              ['USUARIOS', 'APUESTAS', 'JUGADAS', 'JUGADA_NUMERO', 'SORTEOS', 'JUEGOS', 'LOTERIAS',
                               'TURNOS']),

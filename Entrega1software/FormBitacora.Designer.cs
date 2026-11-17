@@ -16,6 +16,7 @@
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnExportar = new System.Windows.Forms.Button();
             this.lblDesde = new System.Windows.Forms.Label();
             this.lblHasta = new System.Windows.Forms.Label();
             this.lblBuscar = new System.Windows.Forms.Label();
@@ -32,7 +33,7 @@
                 this.lblDesde, this.dtpDesde,
                 this.lblHasta, this.dtpHasta,
                 this.lblBuscar, this.txtBuscar,
-                this.btnBuscar
+                this.btnBuscar, this.btnExportar
             });
 
             // lblDesde
@@ -87,6 +88,17 @@
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
 
+            // btnExportar: exporta (serializa) a un archivo JSON los registros de la grilla
+            this.btnExportar.Text = "Exportar";
+            this.btnExportar.Location = new System.Drawing.Point(772, 15);
+            this.btnExportar.Size = new System.Drawing.Size(100, 30);
+            this.btnExportar.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExportar.BackColor = System.Drawing.Color.FromArgb(24, 95, 165);
+            this.btnExportar.ForeColor = System.Drawing.Color.White;
+            this.btnExportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportar.Name = "btnExportar";
+            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
+
             // dgvBitacora
             this.dgvBitacora.Location = new System.Drawing.Point(10, 70);
             this.dgvBitacora.Size = new System.Drawing.Size(960, 450);
@@ -120,6 +132,7 @@
         private System.Windows.Forms.DateTimePicker dtpHasta;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Button btnBuscar;
+        private System.Windows.Forms.Button btnExportar;
         private System.Windows.Forms.Label lblDesde;
         private System.Windows.Forms.Label lblHasta;
         private System.Windows.Forms.Label lblBuscar;

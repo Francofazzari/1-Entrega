@@ -165,6 +165,10 @@ def _clases_de_diagramas(spec):
             e['attrs'].update(v['attrs'])
         for r in dc.rels:
             rels.add((r.origen, r.destino))
+            # un atributo dibujado como asociación (su rol) cuenta como atributo de la clase de origen
+            if r.datos.get('rol') and r.datos.get('tipo') in ('asociacion', 'composicion', 'agregacion'):
+                vistas.setdefault(r.origen, dict(ops=set(), attrs=set()))['attrs'].add(
+                    r.datos['rol'].lstrip('+-#~/'))
     return vistas, rels
 
 
@@ -192,9 +196,11 @@ def verificar(spec, stats=None):
     for titulo, fn in spec['secuencias']:
         s = fn()
         clase_de = {}
-        for l in s.lineas:
+        # en los diagramas por capas, una línea de vida reúne varias clases: se verifica clase por clase
+        lineas = getattr(s, 'lineas_balanceo', s.lineas)
+        for l in lineas:
             if l['tipo'] == 'objeto':
-                clase_de[l['id']] = l['texto'].split(':')[-1].strip()
+                clase_de[l['id']] = l['texto'].replace('\n', '').split(':')[-1].strip()
         for (o, d, texto, tipo) in s.mensajes():
             if d in clase_de and tipo in ('llamada', 'crear'):
                 cd = clase_de[d]
@@ -223,7 +229,7 @@ def verificar(spec, stats=None):
                 if co and co != cd and ops and (co, cd) not in rels:
                     prob.append('[%s] falta una relación %s -> %s en los diagramas de clases (mensaje %r)'
                                 % (s.titulo, co, cd, texto))
-            if tipo in ('llamada',) and any(l['id'] == d and l['tipo'] == 'bd' for l in s.lineas):
+            if tipo in ('llamada',) and any(l['id'] == d and l['tipo'] == 'bd' for l in lineas):
                 usadas_sql |= _tablas_de(texto)
             for cita in re.findall(r'[“"]([^”"]{6,})[”"]', texto):
                 stats['citas'] += 1

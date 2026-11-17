@@ -230,6 +230,7 @@ namespace Entrega1software
                 btnApuesta.Visible = true;
                 btnCambios.Visible = true;
                 btnIdiomas.Visible = true;
+                btnBackup.Visible = true;
             }
             else // Operador
             {
@@ -240,6 +241,7 @@ namespace Entrega1software
                 btnApuesta.Visible = true;
                 btnCambios.Visible = false;
                 btnIdiomas.Visible = false;
+                btnBackup.Visible = false;
             }
         }
         public void ActualizarIdioma(Idioma idioma)
@@ -252,6 +254,7 @@ namespace Entrega1software
             btnLogout.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_logout");
             btnIdiomas.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_idiomas") == "btn_idiomas" ? "Gestion Idiomas" : IdiomaManager.Instancia.ObtenerMensaje("btn_idiomas");
             btnAyuda.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_ayuda") == "btn_ayuda" ? "Ayuda (F1)" : IdiomaManager.Instancia.ObtenerMensaje("btn_ayuda");
+            btnBackup.Text = IdiomaManager.Instancia.ObtenerMensaje("btn_backup") == "btn_backup" ? "Backup" : IdiomaManager.Instancia.ObtenerMensaje("btn_backup");
 
             if (!isInitializingIdioma && idioma != null)
             {
@@ -314,14 +317,30 @@ namespace Entrega1software
 
         private void btnLogout_Click(object sender, System.EventArgs e)
         {
-            BitacoraBLL bitacora = new BitacoraBLL();
-            bitacora.Registrar(
-                SesionManager.Instancia.UsuarioActual.Id,
-                SesionManager.Instancia.UsuarioActual.Nombre,
-                "Logout",
-                "Cierre de sesion"
-            );
-            bll.Logout();
+            CerrarSesion();
+        }
+
+        // Registra el logout, cierra la sesion y vuelve al login. Lo usa el boton "Cerrar sesion" y
+        // tambien la pantalla de Backup / Restore despues de restaurar la base.
+        public void CerrarSesion()
+        {
+            try
+            {
+                BitacoraBLL bitacora = new BitacoraBLL();
+                bitacora.Registrar(
+                    SesionManager.Instancia.UsuarioActual.Id,
+                    SesionManager.Instancia.UsuarioActual.Nombre,
+                    "Logout",
+                    "Cierre de sesion"
+                );
+                bll.Logout();
+            }
+            catch (Exception)
+            {
+                // Si no se pudo registrar (por ejemplo, despues de un restore el usuario ya no existe
+                // en la base), la sesion se cierra igual.
+                SesionManager.Instancia.CerrarSesion();
+            }
             FormLogin fl = new FormLogin();
             fl.Show();
             this.Close();
@@ -342,6 +361,11 @@ namespace Entrega1software
             FormControlCambios fcc = new FormControlCambios();
             fcc.MdiParent = this;
             fcc.Show();
+        }
+
+        private void btnBackup_Click(object sender, System.EventArgs e)
+        {
+            AbrirHijo(() => new FormBackupRestore());
         }
     }
 }

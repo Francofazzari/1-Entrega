@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """PN01 Venta de apuestas: CU-N05 Reimprimir ticket y CU-N06 Cancelar ticket."""
-import sd_venta as SD
+import clases_unicos as CLU
+import sd_unicos as SDU
 from clases import DiagramaClases
 from cu import DiagramaCU
 from n02_comun import diagrama_be, diagrama_der
@@ -27,18 +28,24 @@ def n05_cu():
 
 def n05_clases():
     dc = DiagramaClases('class CU-N05 (1) Clases de la reimpresión del ticket', horizontal=True)
-    dc.paquete('UI (Entrega1software)', [['FormOperacionTicket', None], ['TicketRenderer', 'FormTicket']])
+    dc.paquete('UI (Entrega1software)', [['FormPrincipal', None], ['FormOperacionTicket', None],
+                                         ['TicketRenderer', 'FormTicket']])
     dc.paquete('BLL', [['SesionManager'], ['ApuestaBLL'], ['BitacoraBLL']])
-    dc.paquete('DAL', [['BitacoraDAL']])
+    dc.paquete('DAL', [['ApuestaDAL'], ['BitacoraDAL']])
+    dc.clase('FormPrincipal', ops=['btnReimprimir_Click', 'AbrirHijo'])
     dc.clase('FormOperacionTicket', attrs=['modo', 'apuesta'],
-             ops=['Buscar', 'MostrarTicket', 'btnAccion_Click', 'CargarTicketsDeHoy'])
+             ops=['FormOperacionTicket', 'CrearResumen', 'CrearColumnas', 'Buscar', 'MostrarTicket', 'btnAccion_Click',
+                  'CargarTicketsDeHoy'])
     dc.clase('FormTicket', attrs=['apuesta', 'esReimpresion'], ops=['FormTicket', 'pnlPapel_Paint', 'btnCopiar_Click'])
     dc.clase('TicketRenderer', attrs=['Ancho'], ops=['Dibujar'], estereotipo='«static»')
     dc.clase('SesionManager', attrs=['Instancia', 'UsuarioActual'], estereotipo='«singleton»')
-    dc.clase('ApuestaBLL', attrs=['Vigente'], ops=['RegistrarReimpresion', 'BuscarPorCodigo', 'CodigoCorto',
-                                                   'CodigoCompleto', 'NombreJuego'])
+    dc.clase('ApuestaBLL', attrs=['Vigente'], ops=['ListarVentas', 'RegistrarReimpresion', 'BuscarPorCodigo',
+                                                   'CodigoCorto', 'CodigoCompleto', 'NombreJuego'])
     dc.clase('BitacoraBLL', ops=['Registrar'])
+    dc.clase('ApuestaDAL', attrs=['conexion'], ops=['ListarVentas', 'ObtenerPorCodigo'])
     dc.clase('BitacoraDAL', attrs=['conexion'], ops=['Registrar'])
+    dc.rel('dependencia', 'FormPrincipal', 'FormOperacionTicket', nombre='«create»')
+    dc.rel('asociacion', 'ApuestaBLL', 'ApuestaDAL', rol='-dal', mult_d='1')
     dc.rel('dependencia', 'FormOperacionTicket', 'SesionManager', nombre='«use»')
     dc.rel('asociacion', 'FormOperacionTicket', 'ApuestaBLL', rol='-apuestaBll', mult_d='1')
     dc.rel('dependencia', 'FormOperacionTicket', 'FormTicket', nombre='«create»')
@@ -90,18 +97,12 @@ CU_N05 = dict(
     diagrama_cu=n05_cu,
     flujo_alg=None,
     flujo_no_aplica='No corresponde: el caso de uso no tiene un algoritmo complejo.',
-    clases=[('Clases que intervienen en la reimpresión', n05_clases),
+    clases=CLU.unir('CU-N05', [('Clases que intervienen en la reimpresión', n05_clases),
             ('Clases de entidad (BE) del caso de uso',
              lambda: diagrama_be('class CU-N05 (2) Entidades (BE)',
                                  ['Usuario', 'Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno',
-                                  'Bitacora']))],
-    secuencias=[
-                ('Reimpresión del ticket (pasos 3 a 9 y flujo 6.a)',
-                 SD.n05_sd_reimprimir),
-                ('Pantalla de la reimpresión (pasos 7 y 8)',
-                 SD.n05_sd_ticket),
-                ('Registro de la reimpresión en la bitácora (paso 6)',
-                 SD.n05_sd_registrar)],
+                                  'Bitacora']))]),
+    secuencias=[('flujo completo, pasos 1 a 9, con sus flujos alternativos', SDU.n05_sd)],
     der=lambda: diagrama_der('DER CU-N05 Reimprimir ticket',
                              ['USUARIOS', 'APUESTAS', 'JUGADAS', 'JUGADA_NUMERO', 'SORTEOS', 'JUEGOS', 'LOTERIAS',
                               'TURNOS', 'Bitacora']),
@@ -128,21 +129,25 @@ def n06_cu():
 
 def n06_clases():
     dc = DiagramaClases('class CU-N06 (1) Clases de la cancelación del ticket', horizontal=True)
-    dc.paquete('UI (Entrega1software)', [['FormOperacionTicket']])
+    dc.paquete('UI (Entrega1software)', [['FormPrincipal'], ['FormOperacionTicket']])
     dc.paquete('BLL', [['SesionManager'], ['ApuestaBLL'], ['BitacoraBLL'], ['SorteoBLL']])
     dc.paquete('DAL', [['ApuestaDAL'], ['BitacoraDAL']])
+    dc.clase('FormPrincipal', ops=['btnCancelar_Click', 'AbrirHijo'])
     dc.clase('FormOperacionTicket', attrs=['modo', 'apuesta'],
-             ops=['Buscar', 'MostrarTicket', 'btnAccion_Click', 'Confirmar', 'CargarTicketsDeHoy'])
+             ops=['FormOperacionTicket', 'CrearResumen', 'CrearColumnas', 'Buscar', 'MostrarTicket', 'btnAccion_Click',
+                  'Confirmar', 'CargarTicketsDeHoy'])
     dc.clase('SesionManager', attrs=['Instancia', 'UsuarioActual'], estereotipo='«singleton»')
     dc.clase('ApuestaBLL', attrs=['Vigente', 'Anulada'],
-             ops=['MotivoNoAnulable', 'Anular', 'BuscarPorCodigo', 'CodigoCorto', 'CodigoCompleto', 'NombreJuego'])
+             ops=['ListarVentas', 'MotivoNoAnulable', 'Anular', 'BuscarPorCodigo', 'CodigoCorto', 'CodigoCompleto',
+                  'NombreJuego'])
     dc.clase('SorteoBLL', attrs=['Abierto'], ops=['Descripcion'])
     dc.clase('BitacoraBLL', ops=['Registrar'])
-    dc.clase('ApuestaDAL', attrs=['conexion'], ops=['CambiarEstado'])
+    dc.clase('ApuestaDAL', attrs=['conexion'], ops=['ListarVentas', 'ObtenerPorCodigo', 'CambiarEstado'])
     dc.clase('BitacoraDAL', attrs=['conexion'], ops=['Registrar'])
+    dc.rel('dependencia', 'FormPrincipal', 'FormOperacionTicket', nombre='«create»')
     dc.rel('asociacion', 'FormOperacionTicket', 'ApuestaBLL', rol='-apuestaBll', mult_d='1')
     dc.rel('dependencia', 'FormOperacionTicket', 'SesionManager', nombre='«use»')
-    dc.rel('dependencia', 'ApuestaBLL', 'SorteoBLL', nombre='«use»', lado_o='izq', lado_d='izq')
+    dc.rel('asociacion', 'ApuestaBLL', 'SorteoBLL', rol='-sorteoBll', mult_d='1')
     dc.rel('asociacion', 'ApuestaBLL', 'BitacoraBLL', rol='-bitacora', mult_d='1')
     dc.rel('asociacion', 'ApuestaBLL', 'ApuestaDAL', rol='-dal', mult_d='1')
     dc.rel('asociacion', 'BitacoraBLL', 'BitacoraDAL', rol='-dal', mult_d='1')
@@ -200,18 +205,12 @@ CU_N06 = dict(
     flujo_alg=None,
     flujo_no_aplica='No corresponde: las reglas para cancelar (estado del ticket y de sus sorteos) se enumeran en el '
                     'paso 4 y en el flujo 4.a.',
-    clases=[('Clases que intervienen en la cancelación', n06_clases),
+    clases=CLU.unir('CU-N06', [('Clases que intervienen en la cancelación', n06_clases),
             ('Clases de entidad (BE) del caso de uso',
              lambda: diagrama_be('class CU-N06 (2) Entidades (BE)',
                                  ['Usuario', 'Apuesta', 'Jugada', 'NumeroElegido', 'Juego', 'Sorteo', 'Loteria', 'Turno',
-                                  'Bitacora']))],
-    secuencias=[
-                ('Verificación de las reglas para cancelar (pasos 3 y 4 y flujo 4.a)',
-                 SD.n06_sd_verificar),
-                ('Confirmación de la cancelación (pasos 5 a 11 y flujos 7.a y 8.a)',
-                 SD.n06_sd_confirmar),
-                ('Anulación del ticket y registro en la bitácora (paso 8 y flujo 8.a)',
-                 SD.n06_sd_anular)],
+                                  'Bitacora']))]),
+    secuencias=[('flujo completo, pasos 1 a 11, con sus flujos alternativos', SDU.n06_sd)],
     der=lambda: diagrama_der('DER CU-N06 Cancelar ticket',
                              ['USUARIOS', 'APUESTAS', 'JUGADAS', 'JUGADA_NUMERO', 'SORTEOS', 'JUEGOS', 'LOTERIAS',
                               'TURNOS', 'Bitacora']),

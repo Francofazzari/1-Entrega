@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,6 +46,7 @@
     <Compile Include="BE.cs" />
     <Compile Include="Apuesta.cs" />
     <Compile Include="Bitacora.cs" />
+    <Compile Include="BitacoraExportacion.cs" />
     <Compile Include="Juego.cs" />
     <Compile Include="Jugada.cs" />
     <Compile Include="Loteria.cs" />

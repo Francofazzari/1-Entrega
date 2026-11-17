@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BE;
 using DAL;
 
@@ -64,6 +65,16 @@ namespace BLL
         public List<Idioma> ObtenerIdiomas()
         {
             return dal.ObtenerIdiomas();
+        }
+
+        // Vuelve a leer de la base el idioma actual y sus traducciones (por ejemplo despues de un
+        // restore), para no seguir mostrando lo que habia quedado guardado en memoria.
+        public void RecargarDesdeBase()
+        {
+            if (IdiomaActual == null) return;
+            Idioma actual = ObtenerIdiomas().FirstOrDefault(i => i.Id == IdiomaActual.Id);
+            if (actual != null)
+                CambiarIdioma(actual);
         }
 
         // Verifica los digitos verificadores horizontal y vertical de IDIOMAS.

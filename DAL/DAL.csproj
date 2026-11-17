@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApuestaDAL.cs" />
+    <Compile Include="BackupDAL.cs" />
     <Compile Include="BitacoraDAL.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="IdiomaDAL.cs" />
